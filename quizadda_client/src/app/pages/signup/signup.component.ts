@@ -7,4 +7,20 @@ import { Component } from '@angular/core';
 })
 export class SignupComponent {
 
+  public user = {
+    username: '',
+    password: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: ''
+  }
+
+  formSubmit() {
+    console.log(this.user);
+    if(this.user.username == '' || this.user.username == null) {
+      alert('Username is required !!');
+      return;
+    }
+  }
 }

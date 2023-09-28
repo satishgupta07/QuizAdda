@@ -45,4 +45,9 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
     npm i bootstrap-grid-only-css
 
 ## To create component 
-    ng g component <component-name>    
+    ng g component <component-name>   
+
+## Data Binding
+    Use [] to bind from source to view.
+    Use () to bind from view to source.
+    Use [()] to bind in a two way sequence of view to source to view.     
