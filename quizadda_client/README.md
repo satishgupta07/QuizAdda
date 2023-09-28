@@ -50,4 +50,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## Data Binding
     Use [] to bind from source to view.
     Use () to bind from view to source.
-    Use [()] to bind in a two way sequence of view to source to view.     
+    Use [()] to bind in a two way sequence of view to source to view. 
+
+## To generate service
+    ng g service <service-name>        

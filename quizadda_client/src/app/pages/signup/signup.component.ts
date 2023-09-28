@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-signup',
@@ -6,6 +7,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent {
+
+  constructor(private userService: UserService) {}
 
   public user = {
     username: '',
@@ -22,5 +25,19 @@ export class SignupComponent {
       alert('Username is required !!');
       return;
     }
+
+    // addUser: userservice
+    this.userService.addUser(this.user).subscribe(
+      (data:any) => {
+        //success
+        console.log(data);
+        alert('success');
+      },
+      (error) => {
+        //Error
+        console.log(error);
+        alert('something went wrong');
+      }
+    )
   }
 }
