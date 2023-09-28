@@ -1,0 +1,56 @@
+<div class="bootstrap-wrapper">
+    <div class="container">
+        <div class="row mt20">
+            <div class="col-md-6 offset-md-3">
+                <div class="container text-center">
+                    <img src="../../../assets/register.png" alt="register" style="width: 100px; height: 100px;">
+                </div>
+                <h1 class="text-center">Register Here !!</h1>
+
+                <form>
+                     <!-- Username field -->
+                     <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Username</mat-label>
+                        <input required name="username"
+                        matInput placeholder="Username">
+                    </mat-form-field>
+                    <!-- Password field -->
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Password</mat-label>
+                        <input required name="password"
+                        type="password" matInput placeholder="Password">
+                    </mat-form-field>
+                    <!-- First Name field -->
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>First Name</mat-label>
+                        <input required name="firstname"
+                        matInput placeholder="First Name">
+                    </mat-form-field>
+                    <!-- Last Name field -->
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Last Name</mat-label>
+                        <input required name="lastname"
+                        matInput placeholder="Last Name">
+                    </mat-form-field>
+                    <!-- Email field -->
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input required name="email"
+                        type="email" matInput placeholder="Email">
+                    </mat-form-field>
+                    <!-- Phone No. field -->
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Phone No.</mat-label>
+                        <input required name="phone"
+                        type="tel" matInput placeholder="Phone No.">
+                    </mat-form-field>
+                    <!-- Register and Clear Button -->
+                    <div class="container text-center">
+                        <button type="submit" mat-raised-button color="primary">Register</button>
+                        <button class="ml20" mat-raised-button color="accent">Clear</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

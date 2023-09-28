@@ -43,3 +43,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## To user bootstrap grid system
     npm i bootstrap-grid-only-css
+
+## To create component 
+    ng g component <component-name>    
