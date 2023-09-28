@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from 'src/app/services/user.service';
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-signup',
@@ -8,7 +10,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class SignupComponent {
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private _snackBar: MatSnackBar) {}
 
   public user = {
     username: '',
@@ -22,21 +24,34 @@ export class SignupComponent {
   formSubmit() {
     console.log(this.user);
     if(this.user.username == '' || this.user.username == null) {
-      alert('Username is required !!');
+      // alert('Username is required !!');
+      this._snackBar.open('Username is required !!', '', {
+        duration: 3000,
+        verticalPosition: 'top',
+        horizontalPosition: 'right'
+      });
       return;
     }
+
+    // validate
 
     // addUser: userservice
     this.userService.addUser(this.user).subscribe(
       (data:any) => {
         //success
         console.log(data);
-        alert('success');
+        // alert('success');
+        Swal.fire('User is registered successfully', 'With userId '+data.id, 'success');
       },
       (error) => {
         //Error
         console.log(error);
-        alert('something went wrong');
+        // alert('something went wrong');
+        this._snackBar.open('Something went wrong !!', '', {
+          duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'right'
+        });
       }
     )
   }
