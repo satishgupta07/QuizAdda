@@ -8,17 +8,20 @@
                             <img src="../../../assets/register.png" alt="register" style="width: 100px; height: 100px;">
                         </div>
                         <h1 class="text-center">Login Here !!</h1>
-                        <form>
+                        {{loginData | json }}
+                        <form (ngSubmit)="formSubmit()">
                             <!-- Username field -->
                             <mat-form-field class="full-width" appearance="outline">
                                 <mat-label>Username</mat-label>
-                                <input required name="username"
+                                <input [(ngModel)]="loginData.username"
+                                 required name="username"
                                 matInput placeholder="Username">
                             </mat-form-field>
                             <!-- Password field -->
                             <mat-form-field class="full-width" appearance="outline">
                                 <mat-label>Password</mat-label>
-                                <input required name="password"
+                                <input [(ngModel)]="loginData.password"
+                                 required name="password"
                                 type="password" matInput placeholder="Password">
                             </mat-form-field>
                             <!-- Register and Clear Button -->
