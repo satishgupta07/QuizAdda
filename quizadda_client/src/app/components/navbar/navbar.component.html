@@ -4,13 +4,27 @@
         Quiz Adda
     </a>
     <span class="example-spacer"></span>
-    <a routerLink="/login" mat-button>
+    <a *ngIf="!login.isLoggedIn()"
+     routerLink="/login" mat-button>
         <mat-icon>login</mat-icon>
         Login
     </a>
     
-    <a routerLink="/signup" class="ml20" mat-button>
+    <a *ngIf="!login.isLoggedIn()"
+     routerLink="/signup" class="ml20" mat-button>
         <mat-icon>account_box</mat-icon>
         Register
     </a>
+
+    <button *ngIf="login.isLoggedIn()"
+        mat-button>
+        <mat-icon>account_circle</mat-icon>
+        {{login.getUser().username}}
+    </button>
+
+    <button *ngIf="login.isLoggedIn()" (click)="logout()"
+        class="ml20" mat-button>
+        <mat-icon>logout</mat-icon>
+        Logout
+    </button>
 </mat-toolbar>

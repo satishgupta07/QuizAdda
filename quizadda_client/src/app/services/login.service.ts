@@ -9,6 +9,11 @@ export class LoginService {
 
   constructor(private http:HttpClient) { }
 
+  // current loggedIn User
+  public getCurrentUser() {
+    return this.http.get(`${baseUrl}/current-user`);
+  }
+
   //generate token
   public generateToken(loginData: any) {
     return this.http.post(`${baseUrl}/generate-token`, loginData);
@@ -50,6 +55,7 @@ export class LoginService {
   //getUser
   public getUser() {
     let userStr = localStorage.getItem('user');
+    console.log(userStr);
     if(userStr != null) {
       return JSON.parse(userStr);
     } else {

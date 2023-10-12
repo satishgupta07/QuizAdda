@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {Router} from '@angular/router'; 
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LoginService } from 'src/app/services/login.service';
 
@@ -14,7 +15,7 @@ export class LoginComponent {
     password:''
   }
 
-  constructor(private snack:MatSnackBar, private login:LoginService) {}
+  constructor(private snack:MatSnackBar, private login:LoginService, private router:Router) {}
 
   formSubmit() {
     console.log('login btn clicked');
@@ -37,10 +38,33 @@ export class LoginComponent {
       (data: any) => {
         console.log('Success');
         console.log(data);
+
+        // login...
+        this.login.loginUser(data.token);
+
+        this.login.getCurrentUser().subscribe(
+          (user:any) => {
+            this.login.setUser(user);
+            console.log(user);
+            // redirect... ADMIN: admin-dashboard
+            // redirect... USER: user-dashboard
+            if(this.login.getUserRole() == "ADMIN") {
+              this.router.navigate(['/admin']);
+            } else if(this.login.getUserRole() == "USER") {
+              this.router.navigate(['/user-dashboard']);
+            } else {
+              this.login.logout();
+            }
+          }
+        )
+
       },
       (error)=>{
         console.log("Error !");
         console.log(error);
+        this.snack.open("Invalid Details !! Try again", '', {
+          duration: 3000
+        })
       }
     )
   }

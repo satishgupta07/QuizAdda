@@ -3,6 +3,7 @@ package com.satishgupta.quizadda_server.controllers;
 import com.satishgupta.quizadda_server.models.JwtRequest;
 import com.satishgupta.quizadda_server.models.JwtResponse;
 import com.satishgupta.quizadda_server.config.JwtUtils;
+import com.satishgupta.quizadda_server.models.User;
 import com.satishgupta.quizadda_server.services.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 @CrossOrigin("*")
@@ -46,5 +49,11 @@ public class AuthController {
         } catch (BadCredentialsException e) {
             throw new BadCredentialsException(" Invalid Username or Password  !!");
         }
+    }
+
+    // return the details of current user
+    @GetMapping("/current-user")
+    public User getCurrentUser(Principal principal) {
+        return (User)(this.userDetailsService.loadUserByUsername(principal.getName()));
     }
 }
