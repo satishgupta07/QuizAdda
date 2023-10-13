@@ -5,6 +5,7 @@ import com.satishgupta.quizadda_server.models.User;
 import com.satishgupta.quizadda_server.models.UserRole;
 import com.satishgupta.quizadda_server.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -18,9 +19,16 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @PostMapping("/")
     public User createUser(@RequestBody User user) throws Exception {
         user.setProfile("default.png");
+
+        // encoding password with bcrypt
+        user.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
+
         Set<UserRole> roles = new HashSet<>();
 
         Role role = new Role();

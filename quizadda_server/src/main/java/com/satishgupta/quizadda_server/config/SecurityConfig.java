@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .cors(cors-> cors.disable())
                 .authorizeHttpRequests(auth-> auth.requestMatchers("/").
                         authenticated().
-                        requestMatchers("/generate-token","/users/").permitAll()
+                        requestMatchers("/generate-token","/user/").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS).permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(ex->ex.authenticationEntryPoint(point))
@@ -47,6 +47,6 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
     }
 }
