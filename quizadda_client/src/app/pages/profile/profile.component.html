@@ -1,0 +1,44 @@
+<mat-card *ngIf="user">
+    <h2>Profile Details</h2>
+    <mat-card-content>
+        <div class="bootstrap-wrapper">
+            <div class="container">
+
+                <div class="container text-center">
+                    <img src="https://static.thenounproject.com/png/5034901-200.png" 
+                        alt="" class="profile-image" />
+                       
+                    <h2 class="mt-20">{{user.firstName}} {{user.lastName}} <mat-icon>edit</mat-icon></h2>    
+                </div>
+
+                <div class="row">
+                    <div class="col-md-10 offset-md-1">
+                        <table class="table">
+                            <tr>
+                                <td>Username</td>
+                                <td>{{user.username}}</td>
+                            </tr>
+                            <tr>
+                                <td>UserId</td>
+                                <td>{{user.id}}</td>
+                            </tr>
+                            <tr>
+                                <td>Phone No.</td>
+                                <td>{{user.phone}}</td>
+                            </tr>
+                            <tr>
+                                <td>Role</td>
+                                <td>{{user.authorities[0].authority}}</td>
+                            </tr>
+                            <tr>
+                                <td>Status</td>
+                                <td>{{ user.enabled ? "ACTIVE": "NOT-ACTIVE"}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
+
