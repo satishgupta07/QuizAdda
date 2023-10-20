@@ -30,6 +30,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth-> auth.requestMatchers("/").
                         authenticated().
                         requestMatchers("/generate-token","/user/").permitAll()
+                        .requestMatchers(HttpMethod.GET).permitAll()
                         .requestMatchers(HttpMethod.OPTIONS).permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(ex->ex.authenticationEntryPoint(point))
