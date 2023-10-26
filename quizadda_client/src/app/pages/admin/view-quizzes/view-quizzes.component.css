@@ -1,0 +1,13 @@
+.example-header-image {
+  background-image: url('../../../../assets/quiz.png');
+  background-size: cover;
+}
+
+.card {
+  margin : 10px;
+  background-color: #FAF9F6;
+}
+
+.ml20 {
+  margin-left: 20px;
+}
