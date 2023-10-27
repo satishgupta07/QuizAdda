@@ -41,7 +41,7 @@
                     name="maxMarks"
                     matInput
                     placeholder="Enter here"
-                    [(ngModel)]="quiz.title"
+                    [(ngModel)]="quiz.maxMarks"
                   />
                 </mat-form-field>
               </div>
@@ -55,33 +55,34 @@
                     name="numberOfQuestions"
                     matInput
                     placeholder="Enter here"
-                    [(ngModel)]="quiz.title"
+                    [(ngModel)]="quiz.numberOfQuestions"
                   />
                 </mat-form-field>
               </div>
             </div>
-            
-            <div class="row">
-                <div class="col-md-6">
-            <mat-slide-toggle
-              class="mt10"
-              color="primary"
-              checked=false
-            >
-             Publish Status
-            </mat-slide-toggle>
-            </div>
 
-            <div class="col-md-6">
-            <mat-form-field class="w100" appearance="outline">
-                <mat-label>Favorite food</mat-label>
-                <mat-select [(ngModel)]="quiz.title" name="food">
-                  <mat-option *ngFor="let c of categories" [value]="c.catId">
-                    {{c.title}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <mat-slide-toggle
+                  class="mt10"
+                  color="primary"
+                  name="active"
+                  [(ngModel)]="quiz.active"
+                >
+                  Publish Status
+                </mat-slide-toggle>
+              </div>
+
+              <div class="col-md-6">
+                <mat-form-field class="w100" appearance="outline">
+                  <mat-label>Favorite food</mat-label>
+                  <mat-select [(ngModel)]="quiz.category" name="food">
+                    <mat-option *ngFor="let c of categories" [value]="c">
+                      {{ c.title }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
             </div>
 
             <div class="container text-center mt15">
@@ -93,3 +94,5 @@
     </div>
   </mat-card-content>
 </mat-card>
+
+
