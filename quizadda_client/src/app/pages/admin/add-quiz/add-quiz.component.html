@@ -1,5 +1,5 @@
 <mat-card>
-  <h1>Add New Quiz</h1>
+  <h1>{{pageTexts.title}}</h1>
   <mat-card-content>
     <div class="container">
       <div class="row">
@@ -75,8 +75,8 @@
 
               <div class="col-md-6">
                 <mat-form-field class="w100" appearance="outline">
-                  <mat-label>Favorite food</mat-label>
-                  <mat-select [(ngModel)]="quiz.category" name="food">
+                  <mat-label>Category</mat-label>
+                  <mat-select [(ngModel)]="quiz.category" name="category">
                     <mat-option *ngFor="let c of categories" [value]="c">
                       {{ c.title }}
                     </mat-option>
@@ -86,7 +86,7 @@
             </div>
 
             <div class="container text-center mt15">
-              <button mat-raised-button color="primary">Add</button>
+              <button mat-raised-button color="primary">{{pageTexts.buttonText}}</button>
             </div>
           </form>
         </div>

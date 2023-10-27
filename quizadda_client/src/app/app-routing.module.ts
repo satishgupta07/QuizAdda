@@ -58,6 +58,10 @@ const routes: Routes = [
       {
         path: 'add-quiz',
         component: AddQuizComponent
+      },
+      {
+        path: 'update-quiz/:quizId',
+        component: AddQuizComponent
       }
     ]
   },

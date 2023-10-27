@@ -12,17 +12,35 @@
       </mat-card-content>
       <mat-card-actions>
         <button mat-flat-button color="primary">Questions</button>
-        <button mat-flat-button color="primary" class="ml20">Update</button>
+        <button
+          routerLink="/admin/update-quiz/{{q.quizId}}"
+          mat-flat-button
+          color="primary"
+          class="ml20"
+        >
+          Update
+        </button>
         <button mat-flat-button color="primary" class="ml20">Attempts</button>
-        <button mat-flat-button color="primary" class="ml20" (click)="deleteQuiz(q.quizId)">Delete</button>
-        <button mat-stroked-button color="primary" class="ml20">Max Marks : {{q.maxMarks}}</button>
-        <button mat-stroked-button color="primary" class="ml20">Questions : {{q.numberOfQuestions}}</button>
+        <button
+          mat-flat-button
+          color="primary"
+          class="ml20"
+          (click)="deleteQuiz(q.quizId)"
+        >
+          Delete
+        </button>
+        <button mat-stroked-button color="primary" class="ml20">
+          Max Marks : {{ q.maxMarks }}
+        </button>
+        <button mat-stroked-button color="primary" class="ml20">
+          Questions : {{ q.numberOfQuestions }}
+        </button>
       </mat-card-actions>
     </mat-card>
   </div>
 
   <div class="container text-center mt20">
-    <button routerLink="/admin/add-category" mat-raised-button color="primary">
+    <button routerLink="/admin/add-quiz" mat-raised-button color="primary">
       Add New Quiz
     </button>
   </div>
