@@ -11,9 +11,17 @@
         <p>{{ q.description }}</p>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-flat-button color="primary">Questions</button>
+        <button routerLink="/admin/quiz/view-questions/{{q.quizId}}/{{q.title}}" mat-flat-button color="primary">
+          Questions
+        </button>
+        <button mat-stroked-button color="primary" class="ml20">
+          Max Marks : {{ q.maxMarks }}
+        </button>
+        <button mat-stroked-button color="primary" class="ml20">
+          Questions : {{ q.numberOfQuestions }}
+        </button>
         <button
-          routerLink="/admin/update-quiz/{{q.quizId}}"
+          routerLink="/admin/update-quiz/{{ q.quizId }}"
           mat-flat-button
           color="primary"
           class="ml20"
@@ -28,12 +36,6 @@
           (click)="deleteQuiz(q.quizId)"
         >
           Delete
-        </button>
-        <button mat-stroked-button color="primary" class="ml20">
-          Max Marks : {{ q.maxMarks }}
-        </button>
-        <button mat-stroked-button color="primary" class="ml20">
-          Questions : {{ q.numberOfQuestions }}
         </button>
       </mat-card-actions>
     </mat-card>
