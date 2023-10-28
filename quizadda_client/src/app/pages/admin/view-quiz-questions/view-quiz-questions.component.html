@@ -1,5 +1,7 @@
-<h1 class="mt20">Questions of {{quizTitle}}</h1>
-
+<div class="display-flex">
+    <h1 class="mt20">Questions of {{quizTitle}}</h1>
+    <button routerLink="/admin/quiz/add-question/{{quizId}}/{{quizTitle}}" mat-raised-button color="primary">Add Question</button>
+</div>
 <div class="bootstrap-wrapper">
     <div class="row">
         <div class="col-md-12">

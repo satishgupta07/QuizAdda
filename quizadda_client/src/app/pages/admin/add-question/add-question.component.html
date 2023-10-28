@@ -1,0 +1,101 @@
+<mat-card>
+  <h1>Add Question to Quiz : {{quizTitle}}</h1>
+  {{ question | json }}
+  <mat-card-content>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 offset-md-2">
+          <form (ngSubmit)="formSubmit()">
+            <mat-form-field class="w100" appearance="outline">
+              <mat-label>Write Question Content</mat-label>
+              <textarea
+                required
+                autofocus
+                type="text"
+                name="title"
+                matInput
+                placeholder="Enter here"
+                [(ngModel)]="question.content"
+              ></textarea>
+            </mat-form-field>
+
+            <div class="row">
+              <div class="col-md-6">
+                <mat-form-field class="w100" appearance="outline">
+                  <mat-label>Enter Option 1</mat-label>
+                  <input
+                    required
+                    autofocus
+                    type="text"
+                    name="maxMarks"
+                    matInput
+                    placeholder="Enter here"
+                    [(ngModel)]="question.option1"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field class="w100" appearance="outline">
+                  <mat-label>Enter Option 2</mat-label>
+                  <input
+                    required
+                    autofocus
+                    type="text"
+                    name="numberOfQuestions"
+                    matInput
+                    placeholder="Enter here"
+                    [(ngModel)]="question.option2"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <mat-form-field class="w100" appearance="outline">
+                  <mat-label>Enter Option 3</mat-label>
+                  <input
+                    required
+                    autofocus
+                    type="text"
+                    name="maxMarks"
+                    matInput
+                    placeholder="Enter here"
+                    [(ngModel)]="question.option3"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field class="w100" appearance="outline">
+                  <mat-label>Enter Option 4</mat-label>
+                  <input
+                    required
+                    autofocus
+                    type="text"
+                    name="numberOfQuestions"
+                    matInput
+                    placeholder="Enter here"
+                    [(ngModel)]="question.option4"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+
+            <mat-form-field class="w100" appearance="outline">
+              <mat-label>Select Answer</mat-label>
+              <mat-select required name="category" [value]="question.answer">
+                <mat-option>{{question.option1}}</mat-option>
+                <mat-option>{{question.option2}}</mat-option>
+                <mat-option>{{question.option3}}</mat-option>
+                <mat-option>{{question.option4}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <div class="container text-center mt15">
+              <button mat-raised-button color="primary">Add</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
