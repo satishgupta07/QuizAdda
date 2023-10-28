@@ -48,4 +48,9 @@ public class QuestionController {
     public ResponseEntity<Question> updateQuestion(@RequestBody Question question) {
         return ResponseEntity.ok(this.questionService.updateQuestion(question));
     }
+
+    @DeleteMapping("/{questionId}")
+    public void deleteQuestion(@PathVariable("questionId") Long questionId) {
+        this.questionService.deleteQuestion(questionId);
+    }
 }
