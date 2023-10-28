@@ -12,4 +12,8 @@ export class QuestionsService {
   public getQuestionsOfQuiz(quizId: any) {
     return this._http.get(`${baseUrl}/question/quiz/${quizId}`)
   }
+
+  public addQuestionOfQuiz(question: any) {
+    return this._http.post(`${baseUrl}/question/`, question)
+  }
 }

@@ -11,8 +11,7 @@
               <textarea
                 required
                 autofocus
-                type="text"
-                name="title"
+                name="content"
                 matInput
                 placeholder="Enter here"
                 [(ngModel)]="question.content"
@@ -27,7 +26,7 @@
                     required
                     autofocus
                     type="text"
-                    name="maxMarks"
+                    name="option1"
                     matInput
                     placeholder="Enter here"
                     [(ngModel)]="question.option1"
@@ -41,7 +40,7 @@
                     required
                     autofocus
                     type="text"
-                    name="numberOfQuestions"
+                    name="option2"
                     matInput
                     placeholder="Enter here"
                     [(ngModel)]="question.option2"
@@ -57,7 +56,7 @@
                     required
                     autofocus
                     type="text"
-                    name="maxMarks"
+                    name="option3"
                     matInput
                     placeholder="Enter here"
                     [(ngModel)]="question.option3"
@@ -71,7 +70,7 @@
                     required
                     autofocus
                     type="text"
-                    name="numberOfQuestions"
+                    name="option4"
                     matInput
                     placeholder="Enter here"
                     [(ngModel)]="question.option4"
@@ -82,11 +81,11 @@
 
             <mat-form-field class="w100" appearance="outline">
               <mat-label>Select Answer</mat-label>
-              <mat-select required name="category" [value]="question.answer">
-                <mat-option>{{question.option1}}</mat-option>
-                <mat-option>{{question.option2}}</mat-option>
-                <mat-option>{{question.option3}}</mat-option>
-                <mat-option>{{question.option4}}</mat-option>
+              <mat-select required name="answer" [(ngModel)]="question.answer">
+                <mat-option *ngIf="question.option1" [value]="question.option1">{{question.option1}}</mat-option>
+                <mat-option *ngIf="question.option2" [value]="question.option2">{{question.option2}}</mat-option>
+                <mat-option *ngIf="question.option3" [value]="question.option3">{{question.option3}}</mat-option>
+                <mat-option *ngIf="question.option4" [value]="question.option4">{{question.option4}}</mat-option>
               </mat-select>
             </mat-form-field>
 
