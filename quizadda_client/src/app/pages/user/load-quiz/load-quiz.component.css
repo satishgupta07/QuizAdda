@@ -1,0 +1,12 @@
+.truncate {
+    display: block;
+    white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.avatar {
+    background-image: url('../../../../assets/ideas.png');
+    background-size: cover;
+}

@@ -34,6 +34,7 @@ import {MatSelectModule} from '@angular/material/select';
 import { ViewQuizQuestionsComponent } from './pages/admin/view-quiz-questions/view-quiz-questions.component';
 import { AddQuestionComponent } from './pages/admin/add-question/add-question.component';
 import { UserSidebarComponent } from './pages/user/user-sidebar/user-sidebar.component';
+import { LoadQuizComponent } from './pages/user/load-quiz/load-quiz.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { UserSidebarComponent } from './pages/user/user-sidebar/user-sidebar.com
     AddQuizComponent,
     ViewQuizQuestionsComponent,
     AddQuestionComponent,
-    UserSidebarComponent
+    UserSidebarComponent,
+    LoadQuizComponent
   ],
   imports: [
     BrowserModule,

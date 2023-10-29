@@ -1,0 +1,26 @@
+<div class="bootstrap-wrapper">
+    <div class="container-fluid">
+        <div class="row mt20" *ngIf="quizzes">
+            <div class="col-md-4" *ngFor="let q of quizzes">
+                <mat-card>
+                    <mat-card-header>
+                        <div mat-card-avatar class="avatar"></div>
+                        <mat-card-title>{{q.title}}</mat-card-title>
+                        <mat-card-subtitle>{{q.category.title}}</mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content class="mt10">
+                        <p class="truncate">{{q.description}}</p>
+                        <div style="color: #808080;">
+                            <p>No. of Ques : {{q.numberOfQuestions}}</p>
+                            <p>Max Marks : {{q.maxMarks}}</p>
+                        </div>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button mat-button color="primary">VIEW</button>
+                        <button mat-button color="accent">START</button>
+                      </mat-card-actions>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+</div>
