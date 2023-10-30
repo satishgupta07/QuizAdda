@@ -12,6 +12,7 @@ export class LoadQuizComponent {
 
   categoryId: number | any;
   quizzes = [{
+    quizId: '',
     title: '',
     description: '',
     maxMarks: '',

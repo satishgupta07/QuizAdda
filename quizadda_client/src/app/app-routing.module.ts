@@ -16,6 +16,7 @@ import { AddQuizComponent } from './pages/admin/add-quiz/add-quiz.component';
 import { ViewQuizQuestionsComponent } from './pages/admin/view-quiz-questions/view-quiz-questions.component';
 import { AddQuestionComponent } from './pages/admin/add-question/add-question.component';
 import { LoadQuizComponent } from './pages/user/load-quiz/load-quiz.component';
+import { InstructionsComponent } from './pages/user/instructions/instructions.component';
 
 const routes: Routes = [
   {
@@ -88,6 +89,10 @@ const routes: Routes = [
       {
         path: ':categoryId',
         component: LoadQuizComponent
+      },
+      {
+        path: 'instructions/:quizId',
+        component: InstructionsComponent
       }
     ]
   }
