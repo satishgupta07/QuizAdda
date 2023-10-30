@@ -1,5 +1,6 @@
 package com.satishgupta.quizadda_server.services.impl;
 
+import com.satishgupta.quizadda_server.models.quizPortal.Category;
 import com.satishgupta.quizadda_server.models.quizPortal.Quiz;
 import com.satishgupta.quizadda_server.repositories.QuizRepository;
 import com.satishgupta.quizadda_server.services.QuizService;
@@ -37,5 +38,10 @@ public class QuizServiceImpl implements QuizService {
     @Override
     public void deleteQuiz(Long quizId) {
         this.quizRepository.deleteById(quizId);
+    }
+
+    @Override
+    public List<Quiz> getQuizzesOfCategory(Category category) {
+        return this.quizRepository.findByCategory(category);
     }
 }

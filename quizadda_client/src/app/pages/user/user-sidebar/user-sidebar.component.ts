@@ -10,6 +10,7 @@ import { CategoryService } from 'src/app/services/category.service';
 export class UserSidebarComponent {
 
   categories = [{
+    catId: 0,
     title: ''
   }];
 

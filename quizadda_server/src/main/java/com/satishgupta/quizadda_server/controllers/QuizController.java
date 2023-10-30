@@ -1,5 +1,6 @@
 package com.satishgupta.quizadda_server.controllers;
 
+import com.satishgupta.quizadda_server.models.quizPortal.Category;
 import com.satishgupta.quizadda_server.models.quizPortal.Quiz;
 import com.satishgupta.quizadda_server.services.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,5 +45,13 @@ public class QuizController {
     @DeleteMapping("/{quizId}")
     public void deleteQuiz(@PathVariable("quizId") Long quizId) {
         this.quizService.deleteQuiz(quizId);
+    }
+
+    // get quiz by category
+    @GetMapping("/category/{catId}")
+    public ResponseEntity<List<Quiz>> getQuizByCategory(@PathVariable("catId") Long catId) {
+        Category category = new Category();
+        category.setCatId(catId);
+        return ResponseEntity.ok(this.quizService.getQuizzesOfCategory(category));
     }
 }

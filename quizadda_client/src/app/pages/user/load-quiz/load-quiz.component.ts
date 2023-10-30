@@ -12,32 +12,42 @@ export class LoadQuizComponent {
 
   categoryId: number | any;
   quizzes = [{
-    title: 'Basic Java Quiz',
-    description: 'this is the description',
-    maxMarks: '50',
-    numberOfQuestions: '20',
+    title: '',
+    description: '',
+    maxMarks: '',
+    numberOfQuestions: '',
     category: {
-      title: 'Programming',
+      title: '',
     },
   }];
 
   constructor(private _route: ActivatedRoute, private _quiz:QuizService) {}
 
   ngOnInit() {
-    this.categoryId = this._route.snapshot.params['categoryId'];
-    console.log(this.categoryId);
+    this._route.params.subscribe((params : any) => {
+      this.categoryId = params.categoryId;
 
-    if(!this.categoryId) {
-      this._quiz.quizzes().subscribe(
-        (data: any) => {
-          this.quizzes = data;
-          console.log(this.quizzes);
-        },
-        (error) => {
-          console.log(error);
-          Swal.fire('Error !!', 'Error while loading data', 'error');
-        }
-      );
-    }
+      if(!this.categoryId) {
+        this._quiz.quizzes().subscribe(
+          (data: any) => {
+            this.quizzes = data;
+          },
+          (error) => {
+            console.log(error);
+            Swal.fire('Error !!', 'Error while loading data', 'error');
+          }
+        );
+      } else {
+        this._quiz.getQuizByCategory(this.categoryId).subscribe(
+          (data: any) => {
+            this.quizzes = data;
+          },
+          (error) => {
+            console.log(error);
+            Swal.fire('Error !!', 'Error while loading data', 'error');
+          }
+        );
+      }
+    })
   }
 }
