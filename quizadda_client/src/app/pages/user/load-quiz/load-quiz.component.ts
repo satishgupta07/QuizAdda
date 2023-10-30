@@ -28,7 +28,7 @@ export class LoadQuizComponent {
       this.categoryId = params.categoryId;
 
       if(!this.categoryId) {
-        this._quiz.quizzes().subscribe(
+        this._quiz.getActivequizzes().subscribe(
           (data: any) => {
             this.quizzes = data;
           },
@@ -38,7 +38,7 @@ export class LoadQuizComponent {
           }
         );
       } else {
-        this._quiz.getQuizByCategory(this.categoryId).subscribe(
+        this._quiz.getActiveQuizByCategory(this.categoryId).subscribe(
           (data: any) => {
             this.quizzes = data;
           },
