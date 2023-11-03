@@ -1,4 +1,4 @@
-<div class="bootstrap-wrapper">
+<div class="bootstrap-wrapper" *ngIf="!isSubmitted">
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-2">
@@ -14,41 +14,71 @@
               <h3>
                 <b>Q{{ i + 1 }}.</b> {{ q.content }}
               </h3>
-              <div class="row mt10">
-                <div class="col-md-6">
-                  <mat-radio-button [value]="q.option1" [name]="q.option1">
-                    {{ q.option1 }}
-                  </mat-radio-button>
-                  <!-- <input type="radio" [value]="q.option1" [name]="i">
-                        <label>{{q.option1}}</label> -->
+              <mat-radio-group [(ngModel)]="q.chosenAnswer">
+                <div class="row mt10">
+                  <div class="col-md-6">
+                    <mat-radio-button [value]="q.option1" [name]="q.option1">
+                      {{ q.option1 }}
+                    </mat-radio-button>
+                  </div>
+                  <div class="col-md-6">
+                    <mat-radio-button [value]="q.option2" [name]="q.option2">
+                      {{ q.option2 }}
+                    </mat-radio-button>
+                  </div>
                 </div>
-                <div class="col-md-6">
-                  <mat-radio-button [value]="q.option2" [name]="q.option1">
-                    {{ q.option2 }}
-                  </mat-radio-button>
+                <div class="row mt10">
+                  <div class="col-md-6">
+                    <mat-radio-button [value]="q.option3" [name]="q.option3">
+                      {{ q.option3 }}
+                    </mat-radio-button>
+                  </div>
+                  <div class="col-md-6">
+                    <mat-radio-button [value]="q.option4" [name]="q.option4">
+                      {{ q.option4 }}
+                    </mat-radio-button>
+                  </div>
                 </div>
-              </div>
-              <div class="row mt10">
-                <div class="col-md-6">
-                  <mat-radio-button [value]="q.option3" [name]="q.option1">
-                    {{ q.option3 }}
-                  </mat-radio-button>
-                </div>
-                <div class="col-md-6">
-                  <mat-radio-button [value]="q.option4" [name]="q.option1">
-                    {{ q.option4 }}
-                  </mat-radio-button>
-                </div>
-              </div>
+              </mat-radio-group>
             </mat-card-content>
           </mat-card>
           <div class="container text-center mt20 mb20">
-            <button mat-raised-button color="primary">Submit Quiz</button>
+            <button mat-raised-button color="primary" (click)="submitQuiz()">
+              Submit Quiz
+            </button>
           </div>
         </ng-container>
       </div>
       <div class="col-md-2">
         <!-- progress -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="bootstrap-wrapper" *ngIf="isSubmitted">
+  <div class="container-fluid">
+    <div class="row mt20">
+      <div class="col-md-6 offset-md-3">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Quiz Result</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="mt20">
+            <h3>Marks Got : {{marksGot}}</h3>
+            <h3>Correct Answers : {{correctAnswers}}</h3>
+            <h3>Questions Attempted : {{attempted}}</h3>
+          </mat-card-content>
+          <div class="container text-center mt20 mb20">
+            <button mat-raised-button color="primary" routerLink="/user-dashboard">
+              Dashboard
+            </button>
+            <button mat-raised-button color="accent" class="ml20">
+              Print
+            </button>
+          </div>
+        </mat-card>
       </div>
     </div>
   </div>
