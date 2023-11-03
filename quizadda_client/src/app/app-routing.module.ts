@@ -17,6 +17,7 @@ import { ViewQuizQuestionsComponent } from './pages/admin/view-quiz-questions/vi
 import { AddQuestionComponent } from './pages/admin/add-question/add-question.component';
 import { LoadQuizComponent } from './pages/user/load-quiz/load-quiz.component';
 import { InstructionsComponent } from './pages/user/instructions/instructions.component';
+import { StartPageComponent } from './pages/user/start-page/start-page.component';
 
 const routes: Routes = [
   {
@@ -95,6 +96,11 @@ const routes: Routes = [
         component: InstructionsComponent
       }
     ]
+  },
+  {
+    path: 'quiz/start/:quizId',
+    component: StartPageComponent,
+    canActivate: [userGuard]
   }
 ];
 

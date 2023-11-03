@@ -21,4 +21,9 @@ export class QuestionsService {
   public deleteQuestion(quesId: Number) {
     return this._http.delete(`${baseUrl}/question/${quesId}`)
   }
+
+  // get random questions for user
+  public getQuestionsOfQuizForUser(quizId: any) {
+    return this._http.get(`${baseUrl}/question/random/quiz/${quizId}`)
+  }
 }
