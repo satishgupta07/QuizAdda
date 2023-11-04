@@ -39,6 +39,7 @@ import { InstructionsComponent } from './pages/user/instructions/instructions.co
 import { StartPageComponent } from './pages/user/start-page/start-page.component';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { NgxUiLoaderHttpModule, NgxUiLoaderModule } from 'ngx-ui-loader';
 
 @NgModule({
   declarations: [
@@ -81,7 +82,11 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     MatSlideToggleModule,
     MatSelectModule,
     MatRadioModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    NgxUiLoaderModule,
+    NgxUiLoaderHttpModule.forRoot({
+      showForeground: true
+    })
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]
