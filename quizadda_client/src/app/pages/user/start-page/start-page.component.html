@@ -1,5 +1,5 @@
 <div class="bootstrap-wrapper" *ngIf="!isSubmitted">
-  <div class="container-fluid">
+  <div class="container-fluid" style="background-color: #d3d3d3">
     <div class="row">
       <div class="col-md-2">
         <!-- instructions -->
@@ -51,11 +51,26 @@
       </div>
       <div class="col-md-2">
         <!-- progress -->
+        <mat-card style="margin-top: 48px">
+          <mat-card-header>
+            <mat-card-title>Progress</mat-card-title>
+            <mat-card-subtitle
+              >Quiz will be automatically submitted after : <br />
+              <b>{{ getFormattedTime() }}</b></mat-card-subtitle
+            >
+          </mat-card-header>
+          <mat-card-content class="mt20">
+            <mat-spinner
+              mode="determinate"
+              style="margin: auto"
+              [value]="(timer / (totalQuestions * 60)) * 100"
+            ></mat-spinner>
+          </mat-card-content>
+        </mat-card>
       </div>
     </div>
   </div>
 </div>
-
 
 <div class="bootstrap-wrapper" *ngIf="isSubmitted">
   <div class="container-fluid">
@@ -66,17 +81,19 @@
             <mat-card-title>Quiz Result</mat-card-title>
           </mat-card-header>
           <mat-card-content class="mt20">
-            <h3>Marks Got : {{marksGot}}</h3>
-            <h3>Correct Answers : {{correctAnswers}}</h3>
-            <h3>Questions Attempted : {{attempted}}</h3>
+            <h3>Marks Got : {{ marksGot }}</h3>
+            <h3>Correct Answers : {{ correctAnswers }}</h3>
+            <h3>Questions Attempted : {{ attempted }}</h3>
           </mat-card-content>
           <div class="container text-center mt20 mb20">
-            <button mat-raised-button color="primary" routerLink="/user-dashboard">
+            <button
+              mat-raised-button
+              color="primary"
+              routerLink="/user-dashboard"
+            >
               Dashboard
             </button>
-            <button mat-raised-button color="accent" class="ml20">
-              Print
-            </button>
+            <button mat-raised-button color="accent" class="ml20">Print</button>
           </div>
         </mat-card>
       </div>
