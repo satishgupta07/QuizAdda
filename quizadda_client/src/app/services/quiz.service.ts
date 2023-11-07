@@ -48,4 +48,8 @@ export class QuizService {
     return this._http.get(`${baseUrl}/quiz/active/category/${categoryId}`)
   }
 
+  public evaluateQuiz(questions: any) {
+    return this._http.post(`${baseUrl}/quiz/eval-quiz`, questions);
+  }
+
 }

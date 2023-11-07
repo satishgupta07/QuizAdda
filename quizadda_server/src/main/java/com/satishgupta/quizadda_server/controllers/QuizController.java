@@ -1,13 +1,16 @@
 package com.satishgupta.quizadda_server.controllers;
 
 import com.satishgupta.quizadda_server.models.quizPortal.Category;
+import com.satishgupta.quizadda_server.models.quizPortal.Question;
 import com.satishgupta.quizadda_server.models.quizPortal.Quiz;
+import com.satishgupta.quizadda_server.services.QuestionService;
 import com.satishgupta.quizadda_server.services.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/quiz")
@@ -16,6 +19,9 @@ public class QuizController {
 
     @Autowired
     private QuizService quizService;
+
+    @Autowired
+    private QuestionService questionService;
 
     @PostMapping("/")
     public ResponseEntity<Quiz> addQuiz(@RequestBody Quiz quiz) {
@@ -66,5 +72,29 @@ public class QuizController {
         Category category = new Category();
         category.setCatId(catId);
         return ResponseEntity.ok(this.quizService.getActiveQuizzesOfCategory(category, true));
+    }
+
+    @PostMapping("/eval-quiz")
+    public ResponseEntity<?> evaluateQuiz(@RequestBody List<Question> questions) {
+        float marksGot = 0f;
+        int correctAnswers = 0;
+        int attempted = 0;
+        for(Question ques: questions) {
+            Question question = this.questionService.get(ques.getQuesId());
+            if(ques.getChosenAnswer().trim().equals(question.getAnswer().trim())) {
+                correctAnswers++;
+                float oneQuesMarks = Float.parseFloat(questions.get(0).getQuiz().getMaxMarks())/questions.size();
+                marksGot += oneQuesMarks;
+            }
+            System.out.println(ques.getChosenAnswer() != null);
+            System.out.println(ques.getChosenAnswer() != "");
+            if(ques.getChosenAnswer() != null && !ques.getChosenAnswer().trim().equals("")) {
+                attempted++;
+            }
+        }
+
+        Map<String, Object> map = Map.of("marksGot", marksGot, "correctAnswers", correctAnswers, "attempted", attempted);
+
+        return ResponseEntity.ok(map);
     }
 }

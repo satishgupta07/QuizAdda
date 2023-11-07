@@ -2,6 +2,7 @@ import { LocationStrategy } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuestionsService } from 'src/app/services/questions.service';
+import { QuizService } from 'src/app/services/quiz.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -24,7 +25,8 @@ export class StartPageComponent {
     private _locationSt: LocationStrategy,
     private _route: ActivatedRoute,
     private _question: QuestionsService,
-    private _router: Router
+    private _router: Router,
+    private _quiz: QuizService
   ) {}
 
   ngOnInit(): void {
@@ -92,20 +94,16 @@ export class StartPageComponent {
   }
 
   evalQuiz() {
-    this.isSubmitted = true;
-    this.questions.forEach((ques: any) => {
-      if (ques.chosenAnswer == ques.answer) {
-        this.correctAnswers++;
-        let oneQuesMarks = ques.quiz.maxMarks / this.questions.length;
-        this.marksGot += oneQuesMarks;
+    this._quiz.evaluateQuiz(this.questions).subscribe(
+      (data: any)=> {
+        this.isSubmitted = true;
+        this.marksGot = data.marksGot;
+        this.correctAnswers = data.correctAnswers;
+        this.attempted = data.attempted;
+      },
+      (error) => {
+        console.log(error);
       }
-      if (ques.chosenAnswer.trim() != '') {
-        this.attempted++;
-      }
-    });
-
-    console.log('Correct Answers : ' + this.correctAnswers);
-    console.log('Marks Got : ' + this.marksGot);
-    console.log('Question Attempted : ' + this.attempted);
+    );
   }
 }
