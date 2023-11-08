@@ -54,6 +54,11 @@ public class QuestionController {
         } else {
             randomQuestions = questionsList;
         }
+
+        randomQuestions.forEach(ques -> {
+            ques.setAnswer("");
+        });
+
         return ResponseEntity.ok(randomQuestions);
     }
 
