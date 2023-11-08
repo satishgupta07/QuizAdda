@@ -15,7 +15,7 @@ export class StartPageComponent {
   questions: any;
   totalQuestions: number | any;
 
-  marksGot = 0;
+  marksGot: number | any;
   correctAnswers = 0;
   attempted = 0;
   isSubmitted = false;
@@ -97,7 +97,7 @@ export class StartPageComponent {
     this._quiz.evaluateQuiz(this.questions).subscribe(
       (data: any)=> {
         this.isSubmitted = true;
-        this.marksGot = data.marksGot;
+        this.marksGot = parseFloat(data.marksGot).toFixed(2);
         this.correctAnswers = data.correctAnswers;
         this.attempted = data.attempted;
       },
@@ -106,4 +106,9 @@ export class StartPageComponent {
       }
     );
   }
+
+  printPage() {
+    window.print();
+  }
+
 }

@@ -23,7 +23,6 @@ export class InstructionsComponent {
     this._quiz.getQuiz(this.quizId).subscribe(
       (data: any) => {
         this.quiz = data;
-        console.log(this.quiz)
       },
       (error) => {
         console.log(error);

@@ -3,12 +3,19 @@
     <div class="row">
       <div class="col-md-2">
         <!-- instructions -->
-        <h3>Instructions</h3>
+        <mat-card style="margin-top: 68px; padding: 10px;">
+        <mat-card-title>Instructions</mat-card-title>
+        <ul>
+          <li>Do not refresh the page otherwaise new quiz will be start.</li>
+          <li>Do not switch the tabs.</li>
+          <li>Do not minimize the window.</li>
+        </ul>
+      </mat-card>
       </div>
       <div class="col-md-8">
         <!-- questions -->
         <ng-container *ngIf="questions">
-          <h1>{{ questions[0].quiz.title }}</h1>
+          <h1 class="mt20">{{ questions[0].quiz.title }}</h1>
           <mat-card *ngFor="let q of questions; let i = index" class="mt10">
             <mat-card-content>
               <h3>
@@ -51,7 +58,7 @@
       </div>
       <div class="col-md-2">
         <!-- progress -->
-        <mat-card style="margin-top: 48px">
+        <mat-card style="margin-top: 68px">
           <mat-card-header>
             <mat-card-title>Progress</mat-card-title>
             <mat-card-subtitle
@@ -93,7 +100,7 @@
             >
               Dashboard
             </button>
-            <button mat-raised-button color="accent" class="ml20">Print</button>
+            <button mat-raised-button color="accent" class="ml20" (click)="printPage()">Print</button>
           </div>
         </mat-card>
       </div>
