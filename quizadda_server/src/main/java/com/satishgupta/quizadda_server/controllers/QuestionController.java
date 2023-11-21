@@ -50,7 +50,7 @@ public class QuestionController {
 
         List<Question> randomQuestions;
         if(questionsList.size() > Integer.parseInt(quiz.getNumberOfQuestions())) {
-            randomQuestions =questionsList.subList(0, Integer.parseInt(quiz.getNumberOfQuestions()) + 1);
+            randomQuestions =questionsList.subList(0, Integer.parseInt(quiz.getNumberOfQuestions()));
         } else {
             randomQuestions = questionsList;
         }

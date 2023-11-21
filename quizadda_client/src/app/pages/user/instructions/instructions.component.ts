@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Quiz } from 'src/app/models/quiz.interface';
 import { QuizService } from 'src/app/services/quiz.service';
 import Swal from 'sweetalert2';
 
@@ -10,10 +11,19 @@ import Swal from 'sweetalert2';
 })
 export class InstructionsComponent {
   quizId: number | any;
-  quiz: any = {
+  quiz: Quiz = {
     title: '',
-    description: ''
-  };
+    description: '',
+    quizId: 0,
+    maxMarks: 0,
+    numberOfQuestions: 0,
+    category: {
+      catId: 0,
+      title: '',
+      description: ''
+    },
+    active: false
+  }
 
   constructor(private _route: ActivatedRoute, private _quiz: QuizService, private _router:Router) {}
 

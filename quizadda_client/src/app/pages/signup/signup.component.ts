@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { User } from 'src/app/models/user.interface';
 import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
 
@@ -12,13 +13,16 @@ export class SignupComponent {
 
   constructor(private userService: UserService, private _snackBar: MatSnackBar) {}
 
-  public user = {
+  public user: User = {
+    id: 0,
     username: '',
     password: '',
     firstName: '',
     lastName: '',
     email: '',
-    phone: ''
+    phone: '',
+    enabled: true,
+    authorities: undefined
   }
 
   formSubmit() {

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Question } from 'src/app/models/question.interface';
 import { QuestionsService } from 'src/app/services/questions.service';
 import Swal from 'sweetalert2';
 
@@ -11,17 +12,7 @@ import Swal from 'sweetalert2';
 export class ViewQuizQuestionsComponent {
   quizId: number | any;
   quizTitle: string | any;
-  questions = [
-    {
-      quesId: 0,
-      content: '',
-      option1: '',
-      option2: '',
-      option3: '',
-      option4: '',
-      answer: ''
-    },
-  ];
+  questions: Question[] = [];
 
   constructor(
     private _route: ActivatedRoute,

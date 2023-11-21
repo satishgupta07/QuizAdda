@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { Category } from 'src/app/models/category.interface';
 import { CategoryService } from 'src/app/services/category.service';
 import Swal from 'sweetalert2';
 
@@ -11,7 +12,8 @@ import Swal from 'sweetalert2';
 })
 export class AddCategoryComponent {
 
-  category = {
+  category: Category = {
+    catId: 0,
     title: '',
     description: ''
   }

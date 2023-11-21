@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { User } from 'src/app/models/user.interface';
 import { LoginService } from 'src/app/services/login.service';
 
 @Component({
@@ -7,7 +8,17 @@ import { LoginService } from 'src/app/services/login.service';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent {
-  user:any = null;
+  user:User = {
+    id: 0,
+    username: '',
+    password: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    enabled: true,
+    authorities: undefined
+  };
 
   constructor(private login: LoginService) {}
   

@@ -25,7 +25,6 @@ export class StartPageComponent {
     private _locationSt: LocationStrategy,
     private _route: ActivatedRoute,
     private _question: QuestionsService,
-    private _router: Router,
     private _quiz: QuizService
   ) {}
 

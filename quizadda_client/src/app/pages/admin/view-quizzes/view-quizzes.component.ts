@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Quiz } from 'src/app/models/quiz.interface';
 import { QuizService } from 'src/app/services/quiz.service';
 import Swal from 'sweetalert2';
 
@@ -8,19 +9,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./view-quizzes.component.css'],
 })
 export class ViewQuizzesComponent {
-  quizzes = [
-    {
-      quizId: 23,
-      title: 'Basic Java Quiz',
-      description: 'this is the description',
-      maxMarks: '50',
-      numberOfQuestions: '20',
-      active: '',
-      category: {
-        title: 'Programming',
-      },
-    },
-  ];
+  quizzes: Quiz[] = [];
 
   constructor(private _quiz: QuizService) {}
 

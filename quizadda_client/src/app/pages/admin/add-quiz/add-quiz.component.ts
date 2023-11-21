@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Quiz } from 'src/app/models/quiz.interface';
 import { CategoryService } from 'src/app/services/category.service';
 import { QuizService } from 'src/app/services/quiz.service';
 import Swal from 'sweetalert2';
@@ -11,17 +12,19 @@ import Swal from 'sweetalert2';
   styleUrls: ['./add-quiz.component.css'],
 })
 export class AddQuizComponent {
-  quiz = {
+  quiz: Quiz = {
+    quizId: 0,
     title: '',
     description: '',
-    maxMarks: '',
-    numberOfQuestions: '',
-    active: true,
+    maxMarks: 0,
+    numberOfQuestions: 0,
     category: {
-      catId: '',
-      title: ''
+      catId: 0,
+      title: '',
+      description: ''
     },
-  };
+    active: false
+  }
 
   pageTexts = {
     title: 'Add New Quiz',

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Category } from 'src/app/models/category.interface';
 import { CategoryService } from 'src/app/services/category.service';
 
 @Component({
@@ -9,10 +10,7 @@ import { CategoryService } from 'src/app/services/category.service';
 })
 export class UserSidebarComponent {
 
-  categories = [{
-    catId: 0,
-    title: ''
-  }];
+  categories: Category[] = [];
 
   constructor(private _category: CategoryService, private _snack: MatSnackBar) {}
 

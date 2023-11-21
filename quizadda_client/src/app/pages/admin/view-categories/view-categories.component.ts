@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Category } from 'src/app/models/category.interface';
 import { CategoryService } from 'src/app/services/category.service';
 import Swal from 'sweetalert2';
 
@@ -9,11 +10,7 @@ import Swal from 'sweetalert2';
 })
 export class ViewCategoriesComponent {
 
-  categories = [{
-    cat_id: 23,
-    title: "Programming",
-    description: "this is testing category"
-  }];
+  categories: Category[] = [];
 
   constructor(private _category: CategoryService) {}
 
