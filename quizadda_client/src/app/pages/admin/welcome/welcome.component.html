@@ -1,1 +1,27 @@
-<h1>Welcome to admin panel</h1>
+<mat-card>
+    <h1 class="display-flex">Welcome to Admin Panel</h1>
+    <div class="display-flex">
+        <mat-card class="display-flex card" routerLink="/admin/profile">
+            <mat-icon>account_circle</mat-icon>
+            <h1 style="margin-top: 10px;">Profile</h1>
+        </mat-card>
+        <mat-card class="display-flex card" routerLink="/admin/categories">
+            <mat-icon>list</mat-icon>
+            <h1 style="margin-top: 10px;">Categories</h1>
+        </mat-card>
+        <mat-card class="display-flex card" routerLink="/admin/add-category">
+            <mat-icon>library_add</mat-icon>
+            <h1 style="margin-top: 10px;">Add Category</h1>
+        </mat-card>
+    </div>
+    <div class="display-flex">
+        <mat-card class="display-flex card" routerLink="/admin/quizzes">
+            <mat-icon>quiz</mat-icon>
+            <h1 style="margin-top: 10px;">Quizzes</h1>
+        </mat-card>
+        <mat-card class="display-flex card" routerLink="/admin/add-quiz">
+            <mat-icon>add_circle_outline</mat-icon>
+            <h1 style="margin-top: 10px;">Add Quiz</h1>
+        </mat-card>
+    </div>
+</mat-card>

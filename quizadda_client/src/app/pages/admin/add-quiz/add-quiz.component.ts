@@ -12,14 +12,13 @@ import Swal from 'sweetalert2';
   styleUrls: ['./add-quiz.component.css'],
 })
 export class AddQuizComponent {
-  quiz: Quiz = {
-    quizId: 0,
+  quiz = {
     title: '',
     description: '',
     maxMarks: 0,
     numberOfQuestions: 0,
     category: {
-      catId: 0,
+      catId: '',
       title: '',
       description: ''
     },

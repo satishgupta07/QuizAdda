@@ -5,9 +5,19 @@
 
 .card {
   margin : 10px;
-  background-color: #FAF9F6;
+  background-color: #E5E4E2;
 }
 
 .ml20 {
   margin-left: 20px;
+}
+
+.display-flex {
+  display: flex;
+  justify-content: center;
+  padding-top: 16px;
+}
+
+.mb {
+  margin-bottom: 20px;
 }

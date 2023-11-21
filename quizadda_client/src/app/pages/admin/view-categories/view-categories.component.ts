@@ -24,4 +24,27 @@ export class ViewCategoriesComponent {
       Swal.fire('Error !!', 'Error while loading data', 'error');
     })
   }
+
+  deleteCategory(catId:Number) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Are you sure you want to delete this category ?',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._category.deleteCategory(catId).subscribe(
+          (data: any) => {
+            this.ngOnInit();
+            Swal.fire('Success', 'Category deleted successfully !!', 'success');
+          },
+          (error) => {
+            console.log(error);
+            Swal.fire('Error !!', 'Error in deleting category', 'error');
+          }
+        );
+      }
+    });
+  }
+
 }

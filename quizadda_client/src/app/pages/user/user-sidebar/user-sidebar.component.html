@@ -1,11 +1,13 @@
 <mat-card>
     <mat-action-list>
         <div mat-subheader>Categories</div>
-        <button mat-list-item routerLink="/user-dashboard">
-            <mat-icon mat-list-icon>ballot</mat-icon> All Quizzes
-        </button>
-        <button routerLink="/user-dashboard/{{c.catId}}" mat-list-item *ngFor="let c of categories">
-            <mat-icon mat-list-icon>category</mat-icon> {{c.title}}
-        </button>
+        <mat-list-item routerLink="/user-dashboard">
+            <mat-icon matListItemIcon>ballot</mat-icon>
+            <div matListItemTitle>All Quizzes</div>
+        </mat-list-item>
+        <mat-list-item routerLink="/user-dashboard/{{c.catId}}" *ngFor="let c of categories">
+            <mat-icon matListItemIcon>category</mat-icon>
+            <div matListItemTitle>{{c.title}}</div> 
+        </mat-list-item>
     </mat-action-list>
 </mat-card>

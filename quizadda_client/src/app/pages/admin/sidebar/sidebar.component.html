@@ -1,23 +1,29 @@
 <mat-card>
     <mat-action-list>
         <div mat-subheader>Menu</div>
-        <button mat-list-item routerLink="/admin">
-            <mat-icon mat-list-icon>home</mat-icon> Home
-        </button>
-        <button mat-list-item routerLink="/admin/profile">
-            <mat-icon mat-list-icon>account_circle</mat-icon> Profile
-        </button>
-        <button mat-list-item routerLink="/admin/categories">
-            <mat-icon mat-list-icon>list</mat-icon> Categories
-        </button>
-        <button mat-list-item routerLink="/admin/add-category">
-            <mat-icon mat-list-icon>library_add</mat-icon> Add Category
-        </button>
-        <button mat-list-item routerLink="/admin/quizzes">
-            <mat-icon mat-list-icon>quiz</mat-icon> Quizzes
-        </button>
-        <button mat-list-item routerLink="/admin/add-quiz">
-            <mat-icon mat-list-icon>add_circle_outline</mat-icon> Add Quiz
-        </button>
+        <mat-list-item routerLink="/admin">
+            <mat-icon matListItemIcon>home</mat-icon>
+            <div matListItemTitle>Home</div>
+          </mat-list-item>
+        <mat-list-item routerLink="/admin/profile">
+            <mat-icon matListItemIcon>account_circle</mat-icon>
+            <div matListItemTitle>Profile</div>
+          </mat-list-item>
+        <mat-list-item routerLink="/admin/categories">
+            <mat-icon matListItemIcon>list</mat-icon>
+            <div matListItemTitle>Categories</div>
+          </mat-list-item>
+        <mat-list-item routerLink="/admin/add-category">
+            <mat-icon matListItemIcon>library_add</mat-icon>
+            <div matListItemTitle>Add Category</div>
+          </mat-list-item>
+        <mat-list-item routerLink="/admin/quizzes">
+            <mat-icon matListItemIcon>quiz</mat-icon>
+            <div matListItemTitle>Quizzes</div>
+          </mat-list-item>
+        <mat-list-item routerLink="/admin/add-quiz">
+            <mat-icon matListItemIcon>add_circle_outline</mat-icon>
+            <div matListItemTitle>Add Quiz</div>
+          </mat-list-item>
     </mat-action-list>
 </mat-card>
