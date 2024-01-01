@@ -1,5 +1,11 @@
 # QuizAdda - quiz portal where users can participate in a variety of quizzes
 
+### The QuizAdda WebApp offers an engaging quiz experience with a user-friendly interface. Users start by logging in or registering, after which they are directed to a personalized dashboard. The dashboard showcases various quiz categories catering to different interests. Users can select a category and proceed to the quiz instructions page. After understanding the instructions, they initiate the quiz, answering questions with a timer on the side. Upon completing the quiz, users are redirected to a results page displaying their marks, the number of correct answers, and the total attempted questions.
+
+### Additionally, the app features an Admin Dashboard with exclusive functionalities. Upon login, administrators access a dashboard to manage quiz categories, including viewing, adding, and deleting them. The admin can also handle quizzes, viewing existing ones, observing questions within a quiz, adding new quizzes, updating quiz details, and deleting quizzes. Furthermore, the admin has the capability to add and remove questions from quizzes.
+
+### Overall, QuizAdda provides an interactive and comprehensive platform for both users and administrators.
+
 ## Login Page
 
 ### Testing User Credentials : 
