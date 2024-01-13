@@ -2,6 +2,8 @@ package com.satishgupta.quizadda_server.controllers;
 
 import com.satishgupta.quizadda_server.models.quizPortal.Category;
 import com.satishgupta.quizadda_server.services.CategoryService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/category")
 @CrossOrigin("*")
+@Tag(name="CategoryController", description = "APIs for managing categories")
 public class CategoryController {
 
     @Autowired
@@ -25,12 +28,14 @@ public class CategoryController {
 
     // get all categories
     @GetMapping("/")
+    @Operation(summary = "Get all categories !!")
     public ResponseEntity<List<Category>> getAllCategories() {
         return ResponseEntity.ok(this.categoryService.getCategories());
     }
 
     // get category by id
     @GetMapping("/{categoryId}")
+    @Operation(summary = "Get category by id !!")
     public Category getCategory(@PathVariable("categoryId") Long categoryId) {
         return this.categoryService.getCategory(categoryId);
     }

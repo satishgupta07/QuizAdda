@@ -4,6 +4,7 @@ import com.satishgupta.quizadda_server.models.quizPortal.Question;
 import com.satishgupta.quizadda_server.models.quizPortal.Quiz;
 import com.satishgupta.quizadda_server.services.QuestionService;
 import com.satishgupta.quizadda_server.services.QuizService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/question")
 @CrossOrigin("*")
+@Tag(name="QuestionController", description = "APIs for managing questions")
 public class QuestionController {
 
     @Autowired

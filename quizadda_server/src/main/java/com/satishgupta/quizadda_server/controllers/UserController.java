@@ -4,6 +4,10 @@ import com.satishgupta.quizadda_server.models.Role;
 import com.satishgupta.quizadda_server.models.User;
 import com.satishgupta.quizadda_server.models.UserRole;
 import com.satishgupta.quizadda_server.services.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +18,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/user")
 @CrossOrigin("*")
+@Tag(name="UserController", description = "APIs for user management")
 public class UserController {
 
     @Autowired
@@ -23,6 +28,12 @@ public class UserController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @PostMapping("/")
+    @Operation(summary = "Create new user !!", description = "this api is for user creation")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success | OK"),
+            @ApiResponse(responseCode = "401", description = "Unauthorised User"),
+            @ApiResponse(responseCode = "201", description = "User created successfully !!")
+    })
     public User createUser(@RequestBody User user) throws Exception {
         user.setProfile("default.png");
 

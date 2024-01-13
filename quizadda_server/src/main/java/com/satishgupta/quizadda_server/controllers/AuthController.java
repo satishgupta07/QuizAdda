@@ -5,6 +5,7 @@ import com.satishgupta.quizadda_server.models.JwtResponse;
 import com.satishgupta.quizadda_server.config.JwtUtils;
 import com.satishgupta.quizadda_server.models.User;
 import com.satishgupta.quizadda_server.services.impl.UserDetailsServiceImpl;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import java.security.Principal;
 
 @RestController
 @CrossOrigin("*")
+@Tag(name="AuthController", description = "APIs for Authentication")
 public class AuthController {
 
     @Autowired
