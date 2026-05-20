@@ -16,6 +16,18 @@ import { QuizService } from 'src/app/services/quiz.service';
 /** Seconds allotted per question during a live quiz attempt. */
 const SECONDS_PER_QUESTION = 60;
 
+/**
+ * Live quiz-taking screen. Responsibilities:
+ * <ul>
+ *   <li>Fetch the question set (server omits the answer for this endpoint)</li>
+ *   <li>Track chosen answers locally via {@code [(ngModel)]} on each option</li>
+ *   <li>Drive a countdown timer that auto-submits at zero</li>
+ *   <li>POST chosen answers to {@code /evaluate} for server-side scoring</li>
+ * </ul>
+ * Explicitly implements {@link OnDestroy} so the interval is cleared if the
+ * user navigates away mid-attempt — without this the timer keeps decrementing
+ * and the eventual auto-submit lands on a stale component.
+ */
 @Component({
   selector: 'app-start-page',
   standalone: true,
@@ -93,6 +105,12 @@ export class StartPageComponent implements OnDestroy {
     window.print();
   }
 
+  /**
+   * Blocks the browser back button mid-attempt. We push a duplicate history
+   * entry on entry and re-push one on every popstate, so the user can't
+   * accidentally exit the quiz and lose progress. They can still navigate
+   * forward via the in-app router links (e.g. Submit → result screen).
+   */
   private preventBackButton(): void {
     history.pushState(null, '', location.href);
     this.locationStrategy.onPopState(() => {

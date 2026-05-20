@@ -9,6 +9,11 @@ import { UserResponse } from 'src/app/models/user.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { ThemeService } from 'src/app/services/theme.service';
 
+/**
+ * Persistent top navigation. Shows different links depending on auth state
+ * and the user's role (USER vs ADMIN). Drives the theme toggle and exposes
+ * a hamburger drawer below the tablet breakpoint.
+ */
 @Component({
   selector: 'app-navbar',
   standalone: true,

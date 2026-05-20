@@ -9,6 +9,10 @@ import Swal from 'sweetalert2';
 import { QuizResponse } from 'src/app/models/quiz.interface';
 import { QuizService } from 'src/app/services/quiz.service';
 
+/**
+ * Admin list of all quizzes (active + hidden). Cards show category, active
+ * status, and quick stats with inline edit/delete actions.
+ */
 @Component({
   selector: 'app-view-quizzes',
   standalone: true,

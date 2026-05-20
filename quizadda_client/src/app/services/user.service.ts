@@ -4,6 +4,10 @@ import { Observable } from 'rxjs';
 import { RegisterUserRequest, UserResponse } from '../models/user.interface';
 import baseUrl from './helper';
 
+/**
+ * HTTP client for `/api/v1/users`. Currently only handles registration —
+ * authentication and profile lookup live in {@link AuthService}.
+ */
 @Injectable({ providedIn: 'root' })
 export class UserService {
 

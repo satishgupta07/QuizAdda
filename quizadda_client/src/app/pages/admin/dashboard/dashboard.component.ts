@@ -9,6 +9,11 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter, map } from 'rxjs';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 
+/**
+ * Admin dashboard shell. Hosts the admin sidebar + a router outlet for the
+ * child admin pages. The sidebar is persistent on desktop and becomes an
+ * overlay drawer (auto-closes on navigation) at tablet/handset widths.
+ */
 @Component({
   selector: 'app-dashboard',
   standalone: true,

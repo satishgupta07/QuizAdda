@@ -10,6 +10,13 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
+/**
+ * Sign-in page. On success, routes the user to the dashboard matching their
+ * role (ADMIN → /admin, USER → /user-dashboard). Bad-credentials errors are
+ * surfaced contextually with a snackbar here rather than the global error
+ * interceptor — that 401 case is expected and shouldn't trigger a logout
+ * redirect.
+ */
 @Component({
   selector: 'app-login',
   standalone: true,

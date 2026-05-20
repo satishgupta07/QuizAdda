@@ -5,6 +5,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { UserResponse } from 'src/app/models/user.interface';
 import { AuthService } from 'src/app/services/auth.service';
 
+/**
+ * Read-only profile view. The user payload is already cached in
+ * {@link AuthService}, so this reads synchronously instead of refetching.
+ * No edit affordance yet — that endpoint doesn't exist on the backend.
+ */
 @Component({
   selector: 'app-profile',
   standalone: true,

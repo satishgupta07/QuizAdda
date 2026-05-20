@@ -9,6 +9,11 @@ import {
 } from '../models/quiz.interface';
 import baseUrl from './helper';
 
+/**
+ * HTTP client for the `/api/v1/quizzes` resource, including the user-facing
+ * {@link #evaluate} endpoint. Server is the authority on scoring — this client
+ * only ships the user's chosen answers, never the correct ones.
+ */
 @Injectable({ providedIn: 'root' })
 export class QuizService {
 

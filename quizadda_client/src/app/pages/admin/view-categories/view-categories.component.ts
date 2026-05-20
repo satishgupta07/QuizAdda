@@ -10,6 +10,11 @@ import Swal from 'sweetalert2';
 import { CategoryResponse } from 'src/app/models/category.interface';
 import { CategoryService } from 'src/app/services/category.service';
 
+/**
+ * Admin list view of all categories. Delete uses a Swal confirm before issuing
+ * the request — failures themselves are surfaced by the global error
+ * interceptor, so this component only needs to handle the success path.
+ */
 @Component({
   selector: 'app-view-categories',
   standalone: true,

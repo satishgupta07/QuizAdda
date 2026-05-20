@@ -4,6 +4,13 @@ import { Observable } from 'rxjs';
 import { CategoryRequest, CategoryResponse } from '../models/category.interface';
 import baseUrl from './helper';
 
+/**
+ * Thin HTTP wrapper around the `/api/v1/categories` resource.
+ * <p>
+ * Returns hot observables that complete after one response (Angular's HttpClient
+ * convention) — components should `subscribe` once and rely on the global
+ * error interceptor for failure handling.
+ */
 @Injectable({ providedIn: 'root' })
 export class CategoryService {
 

@@ -10,6 +10,11 @@ import Swal from 'sweetalert2';
 import { QuestionResponse } from 'src/app/models/question.interface';
 import { QuestionsService } from 'src/app/services/questions.service';
 
+/**
+ * Admin view of all questions belonging to a quiz. The correct answer is
+ * highlighted in green — this is an admin-only screen, so the answer key
+ * is intentionally exposed.
+ */
 @Component({
   selector: 'app-view-quiz-questions',
   standalone: true,

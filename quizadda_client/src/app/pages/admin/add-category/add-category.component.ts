@@ -10,6 +10,10 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { CategoryService } from 'src/app/services/category.service';
 
+/**
+ * Form for creating a new quiz category. Reactive validators mirror the
+ * backend's constraints (title required, <=100 chars; description <=500).
+ */
 @Component({
   selector: 'app-add-category',
   standalone: true,

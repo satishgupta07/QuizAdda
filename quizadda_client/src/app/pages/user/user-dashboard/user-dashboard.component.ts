@@ -9,6 +9,10 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter, map } from 'rxjs';
 import { UserSidebarComponent } from '../user-sidebar/user-sidebar.component';
 
+/**
+ * User dashboard shell. Mirror of {@code DashboardComponent} for the USER
+ * role — same drawer behavior, different sidebar that lists categories.
+ */
 @Component({
   selector: 'app-user-dashboard',
   standalone: true,

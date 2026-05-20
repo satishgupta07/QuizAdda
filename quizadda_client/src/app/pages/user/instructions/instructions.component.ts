@@ -9,6 +9,10 @@ import Swal from 'sweetalert2';
 import { QuizResponse } from 'src/app/models/quiz.interface';
 import { QuizService } from 'src/app/services/quiz.service';
 
+/**
+ * Pre-attempt landing for a quiz: shows the rules, summary stats, and a
+ * confirm dialog before navigating the user into the timed quiz screen.
+ */
 @Component({
   selector: 'app-instructions',
   standalone: true,

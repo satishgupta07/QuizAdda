@@ -11,6 +11,11 @@ import { Router, RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
 import { UserService } from 'src/app/services/user.service';
 
+/**
+ * New-user registration. On success, redirects to the login page so the user
+ * authenticates with the credentials they just chose. New users always receive
+ * the {@code USER} role on the server; admin promotion is out-of-band.
+ */
 @Component({
   selector: 'app-signup',
   standalone: true,

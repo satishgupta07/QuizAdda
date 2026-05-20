@@ -9,8 +9,15 @@ const TOKEN_KEY = 'token';
 const USER_KEY  = 'user';
 
 /**
- * Owner of authentication state. Components subscribe to {@link currentUser$}
- * to react to login/logout without polling localStorage.
+ * Owner of authentication state for the whole app.
+ *
+ * <p>Holds the current user in a {@link BehaviorSubject} so that any component
+ * (navbar, guards, page logic) can subscribe to {@link currentUser$} and react
+ * immediately to login/logout — no polling, no manual refresh.
+ *
+ * <p>Persistence is via {@code localStorage} so a refresh keeps the user signed
+ * in. (Trade-off: tokens in {@code localStorage} are vulnerable to XSS; a
+ * production hardening would move them to HttpOnly cookies + CSRF tokens.)
  */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -18,7 +25,8 @@ export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly path = `${baseUrl}/api/v1/auth`;
 
-  /** Source of truth for the currently authenticated user. `null` when logged out. */
+  // BehaviorSubject so late subscribers immediately receive the current value
+  // (e.g. the navbar on first paint, before any login action happens).
   private readonly currentUserSubject = new BehaviorSubject<UserResponse | null>(this.readUserFromStorage());
   readonly currentUser$: Observable<UserResponse | null> = this.currentUserSubject.asObservable();
 

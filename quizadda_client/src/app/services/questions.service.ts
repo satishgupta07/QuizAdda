@@ -4,6 +4,15 @@ import { Observable } from 'rxjs';
 import { QuestionRequest, QuestionResponse } from '../models/question.interface';
 import baseUrl from './helper';
 
+/**
+ * HTTP client for the `/api/v1/questions` resource.
+ * <p>
+ * Note the two distinct list endpoints:
+ * <ul>
+ *   <li>{@link #listByQuiz} — admin view, includes the correct answer</li>
+ *   <li>{@link #takeQuiz}   — user view, server strips the answer field</li>
+ * </ul>
+ */
 @Injectable({ providedIn: 'root' })
 export class QuestionsService {
 

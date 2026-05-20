@@ -5,6 +5,12 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ThemeService } from './services/theme.service';
 
+/**
+ * Top-level app shell: sticky navbar above a router outlet, with the footer
+ * pinned at the bottom of the viewport. The {@link ThemeService} is eagerly
+ * injected here so the {@code dark-mode} class is applied to {@code <body>}
+ * before any page paints — preventing a light-mode flash for dark-mode users.
+ */
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -16,7 +22,6 @@ export class AppComponent {
   readonly title = 'Quiz Adda';
 
   constructor() {
-    // Side-effect: applies the saved/OS-preferred theme on first render.
     inject(ThemeService);
   }
 }

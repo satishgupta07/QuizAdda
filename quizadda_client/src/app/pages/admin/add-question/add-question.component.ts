@@ -12,6 +12,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { QuestionsService } from 'src/app/services/questions.service';
 
+/**
+ * Form for adding a question to a specific quiz. The {@code quizId} is read
+ * from the route (the user navigated here from the quiz's "Add Question"
+ * button), so the form itself only collects content + options + answer.
+ */
 @Component({
   selector: 'app-add-question',
   standalone: true,
