@@ -267,6 +267,27 @@ a:hover { color: var(--brand-primary-strong); }
   color: var(--brand-primary-strong);
 }
 
+/* Difficulty pill — color-coded by data-attribute. */
+.pill.pill-difficulty[data-difficulty="EASY"]   { background: rgba(16, 185, 129, .12); color: var(--color-success); }
+.pill.pill-difficulty[data-difficulty="MEDIUM"] { background: rgba(245, 158, 11, .12); color: var(--color-warning); }
+.pill.pill-difficulty[data-difficulty="HARD"]   { background: rgba(239, 68, 68, .12);  color: var(--color-danger); }
+
+/* Tag chip — softer, smaller than .pill. */
+.quiz-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+.tag-chip {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: var(--r-full);
+  background: var(--bg-muted);
+  color: var(--text-secondary);
+}
+
 /* Gradient icon chip — used on hero stats / nav tiles */
 .icon-chip {
   display: inline-flex;

@@ -12,6 +12,7 @@ import com.satishgupta.quizadda_server.mappers.QuizMapper;
 import com.satishgupta.quizadda_server.models.QuizAttempt;
 import com.satishgupta.quizadda_server.models.User;
 import com.satishgupta.quizadda_server.models.quizPortal.Category;
+import com.satishgupta.quizadda_server.models.quizPortal.Difficulty;
 import com.satishgupta.quizadda_server.models.quizPortal.Question;
 import com.satishgupta.quizadda_server.models.quizPortal.Quiz;
 import com.satishgupta.quizadda_server.repositories.CategoryRepository;
@@ -28,8 +29,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -196,7 +201,21 @@ public class QuizServiceImpl implements QuizService {
         quiz.setMaxMarks(request.maxMarks());
         quiz.setNumberOfQuestions(request.numberOfQuestions());
         quiz.setActive(request.active());
+        quiz.setDifficulty(request.difficulty() != null ? request.difficulty() : Difficulty.MEDIUM);
+        quiz.setTags(normalizeTags(request.tags()));
         quiz.setCategory(requireCategory(request.categoryId()));
+    }
+
+    /**
+     * Lowercase, trim, drop blanks, deduplicate. Keeps tags consistent across
+     * quizzes so {@code WHERE tag = 'javascript'} matches "JavaScript " too.
+     */
+    private Set<String> normalizeTags(Set<String> raw) {
+        if (raw == null || raw.isEmpty()) return new LinkedHashSet<>();
+        return raw.stream()
+                .filter(t -> t != null && !t.isBlank())
+                .map(t -> t.trim().toLowerCase(Locale.ROOT))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     private Category requireCategory(Long categoryId) {

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Getter
@@ -34,6 +35,26 @@ public class Quiz {
 
     @Column(nullable = false)
     private boolean active = false;
+
+    /**
+     * Difficulty band shown to users. Defaults to MEDIUM so existing rows
+     * without a value behave sensibly after the column is added.
+     */
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 16)
+    private Difficulty difficulty = Difficulty.MEDIUM;
+
+    /**
+     * Free-form tags ("javascript", "history", "fast"). Persisted as a
+     * separate {@code quiz_tags} table because tags are queried per-tag and
+     * may be large.
+     */
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "quiz_tags",
+            joinColumns = @JoinColumn(name = "quiz_id"),
+            indexes = @Index(name = "idx_quiz_tags_tag", columnList = "tag"))
+    @Column(name = "tag", length = 40)
+    private Set<String> tags = new LinkedHashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "category_id", nullable = false)

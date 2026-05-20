@@ -1,5 +1,8 @@
 import { CategoryResponse } from './category.interface';
 
+export type Difficulty = 'EASY' | 'MEDIUM' | 'HARD';
+export const DIFFICULTIES: Difficulty[] = ['EASY', 'MEDIUM', 'HARD'];
+
 /**
  * Quiz returned from the backend. `maxMarks` and `numberOfQuestions` are strings
  * because that's how the backend stores them (free-form values in DB columns).
@@ -11,6 +14,8 @@ export interface QuizResponse {
   maxMarks: string;
   numberOfQuestions: string;
   active: boolean;
+  difficulty: Difficulty;
+  tags: string[];
   category: CategoryResponse;
 }
 
@@ -21,6 +26,8 @@ export interface QuizRequest {
   maxMarks: string;
   numberOfQuestions: string;
   active: boolean;
+  difficulty: Difficulty;
+  tags: string[];
   categoryId: number;
 }
 

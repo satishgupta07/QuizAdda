@@ -22,6 +22,9 @@
     <div class="quiz-card-head">
       <div class="quiz-card-meta">
         <span class="pill pill-brand">{{ q.category.title }}</span>
+        <span class="pill pill-difficulty" [attr.data-difficulty]="q.difficulty">
+          <mat-icon>trending_up</mat-icon> {{ q.difficulty }}
+        </span>
         <span class="pill" *ngIf="q.active">
           <mat-icon>visibility</mat-icon> Active
         </span>
@@ -33,6 +36,10 @@
 
     <h3>{{ q.title }}</h3>
     <p class="text-muted">{{ q.description }}</p>
+
+    <div class="quiz-tags" *ngIf="q.tags?.length">
+      <span class="tag-chip" *ngFor="let t of q.tags">#{{ t }}</span>
+    </div>
 
     <div class="quiz-stats">
       <div>

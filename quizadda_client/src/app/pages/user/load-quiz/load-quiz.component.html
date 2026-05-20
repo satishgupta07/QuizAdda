@@ -15,9 +15,16 @@
   <article class="quiz-tile" *ngFor="let q of quizzes; trackBy: trackByQuizId">
     <div class="quiz-tile-head">
       <span class="pill pill-brand">{{ q.category.title }}</span>
+      <span class="pill pill-difficulty" [attr.data-difficulty]="q.difficulty">
+        {{ q.difficulty }}
+      </span>
     </div>
     <h3>{{ q.title }}</h3>
     <p class="text-muted truncate">{{ q.description }}</p>
+
+    <div class="quiz-tags" *ngIf="q.tags?.length">
+      <span class="tag-chip" *ngFor="let t of q.tags">#{{ t }}</span>
+    </div>
 
     <div class="quiz-tile-meta">
       <span><mat-icon>format_list_numbered</mat-icon> {{ q.numberOfQuestions }} Qs</span>

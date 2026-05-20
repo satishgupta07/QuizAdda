@@ -49,14 +49,39 @@
         <mat-error *ngIf="form.controls.categoryId.touched && form.controls.categoryId.errors?.['required']">Category is required</mat-error>
       </mat-form-field>
 
-      <div class="active-toggle">
-        <mat-slide-toggle color="primary" formControlName="active">
-          <span class="toggle-label">Publish (visible to users)</span>
-        </mat-slide-toggle>
-        <span class="text-muted toggle-hint">
-          Hidden quizzes don't show in the user dashboard.
-        </span>
-      </div>
+      <mat-form-field appearance="outline">
+        <mat-label>Difficulty</mat-label>
+        <mat-select formControlName="difficulty">
+          <mat-option *ngFor="let d of difficulties" [value]="d">{{ d }}</mat-option>
+        </mat-select>
+        <mat-icon matPrefix>trending_up</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" class="w100">
+      <mat-label>Tags</mat-label>
+      <mat-chip-grid #chipGrid aria-label="Quiz tags">
+        <mat-chip-row *ngFor="let tag of tags" (removed)="removeTag(tag)">
+          {{ tag }}
+          <button matChipRemove [attr.aria-label]="'remove ' + tag">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+      </mat-chip-grid>
+      <input placeholder="Type a tag and press Enter (max 10)"
+             [matChipInputFor]="chipGrid"
+             (matChipInputTokenEnd)="addTag($event)">
+      <mat-icon matPrefix>label</mat-icon>
+      <mat-hint>Tags are lowercased and deduplicated.</mat-hint>
+    </mat-form-field>
+
+    <div class="active-toggle">
+      <mat-slide-toggle color="primary" formControlName="active">
+        <span class="toggle-label">Publish (visible to users)</span>
+      </mat-slide-toggle>
+      <span class="text-muted toggle-hint">
+        Hidden quizzes don't show in the user dashboard.
+      </span>
     </div>
 
     <div class="form-actions">

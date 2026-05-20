@@ -1,9 +1,12 @@
 package com.satishgupta.quizadda_server.dto.quiz;
 
+import com.satishgupta.quizadda_server.models.quizPortal.Difficulty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+
+import java.util.Set;
 
 public record QuizRequest(
         @NotBlank(message = "Title is required")
@@ -22,6 +25,12 @@ public record QuizRequest(
         String numberOfQuestions,
 
         boolean active,
+
+        /** Optional in the request — defaults to MEDIUM if omitted. */
+        Difficulty difficulty,
+
+        /** Optional free-form tags, deduplicated server-side. Null is treated as empty. */
+        Set<String> tags,
 
         @NotNull(message = "Category id is required")
         Long categoryId
