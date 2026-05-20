@@ -5,6 +5,12 @@
   fgsType="three-strings"
 ></ngx-ui-loader>
 
+<!-- Full-screen splash; renders nothing once boot is ready. -->
+<app-boot-gate></app-boot-gate>
+
+<!-- Floating banner for any in-flight request that stalls past 3 s. -->
+<app-slow-server-banner></app-slow-server-banner>
+
 <!-- Keyboard-accessible skip-to-content link; visible only when focused. -->
 <a class="skip-link" href="#main-content">Skip to main content</a>
 

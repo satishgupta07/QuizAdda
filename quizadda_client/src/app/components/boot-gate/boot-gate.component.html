@@ -1,0 +1,14 @@
+<!--
+  Splash overlays everything while we're waiting on the backend's first
+  response. Once status transitions to "ready" the component renders nothing.
+-->
+<div *ngIf="status === 'pending-slow'" class="boot-splash hero-bg" role="status" aria-live="polite">
+  <div class="boot-card">
+    <span class="boot-spinner" aria-hidden="true"></span>
+    <h1>Waking up our server...</h1>
+    <p>
+      The free-tier backend sleeps when idle. This usually takes
+      <strong>~30 seconds</strong>. Thanks for your patience!
+    </p>
+  </div>
+</div>

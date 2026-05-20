@@ -9,12 +9,13 @@ import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
 import { authInterceptor } from './app/services/auth.interceptor';
 import { errorInterceptor } from './app/services/error.interceptor';
+import { slowMarkInterceptor } from './app/services/slow-mark.interceptor';
 
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes, withComponentInputBinding()),
     provideAnimations(),
-    provideHttpClient(withInterceptors([authInterceptor, errorInterceptor])),
+    provideHttpClient(withInterceptors([authInterceptor, slowMarkInterceptor, errorInterceptor])),
     // ngx-ui-loader still ships as an NgModule; bridge it via importProvidersFrom.
     importProvidersFrom(NgxUiLoaderModule, NgxUiLoaderHttpModule.forRoot({ showForeground: true }))
   ]

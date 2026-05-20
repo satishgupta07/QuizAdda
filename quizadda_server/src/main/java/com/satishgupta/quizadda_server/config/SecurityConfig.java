@@ -61,8 +61,10 @@ public class SecurityConfig {
                                 "/api/v1/auth/reset-password",
                                 "/api/v1/auth/verify-email"
                         ).permitAll()
-                        // Public docs + uploaded files (images need to load without a JWT).
+                        // Public docs, uploaded files, and the health probe used by the
+                        // frontend BootGate to detect Render cold starts.
                         .requestMatchers(
+                                "/api/v1/health",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
