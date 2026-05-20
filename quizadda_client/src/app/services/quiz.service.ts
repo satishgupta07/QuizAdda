@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
+import { PageResponse } from '../models/page.interface';
 import {
   EvaluateQuizRequest,
   EvaluateQuizResponse,
@@ -60,9 +61,10 @@ export class QuizService {
     return this.http.post<EvaluateQuizResponse>(`${this.path}/${quizId}/evaluate`, payload);
   }
 
-  /** The current user's own attempt history (newest first, max 50). */
-  myAttempts(): Observable<QuizAttemptResponse[]> {
-    return this.http.get<QuizAttemptResponse[]>(`${this.path}/my-attempts`);
+  /** Paginated attempt history for the current user (newest first). */
+  myAttempts(page = 0, size = 20): Observable<PageResponse<QuizAttemptResponse>> {
+    const params = new HttpParams().set('page', page).set('size', size);
+    return this.http.get<PageResponse<QuizAttemptResponse>>(`${this.path}/my-attempts`, { params });
   }
 
   /** Top-10 leaderboard for a quiz. */

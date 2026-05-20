@@ -1,5 +1,6 @@
 package com.satishgupta.quizadda_server.services.impl;
 
+import com.satishgupta.quizadda_server.dto.PageResponse;
 import com.satishgupta.quizadda_server.dto.quiz.EvaluateQuizRequest;
 import com.satishgupta.quizadda_server.dto.quiz.EvaluateQuizResponse;
 import com.satishgupta.quizadda_server.dto.quiz.LeaderboardEntry;
@@ -22,6 +23,7 @@ import com.satishgupta.quizadda_server.repositories.QuizRepository;
 import com.satishgupta.quizadda_server.services.QuizService;
 import com.satishgupta.quizadda_server.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -149,11 +151,12 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<QuizAttemptResponse> getMyAttempts() {
+    public PageResponse<QuizAttemptResponse> getMyAttempts(Pageable pageable) {
         User user = currentUser();
-        return quizAttemptRepository.findTop50ByUserOrderByAttemptedAtDesc(user).stream()
-                .map(QuizAttemptMapper::toResponse)
-                .toList();
+        return PageResponse.from(
+                quizAttemptRepository.findByUserOrderByAttemptedAtDesc(user, pageable)
+                        .map(QuizAttemptMapper::toResponse)
+        );
     }
 
     @Override

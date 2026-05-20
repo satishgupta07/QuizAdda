@@ -1,5 +1,6 @@
 package com.satishgupta.quizadda_server.services;
 
+import com.satishgupta.quizadda_server.dto.PageResponse;
 import com.satishgupta.quizadda_server.dto.quiz.EvaluateQuizRequest;
 import com.satishgupta.quizadda_server.dto.quiz.EvaluateQuizResponse;
 import com.satishgupta.quizadda_server.dto.quiz.LeaderboardEntry;
@@ -7,6 +8,7 @@ import com.satishgupta.quizadda_server.dto.quiz.QuizAttemptResponse;
 import com.satishgupta.quizadda_server.dto.quiz.QuizRequest;
 import com.satishgupta.quizadda_server.dto.quiz.QuizResponse;
 import com.satishgupta.quizadda_server.models.quizPortal.Quiz;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -40,8 +42,8 @@ public interface QuizService {
 
     EvaluateQuizResponse evaluateQuiz(Long quizId, EvaluateQuizRequest request);
 
-    /** Caller's own most-recent attempts (capped at 50). */
-    List<QuizAttemptResponse> getMyAttempts();
+    /** Caller's own attempt history, paginated newest-first. */
+    PageResponse<QuizAttemptResponse> getMyAttempts(Pageable pageable);
 
     /** Top 10 attempts for a quiz across all users. */
     List<LeaderboardEntry> getLeaderboard(Long quizId);

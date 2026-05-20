@@ -167,6 +167,12 @@
 .empty-state h3 { margin: 0; }
 .empty-state p { color: var(--text-muted); margin: 0; }
 
+.load-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
 @media (max-width: 600px) {
   .attempt-card {
     grid-template-columns: 1fr auto;

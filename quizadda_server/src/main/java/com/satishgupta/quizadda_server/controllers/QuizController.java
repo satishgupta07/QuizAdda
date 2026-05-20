@@ -1,5 +1,6 @@
 package com.satishgupta.quizadda_server.controllers;
 
+import com.satishgupta.quizadda_server.dto.PageResponse;
 import com.satishgupta.quizadda_server.dto.quiz.EvaluateQuizRequest;
 import com.satishgupta.quizadda_server.dto.quiz.EvaluateQuizResponse;
 import com.satishgupta.quizadda_server.dto.quiz.LeaderboardEntry;
@@ -7,6 +8,8 @@ import com.satishgupta.quizadda_server.dto.quiz.QuizAttemptResponse;
 import com.satishgupta.quizadda_server.dto.quiz.QuizRequest;
 import com.satishgupta.quizadda_server.dto.quiz.QuizResponse;
 import com.satishgupta.quizadda_server.services.QuizService;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -82,10 +85,14 @@ public class QuizController {
         return ResponseEntity.ok(quizService.evaluateQuiz(quizId, request));
     }
 
-    /** The caller's own attempt history (newest first, capped at 50). */
+    /**
+     * Paginated attempt history for the caller (newest first).
+     * Defaults to 20 per page if {@code page} / {@code size} aren't provided.
+     */
     @GetMapping("/my-attempts")
-    public ResponseEntity<List<QuizAttemptResponse>> myAttempts() {
-        return ResponseEntity.ok(quizService.getMyAttempts());
+    public ResponseEntity<PageResponse<QuizAttemptResponse>> myAttempts(
+            @PageableDefault(size = 20) Pageable pageable) {
+        return ResponseEntity.ok(quizService.getMyAttempts(pageable));
     }
 
     /** Public leaderboard for a quiz — top 10 attempts by score. */

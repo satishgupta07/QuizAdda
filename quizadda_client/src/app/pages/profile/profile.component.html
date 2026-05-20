@@ -52,7 +52,12 @@
     <div class="page-header">
       <div>
         <h2>Recent attempts</h2>
-        <p class="text-muted">Your last 50 quiz attempts, newest first.</p>
+        <p class="text-muted" *ngIf="totalElements > 0">
+          Showing {{ attempts.length }} of {{ totalElements }} attempts, newest first.
+        </p>
+        <p class="text-muted" *ngIf="totalElements === 0">
+          Take your first quiz and your score will show up here.
+        </p>
       </div>
     </div>
 
@@ -86,6 +91,13 @@
           <span><mat-icon>edit</mat-icon> {{ a.attempted }} attempted</span>
         </div>
       </article>
+    </div>
+
+    <div class="load-more" *ngIf="hasMore">
+      <button mat-stroked-button (click)="loadMore()" [disabled]="loadingMore">
+        <mat-icon *ngIf="!loadingMore">expand_more</mat-icon>
+        {{ loadingMore ? 'Loading...' : 'Load more' }}
+      </button>
     </div>
   </section>
 </div>
