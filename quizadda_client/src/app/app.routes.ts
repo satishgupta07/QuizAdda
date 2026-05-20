@@ -56,6 +56,11 @@ export const routes: Routes = [
           import('./pages/profile/profile.component').then(m => m.ProfileComponent)
       },
       {
+        path: 'analytics',
+        loadComponent: () =>
+          import('./pages/admin/analytics/analytics.component').then(m => m.AnalyticsComponent)
+      },
+      {
         path: 'categories',
         loadComponent: () =>
           import('./pages/admin/view-categories/view-categories.component').then(m => m.ViewCategoriesComponent)

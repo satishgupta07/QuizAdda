@@ -1,0 +1,82 @@
+<div class="page-header">
+  <div>
+    <h1>Analytics</h1>
+    <p class="text-muted">A snapshot of platform activity.</p>
+  </div>
+</div>
+
+<div class="empty-state" *ngIf="loaded && !data">
+  <span class="icon-chip"><mat-icon>error_outline</mat-icon></span>
+  <h3>Couldn't load analytics</h3>
+  <p>Try refreshing the page.</p>
+</div>
+
+<ng-container *ngIf="data as d">
+  <div class="stat-grid">
+    <div class="stat-tile">
+      <span class="icon-chip"><mat-icon>group</mat-icon></span>
+      <div>
+        <div class="stat-num">{{ d.totalUsers }}</div>
+        <div class="stat-label">Users</div>
+      </div>
+    </div>
+    <div class="stat-tile">
+      <span class="icon-chip"><mat-icon>category</mat-icon></span>
+      <div>
+        <div class="stat-num">{{ d.totalCategories }}</div>
+        <div class="stat-label">Categories</div>
+      </div>
+    </div>
+    <div class="stat-tile">
+      <span class="icon-chip"><mat-icon>quiz</mat-icon></span>
+      <div>
+        <div class="stat-num">{{ d.totalQuizzes }}</div>
+        <div class="stat-label">Quizzes ({{ d.activeQuizzes }} active)</div>
+      </div>
+    </div>
+    <div class="stat-tile">
+      <span class="icon-chip"><mat-icon>help_outline</mat-icon></span>
+      <div>
+        <div class="stat-num">{{ d.totalQuestions }}</div>
+        <div class="stat-label">Questions</div>
+      </div>
+    </div>
+    <div class="stat-tile">
+      <span class="icon-chip"><mat-icon>history</mat-icon></span>
+      <div>
+        <div class="stat-num">{{ d.totalAttempts }}</div>
+        <div class="stat-label">Total attempts</div>
+      </div>
+    </div>
+  </div>
+
+  <section class="top-quizzes surface-card">
+    <h2>Top quizzes by attempts</h2>
+    <p class="text-muted">The 5 quizzes users are taking most, with their average score.</p>
+
+    <div class="empty-state" *ngIf="d.topQuizzes.length === 0">
+      <span class="icon-chip"><mat-icon>insights</mat-icon></span>
+      <h3>No attempts yet</h3>
+      <p>Once users take quizzes, the top performers will appear here.</p>
+    </div>
+
+    <table class="top-table" *ngIf="d.topQuizzes.length > 0">
+      <thead>
+        <tr>
+          <th>Quiz</th>
+          <th>Category</th>
+          <th>Attempts</th>
+          <th>Avg score</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let q of d.topQuizzes; trackBy: trackByQuizId">
+          <td>{{ q.quizTitle }}</td>
+          <td><span class="pill pill-brand">{{ q.categoryTitle }}</span></td>
+          <td>{{ q.attemptCount }}</td>
+          <td>{{ q.averageScore | number:'1.0-2' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</ng-container>
