@@ -324,13 +324,61 @@ Hibernate manages schema with `spring.jpa.hibernate.ddl-auto=update`. This is fi
 
 ## Deployment (Render)
 
-1. Push to GitHub.
-2. On Render, create a new **Web Service** pointing at this repo, with **Root directory** `quizadda_server` and **Build command** `./mvnw clean package -DskipTests`.
-3. Set **Start command** to `java -jar target/quizadda_server-0.0.1-SNAPSHOT.jar`.
-4. Add the environment variables listed [above](#environment-variables) (use Render's "Secret" type for `JWT_SECRET` and the DB password).
-5. Deploy. First boot triggers Hibernate schema creation and role seeding in Neon.
+Render's native runtimes don't cover Java, so we ship as a Docker container. The repo includes:
 
-> **Cold starts** — Render's free tier sleeps after 15 min idle. First request after sleep takes ~30–60 s while Spring Boot boots. Either tell users to expect this, or run a small uptime monitor.
+- **[Dockerfile](Dockerfile)** — multi-stage build (JDK build → JRE runtime, ~150 MB final image) that runs as an unprivileged user
+- **[.dockerignore](.dockerignore)** — keeps `target/`, IDE files, uploads, and git metadata out of the build context
+
+### One-time setup (Render dashboard)
+
+1. **Push the repo to GitHub.**
+2. In the Render dashboard → **New → Web Service** → select your repo.
+3. Configure the service:
+   - **Runtime**: Docker
+   - **Root directory**: `quizadda_server`
+   - **Dockerfile path**: `./Dockerfile`
+   - **Plan**: Free
+   - **Health check path**: `/api/v1/health`
+4. Under **Environment variables**, add the variables listed below. Mark `JWT_SECRET` and the DB password as **Secret** so they're masked in the UI.
+5. Click **Create Web Service**. First deploy triggers Hibernate schema creation in Neon and `DataLoader` seeds the `USER`/`ADMIN` roles.
+
+### Required environment variables on Render
+
+| Variable | Notes |
+|---|---|
+| `SPRING_DATASOURCE_URL` | `jdbc:postgresql://...neon.tech/neondb?sslmode=require` |
+| `SPRING_DATASOURCE_USERNAME` | Neon username (typically `neondb_owner`) |
+| `SPRING_DATASOURCE_PASSWORD` | Neon password — mark as Secret |
+| `JWT_SECRET` | ≥ 32 characters — mark as Secret |
+| `JWT_EXPIRATION_MS` | Optional; defaults to 18_000_000 (5 h) |
+| `CORS_ALLOWED_ORIGINS` | Your Vercel URL, e.g. `https://quizadda.vercel.app` |
+| `APP_FRONTEND_PASSWORD_RESET_URL` | `https://<your-vercel>/reset-password` |
+| `APP_FRONTEND_EMAIL_VERIFY_URL` | `https://<your-vercel>/verify-email` |
+
+`PORT` is injected automatically by Render — the app reads it from `${PORT:9797}` in [application.properties](src/main/resources/application.properties).
+
+### Health check
+
+Render polls `/api/v1/health` (configured in the service's Health Check Path) to detect a healthy boot and to gate zero-downtime deploys. The frontend's BootGate splash uses the same endpoint to detect cold starts.
+
+### Watch out for
+
+- **Free dyno sleeps after 15 min idle** — the first request after sleep takes 30–60 s while Spring Boot boots. The frontend BootGate splash handles this gracefully. To avoid sleep entirely, ping `/api/v1/health` every ~10 min from an external uptime monitor (UptimeRobot's free tier works) — but you'll burn through your monthly free hours faster.
+- **Ephemeral filesystem** — Render's free tier doesn't include persistent disks. Anything written to `./uploads/` (question images) is lost on every dyno restart. For real persistence, attach a paid disk, or swap `FileStorageService` for Cloudinary/S3.
+- **JVM memory** — the Dockerfile sets `-XX:MaxRAMPercentage=75` so the JVM right-sizes its heap to the container's RAM limit. No manual `-Xmx` tuning needed.
+
+### Building the image locally
+
+```powershell
+cd quizadda_server
+docker build -t quizadda-server .
+docker run --rm -p 9797:9797 `
+  -e SPRING_DATASOURCE_URL="jdbc:postgresql://..." `
+  -e SPRING_DATASOURCE_USERNAME="..." `
+  -e SPRING_DATASOURCE_PASSWORD="..." `
+  -e JWT_SECRET="$(-join ((48..57)+(65..90)+(97..122) | Get-Random -Count 64 | ForEach-Object {[char]$_}))" `
+  quizadda-server
+```
 
 ## Conventions
 
