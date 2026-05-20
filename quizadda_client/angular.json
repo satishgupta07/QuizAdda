@@ -20,6 +20,9 @@
               "zone.js"
             ],
             "tsConfig": "tsconfig.app.json",
+            "allowedCommonJsDependencies": [
+              "sweetalert2"
+            ],
             "assets": [
               "src/favicon.ico",
               "src/assets"

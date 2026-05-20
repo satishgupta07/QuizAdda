@@ -1,49 +1,27 @@
 <mat-card>
-  <h1>Add Question to Quiz : {{quizTitle}}</h1>
+  <h1>Add Question to Quiz : {{ quizTitle }}</h1>
   <mat-card-content>
     <div class="container">
       <div class="row">
         <div class="col-md-8 offset-md-2">
-          <form (ngSubmit)="formSubmit()">
+          <form [formGroup]="form" (ngSubmit)="submit()">
             <mat-form-field class="w100" appearance="outline">
               <mat-label>Write Question Content</mat-label>
-              <textarea
-                required
-                autofocus
-                name="content"
-                matInput
-                placeholder="Enter here"
-                [(ngModel)]="question.content"
-              ></textarea>
+              <textarea formControlName="content" autofocus matInput placeholder="Enter here"></textarea>
+              <mat-error *ngIf="form.controls.content.touched && form.controls.content.errors?.['required']">Question content is required</mat-error>
             </mat-form-field>
 
             <div class="row">
               <div class="col-md-6">
                 <mat-form-field class="w100" appearance="outline">
                   <mat-label>Enter Option 1</mat-label>
-                  <input
-                    required
-                    autofocus
-                    type="text"
-                    name="option1"
-                    matInput
-                    placeholder="Enter here"
-                    [(ngModel)]="question.option1"
-                  />
+                  <input formControlName="option1" matInput placeholder="Enter here" />
                 </mat-form-field>
               </div>
               <div class="col-md-6">
                 <mat-form-field class="w100" appearance="outline">
                   <mat-label>Enter Option 2</mat-label>
-                  <input
-                    required
-                    autofocus
-                    type="text"
-                    name="option2"
-                    matInput
-                    placeholder="Enter here"
-                    [(ngModel)]="question.option2"
-                  />
+                  <input formControlName="option2" matInput placeholder="Enter here" />
                 </mat-form-field>
               </div>
             </div>
@@ -51,45 +29,30 @@
               <div class="col-md-6">
                 <mat-form-field class="w100" appearance="outline">
                   <mat-label>Enter Option 3</mat-label>
-                  <input
-                    required
-                    autofocus
-                    type="text"
-                    name="option3"
-                    matInput
-                    placeholder="Enter here"
-                    [(ngModel)]="question.option3"
-                  />
+                  <input formControlName="option3" matInput placeholder="Enter here" />
                 </mat-form-field>
               </div>
               <div class="col-md-6">
                 <mat-form-field class="w100" appearance="outline">
                   <mat-label>Enter Option 4</mat-label>
-                  <input
-                    required
-                    autofocus
-                    type="text"
-                    name="option4"
-                    matInput
-                    placeholder="Enter here"
-                    [(ngModel)]="question.option4"
-                  />
+                  <input formControlName="option4" matInput placeholder="Enter here" />
                 </mat-form-field>
               </div>
             </div>
 
             <mat-form-field class="w100" appearance="outline">
               <mat-label>Select Answer</mat-label>
-              <mat-select required name="answer" [(ngModel)]="question.answer">
-                <mat-option *ngIf="question.option1" [value]="question.option1">{{question.option1}}</mat-option>
-                <mat-option *ngIf="question.option2" [value]="question.option2">{{question.option2}}</mat-option>
-                <mat-option *ngIf="question.option3" [value]="question.option3">{{question.option3}}</mat-option>
-                <mat-option *ngIf="question.option4" [value]="question.option4">{{question.option4}}</mat-option>
+              <mat-select formControlName="answer">
+                <mat-option *ngIf="form.controls.option1.value" [value]="form.controls.option1.value">{{ form.controls.option1.value }}</mat-option>
+                <mat-option *ngIf="form.controls.option2.value" [value]="form.controls.option2.value">{{ form.controls.option2.value }}</mat-option>
+                <mat-option *ngIf="form.controls.option3.value" [value]="form.controls.option3.value">{{ form.controls.option3.value }}</mat-option>
+                <mat-option *ngIf="form.controls.option4.value" [value]="form.controls.option4.value">{{ form.controls.option4.value }}</mat-option>
               </mat-select>
+              <mat-error *ngIf="form.controls.answer.touched && form.controls.answer.errors?.['required']">Answer is required</mat-error>
             </mat-form-field>
 
             <div class="container text-center mt15">
-              <button mat-raised-button color="primary">Add</button>
+              <button type="submit" mat-raised-button color="primary" [disabled]="submitting">Add</button>
             </div>
           </form>
         </div>

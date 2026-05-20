@@ -1,25 +1,24 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { Observable } from 'rxjs';
+import { CategoryRequest, CategoryResponse } from '../models/category.interface';
 import baseUrl from './helper';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class CategoryService {
 
+  private readonly http = inject(HttpClient);
   private readonly path = `${baseUrl}/api/v1/categories`;
 
-  constructor(private _http: HttpClient) { }
-
-  public categories() {
-    return this._http.get(this.path);
+  list(): Observable<CategoryResponse[]> {
+    return this.http.get<CategoryResponse[]>(this.path);
   }
 
-  public addCategory(category: any) {
-    return this._http.post(this.path, category);
+  create(category: CategoryRequest): Observable<CategoryResponse> {
+    return this.http.post<CategoryResponse>(this.path, category);
   }
 
-  public deleteCategory(catId: number) {
-    return this._http.delete(`${this.path}/${catId}`);
+  delete(catId: number): Observable<void> {
+    return this.http.delete<void>(`${this.path}/${catId}`);
   }
 }

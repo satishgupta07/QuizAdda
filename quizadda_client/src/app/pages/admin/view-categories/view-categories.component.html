@@ -1,9 +1,11 @@
 <mat-card style="padding-bottom: 16px;">
   <h1 style="padding-top: 10px; display: flex; justify-content: center;">All Categories</h1>
-  <div *ngFor="let c of categories">
+  <div *ngFor="let c of categories; trackBy: trackByCatId">
     <mat-card style="margin: 10px; background-color: #E5E4E2;">
       <mat-card-header class="display-flex">
-        <mat-card-title style="display: flex;"><mat-icon style="margin-right: 10px;" matListItemIcon>category</mat-icon>{{ c.title }}</mat-card-title>
+        <mat-card-title style="display: flex;">
+          <mat-icon style="margin-right: 10px;" matListItemIcon>category</mat-icon>{{ c.title }}
+        </mat-card-title>
         <button class="icon-button" (click)="deleteCategory(c.catId)">
           <mat-icon fontIcon="delete"></mat-icon>
         </button>

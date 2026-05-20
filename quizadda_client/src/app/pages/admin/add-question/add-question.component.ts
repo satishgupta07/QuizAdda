@@ -1,57 +1,74 @@
-import { Component } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { CommonModule } from '@angular/common';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
-import { QuestionsService } from 'src/app/services/questions.service';
 import Swal from 'sweetalert2';
+import { QuestionsService } from 'src/app/services/questions.service';
 
 @Component({
   selector: 'app-add-question',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule
+  ],
   templateUrl: './add-question.component.html',
-  styleUrls: ['./add-question.component.css'],
+  styleUrls: ['./add-question.component.css']
 })
 export class AddQuestionComponent {
-  quizId: number | any;
-  quizTitle: string | any;
 
-  question = {
-    content: '',
-    option1: '',
-    option2: '',
-    option3: '',
-    option4: '',
-    answer: '',
-  };
+  private readonly fb = inject(FormBuilder);
+  private readonly questionsService = inject(QuestionsService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
 
-  constructor(
-    private _route: ActivatedRoute,
-    private _question: QuestionsService,
-    private _snack: MatSnackBar,
-    private router: Router
-  ) {}
+  readonly form = this.fb.nonNullable.group({
+    content: ['', [Validators.required, Validators.maxLength(5000)]],
+    option1: ['', [Validators.required]],
+    option2: ['', [Validators.required]],
+    option3: ['', [Validators.required]],
+    option4: ['', [Validators.required]],
+    answer: ['', [Validators.required]]
+  });
 
-  ngOnInit() {
-    this.quizId = this._route.snapshot.params['quizId'];
-    this.quizTitle = this._route.snapshot.params['title'];
+  quizId!: number;
+  quizTitle = '';
+  submitting = false;
+
+  ngOnInit(): void {
+    this.quizId = Number(this.route.snapshot.paramMap.get('quizId'));
+    this.quizTitle = this.route.snapshot.paramMap.get('title') ?? '';
   }
 
-  formSubmit() {
-    if (this.question.content.trim() === '' || this.question.content == null) {
-      this._snack.open('Title Required !!', '', { duration: 3000 });
+  submit(): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
       return;
     }
 
-    // QuestionRequest on the backend expects a flat quizId rather than a nested quiz object.
-    const payload = {
-      ...this.question,
-      quizId: Number(this.quizId)
-    };
-
-    this._question.addQuestionOfQuiz(payload).subscribe(
-      () => {
-        this.router.navigate(['/admin/quizzes']);
-        Swal.fire('Success !!', 'Question added successfully !!', 'success');
-      },
-      () => Swal.fire('Error !!', 'Something went wrong !!', 'error')
-    );
+    this.submitting = true;
+    this.questionsService.create({ ...this.form.getRawValue(), quizId: this.quizId })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          Swal.fire('Success', 'Question added successfully !!', 'success');
+          this.router.navigate(['/admin/quizzes']);
+        },
+        error: () => {
+          this.submitting = false;
+        }
+      });
   }
 }

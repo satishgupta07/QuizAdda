@@ -4,27 +4,27 @@
         <div class="bootstrap-wrapper">
             <div class="row">
                 <div class="col-md-8 offset-md-2">
-                    <form (ngSubmit)="formSubmit()">
+                    <form [formGroup]="form" (ngSubmit)="submit()">
                         <mat-form-field class="w100" appearance="outline">
                             <mat-label>Title</mat-label>
-                            <input required autofocus type="text" name="title" 
-                                matInput placeholder="Enter here" [(ngModel)]="category.title">
+                            <input formControlName="title" autofocus matInput placeholder="Enter here">
+                            <mat-error *ngIf="form.controls.title.touched && form.controls.title.errors?.['required']">Title is required</mat-error>
+                            <mat-error *ngIf="form.controls.title.touched && form.controls.title.errors?.['maxlength']">Max 100 characters</mat-error>
                         </mat-form-field>
                         <mat-form-field class="w100" appearance="outline">
                             <mat-label>Description</mat-label>
-                            <textarea name="description" matInput 
-                                placeholder="Enter description ..." rows="3" [(ngModel)]="category.description">
-                            </textarea>
+                            <textarea formControlName="description" matInput placeholder="Enter description ..." rows="3"></textarea>
+                            <mat-error *ngIf="form.controls.description.touched && form.controls.description.errors?.['maxlength']">Max 500 characters</mat-error>
                         </mat-form-field>
 
                         <div class="container text-center mt15">
-                            <button mat-raised-button color="primary">Add</button>
+                            <button type="submit" mat-raised-button color="primary" [disabled]="submitting">
+                                {{ submitting ? 'Adding...' : 'Add' }}
+                            </button>
                         </div>
-
                     </form>
                 </div>
             </div>
         </div>
     </mat-card-content>
 </mat-card>
-

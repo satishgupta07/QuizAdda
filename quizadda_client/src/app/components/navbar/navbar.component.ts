@@ -1,29 +1,42 @@
-import { Component } from '@angular/core';
-import { LoginService } from 'src/app/services/login.service';
+import { CommonModule } from '@angular/common';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { Router, RouterLink } from '@angular/router';
+import { UserResponse } from 'src/app/models/user.interface';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-navbar',
+  standalone: true,
+  imports: [CommonModule, MatButtonModule, MatIconModule, MatToolbarModule, RouterLink],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
-  isActive = false;
-  user:any = null;
 
-  constructor(public login: LoginService) {}
+  private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
 
-  ngOnInit(): void {
-    this.isActive = this.login.isLoggedIn();
-    this.user = this.login.getUser();
-    this.login.loginStatusSubject.asObservable().subscribe(data=>{
-      this.isActive = this.login.isLoggedIn();
-      this.user = this.login.getUser();
-    })
+  user: UserResponse | null = null;
+
+  get isActive(): boolean {
+    return this.user !== null;
   }
 
-  public logout() {
-    this.login.logout();
-    window.location.reload();
-    // this.login.loginStatusSubject.next(false);
+  ngOnInit(): void {
+    // Subscribe to AuthService's BehaviorSubject so the navbar re-renders the
+    // moment login/logout happens, without polling localStorage.
+    this.auth.currentUser$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(user => (this.user = user));
+  }
+
+  logout(): void {
+    this.auth.logout();
+    this.router.navigate(['/login']);
   }
 }

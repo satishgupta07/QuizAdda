@@ -1,24 +1,24 @@
 <div class="bootstrap-wrapper">
     <div class="container-fluid">
-        <div class="row mt20" *ngIf="quizzes">
-            <div class="col-md-4" *ngFor="let q of quizzes">
+        <div class="row mt20" *ngIf="quizzes.length > 0">
+            <div class="col-md-4" *ngFor="let q of quizzes; trackBy: trackByQuizId">
                 <mat-card>
                     <mat-card-header>
                         <div mat-card-avatar class="avatar"></div>
-                        <mat-card-title>{{q.title}}</mat-card-title>
-                        <mat-card-subtitle>{{q.category.title}}</mat-card-subtitle>
+                        <mat-card-title>{{ q.title }}</mat-card-title>
+                        <mat-card-subtitle>{{ q.category.title }}</mat-card-subtitle>
                     </mat-card-header>
                     <mat-card-content class="mt10">
-                        <p class="truncate">{{q.description}}</p>
+                        <p class="truncate">{{ q.description }}</p>
                         <div style="color: #808080;">
-                            <p>No. of Ques : {{q.numberOfQuestions}}</p>
-                            <p>Max Marks : {{q.maxMarks}}</p>
+                            <p>No. of Ques : {{ q.numberOfQuestions }}</p>
+                            <p>Max Marks : {{ q.maxMarks }}</p>
                         </div>
                     </mat-card-content>
                     <mat-card-actions>
                         <button mat-button color="primary">VIEW</button>
-                        <button mat-button color="accent" routerLink="/user-dashboard/instructions/{{q.quizId}}">START</button>
-                      </mat-card-actions>
+                        <button mat-button color="accent" [routerLink]="['/user-dashboard/instructions', q.quizId]">START</button>
+                    </mat-card-actions>
                 </mat-card>
             </div>
         </div>

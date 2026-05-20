@@ -1,14 +1,14 @@
 import { CanActivateFn, Router } from '@angular/router';
-import { LoginService } from './login.service';
 import { inject } from '@angular/core';
+import { AuthService } from './auth.service';
 
-export const userGuard: CanActivateFn = (route, state) => {
-  const login = inject(LoginService);
+/** Restricts a route to authenticated users with the `USER` role. */
+export const userGuard: CanActivateFn = () => {
+  const auth = inject(AuthService);
   const router = inject(Router);
-  if(login.isLoggedIn() && login.getUserRole() == 'USER') {
+  if (auth.isLoggedIn() && auth.hasRole('USER')) {
     return true;
-  } else {
-    router.navigate(['/login']);
-    return false;
   }
+  router.navigate(['/login']);
+  return false;
 };

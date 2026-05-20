@@ -8,25 +8,28 @@
                             <img src="../../../assets/register.png" alt="register" style="width: 100px; height: 100px;">
                         </div>
                         <h1 class="text-center">Login Here !!</h1>
-                        <form (ngSubmit)="formSubmit()">
-                            <!-- Username field -->
+                        <form [formGroup]="form" (ngSubmit)="submit()">
                             <mat-form-field class="full-width" appearance="outline">
                                 <mat-label>Username</mat-label>
-                                <input [(ngModel)]="loginData.username"
-                                 required name="username"
-                                matInput placeholder="Username">
+                                <input formControlName="username" matInput placeholder="Username" autocomplete="username">
+                                <mat-error *ngIf="form.controls.username.touched && form.controls.username.errors?.['required']">
+                                    Username is required
+                                </mat-error>
                             </mat-form-field>
-                            <!-- Password field -->
+
                             <mat-form-field class="full-width" appearance="outline">
                                 <mat-label>Password</mat-label>
-                                <input [(ngModel)]="loginData.password"
-                                 required name="password"
-                                type="password" matInput placeholder="Password">
+                                <input formControlName="password" type="password" matInput placeholder="Password" autocomplete="current-password">
+                                <mat-error *ngIf="form.controls.password.touched && form.controls.password.errors?.['required']">
+                                    Password is required
+                                </mat-error>
                             </mat-form-field>
-                            <!-- Register and Clear Button -->
+
                             <div class="container text-center">
-                                <button type="submit" mat-raised-button color="primary">Login</button>
-                                <button class="ml20" mat-raised-button color="accent">Clear</button>
+                                <button type="submit" mat-raised-button color="primary" [disabled]="submitting">
+                                    {{ submitting ? 'Signing in...' : 'Login' }}
+                                </button>
+                                <button type="button" class="ml20" mat-raised-button color="accent" (click)="resetForm()">Clear</button>
                             </div>
                         </form>
                         <div class="mt20 text-center">
@@ -35,6 +38,6 @@
                     </mat-card-content>
                 </mat-card>
             </div>
-        </div>    
+        </div>
     </div>
 </div>

@@ -1,37 +1,19 @@
-import { Injectable } from '@angular/core';
-import {
-    HttpRequest,
-    HttpHandler,
-    HttpEvent,
-    HttpInterceptor,
-    HTTP_INTERCEPTORS
-    } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { LoginService } from './login.service';
- 
-@Injectable()
-export class AppInterceptor implements HttpInterceptor {
-    constructor(private login:LoginService) {}
-    intercept(
-        req: HttpRequest<any>,
-        next: HttpHandler
-    ): Observable<HttpEvent<any>> {
-        // add the jwt token (localStorage) request
-        let authReq=req;
-        const token = this.login.getToken();
-        if(token != null) {
-            authReq = authReq.clone({
-                setHeaders: {Authorization: `Bearer ${token}`}
-            });
-        }
-        return next.handle(authReq);
-    }
-}
+import { HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { AuthService } from './auth.service';
 
-export const authInterceptorProviders=[
-    {
-        provide: HTTP_INTERCEPTORS,
-        useClass: AppInterceptor,
-        multi: true
-    }
-];
+/**
+ * Stamps `Authorization: Bearer <token>` on every outgoing request when a token
+ * is present. Functional interceptors are the Angular 15+ standard and play
+ * cleanly with `provideHttpClient(withInterceptors(...))`.
+ */
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const token = inject(AuthService).getToken();
+  if (!token) {
+    return next(req);
+  }
+  const authedReq = req.clone({
+    setHeaders: { Authorization: `Bearer ${token}` }
+  });
+  return next(authedReq);
+};

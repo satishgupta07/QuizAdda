@@ -1,29 +1,32 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { Observable } from 'rxjs';
+import { QuestionRequest, QuestionResponse } from '../models/question.interface';
 import baseUrl from './helper';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class QuestionsService {
 
+  private readonly http = inject(HttpClient);
   private readonly path = `${baseUrl}/api/v1/questions`;
 
-  constructor(private _http: HttpClient) { }
-
-  public getQuestionsOfQuiz(quizId: number) {
-    return this._http.get(this.path, { params: { quizId } });
+  /** Admin view: includes the correct answer. */
+  listByQuiz(quizId: number): Observable<QuestionResponse[]> {
+    const params = new HttpParams().set('quizId', quizId);
+    return this.http.get<QuestionResponse[]>(this.path, { params });
   }
 
-  public addQuestionOfQuiz(question: any) {
-    return this._http.post(this.path, question);
+  /** User view: random subset for taking the quiz; `answer` is stripped server-side. */
+  takeQuiz(quizId: number): Observable<QuestionResponse[]> {
+    const params = new HttpParams().set('quizId', quizId);
+    return this.http.get<QuestionResponse[]>(`${this.path}/take`, { params });
   }
 
-  public deleteQuestion(quesId: number) {
-    return this._http.delete(`${this.path}/${quesId}`);
+  create(question: QuestionRequest): Observable<QuestionResponse> {
+    return this.http.post<QuestionResponse>(this.path, question);
   }
 
-  public getQuestionsOfQuizForUser(quizId: number) {
-    return this._http.get(`${this.path}/take`, { params: { quizId } });
+  delete(quesId: number): Observable<void> {
+    return this.http.delete<void>(`${this.path}/${quesId}`);
   }
 }

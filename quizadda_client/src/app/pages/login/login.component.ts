@@ -1,73 +1,70 @@
-import { Component } from '@angular/core';
-import {Router} from '@angular/router'; 
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { LoginService } from 'src/app/services/login.service';
+import { CommonModule } from '@angular/common';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSnackBarModule,
+    RouterLink
+  ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
 
-  loginData = {
-    username:'',
-    password:''
+  private readonly fb = inject(FormBuilder);
+  private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
+  private readonly snack = inject(MatSnackBar);
+  private readonly destroyRef = inject(DestroyRef);
+
+  // Reactive form — validators declared once, errors bound to controls in the template.
+  readonly form = this.fb.nonNullable.group({
+    username: ['', [Validators.required]],
+    password: ['', [Validators.required]]
+  });
+
+  submitting = false;
+
+  submit(): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    this.submitting = true;
+    this.auth.login(this.form.getRawValue())
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: user => {
+          // Route by role — the AuthService already cached the user/token.
+          const route = user.authorities.includes('ADMIN') ? '/admin' : '/user-dashboard';
+          this.router.navigate([route]);
+        },
+        error: () => {
+          this.submitting = false;
+          this.snack.open('Invalid username or password', '', { duration: 3000 });
+        }
+      });
   }
 
-  constructor(private snack:MatSnackBar, private login:LoginService, private router:Router) {}
-
-  formSubmit() {
-    console.log('login btn clicked');
-
-    if(this.loginData.username.trim() == '' || this.loginData.username == null) {
-      this.snack.open("Username is required !!", '', {
-        duration: 3000
-      })
-      return;
-    }
-    if(this.loginData.password.trim() == '' || this.loginData.password == null) {
-      this.snack.open("Password is required !!", '', {
-        duration: 3000
-      })
-      return;
-    }
-
-    // request to server to generate token
-    this.login.generateToken(this.loginData).subscribe(
-      (data: any) => {
-        console.log('Success');
-        console.log(data);
-
-        // login...
-        this.login.loginUser(data.token);
-
-        this.login.getCurrentUser().subscribe(
-          (user:any) => {
-            this.login.setUser(user);
-            console.log(user);
-            // redirect... ADMIN: admin-dashboard
-            // redirect... USER: user-dashboard
-            if(this.login.getUserRole() == "ADMIN") {
-              this.router.navigate(['/admin']);
-              this.login.loginStatusSubject.next(true);
-            } else if(this.login.getUserRole() == "USER") {
-              this.router.navigate(['/user-dashboard']);
-              this.login.loginStatusSubject.next(true);
-            } else {
-              this.login.logout();
-            }
-          }
-        )
-
-      },
-      (error)=>{
-        console.log("Error !");
-        console.log(error);
-        this.snack.open("Invalid Details !! Try again", '', {
-          duration: 3000
-        })
-      }
-    )
+  resetForm(): void {
+    this.form.reset({ username: '', password: '' });
   }
 }

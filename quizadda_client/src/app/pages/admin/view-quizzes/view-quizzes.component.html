@@ -1,6 +1,6 @@
 <mat-card>
   <h1 class="display-flex">Quizzes</h1>
-  <div *ngFor="let q of quizzes">
+  <div *ngFor="let q of quizzes; trackBy: trackByQuizId">
     <mat-card class="card">
       <mat-card-header>
         <div mat-card-avatar class="example-header-image"></div>
@@ -11,7 +11,7 @@
         <p>{{ q.description }}</p>
       </mat-card-content>
       <mat-card-actions>
-        <button routerLink="/admin/quiz/view-questions/{{q.quizId}}/{{q.title}}" mat-flat-button color="primary">
+        <button [routerLink]="['/admin/quiz/view-questions', q.quizId, q.title]" mat-flat-button color="primary">
           Questions
         </button>
         <button mat-stroked-button color="primary" class="ml20">
@@ -20,21 +20,10 @@
         <button mat-stroked-button color="primary" class="ml20">
           Questions : {{ q.numberOfQuestions }}
         </button>
-        <button
-          routerLink="/admin/update-quiz/{{ q.quizId }}"
-          mat-flat-button
-          color="primary"
-          class="ml20"
-        >
+        <button [routerLink]="['/admin/update-quiz', q.quizId]" mat-flat-button color="primary" class="ml20">
           Update
         </button>
-        <!-- <button mat-flat-button color="primary" class="ml20">Attempts</button> -->
-        <button
-          mat-flat-button
-          color="primary"
-          class="ml20"
-          (click)="deleteQuiz(q.quizId)"
-        >
+        <button mat-flat-button color="primary" class="ml20" (click)="deleteQuiz(q.quizId)">
           Delete
         </button>
       </mat-card-actions>

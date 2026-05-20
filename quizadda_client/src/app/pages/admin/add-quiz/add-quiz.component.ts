@@ -1,101 +1,118 @@
-import { Component } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { CommonModule } from '@angular/common';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import Swal from 'sweetalert2';
+import { CategoryResponse } from 'src/app/models/category.interface';
+import { QuizRequest, QuizResponse } from 'src/app/models/quiz.interface';
 import { CategoryService } from 'src/app/services/category.service';
 import { QuizService } from 'src/app/services/quiz.service';
-import Swal from 'sweetalert2';
 
+/**
+ * Dual-purpose form: creates a new quiz when no `quizId` is in the route, and
+ * updates the existing quiz otherwise.
+ */
 @Component({
   selector: 'app-add-quiz',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatSlideToggleModule
+  ],
   templateUrl: './add-quiz.component.html',
-  styleUrls: ['./add-quiz.component.css'],
+  styleUrls: ['./add-quiz.component.css']
 })
 export class AddQuizComponent {
+
+  private readonly fb = inject(FormBuilder);
+  private readonly quizService = inject(QuizService);
+  private readonly categoryService = inject(CategoryService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
+
+  readonly form = this.fb.nonNullable.group({
+    title: ['', [Validators.required, Validators.maxLength(150)]],
+    description: ['', [Validators.maxLength(1000)]],
+    maxMarks: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+    numberOfQuestions: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+    active: [false],
+    categoryId: [0, [Validators.required, Validators.min(1)]]
+  });
+
+  categories: CategoryResponse[] = [];
   quizId: number | null = null;
-
-  quiz = {
-    title: '',
-    description: '',
-    maxMarks: '',
-    numberOfQuestions: '',
-    category: {
-      catId: '',
-      title: '',
-      description: ''
-    },
-    active: false
-  };
-
-  pageTexts = {
-    title: 'Add New Quiz',
-    buttonText: 'Add',
-    isEditMode: false
-  };
-
-  categories: any[] = [];
-
-  constructor(
-    private _category: CategoryService,
-    private _snack: MatSnackBar,
-    private _quiz: QuizService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {}
+  pageTitle = 'Add New Quiz';
+  buttonText = 'Add';
+  submitting = false;
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      if (params['quizId']) {
-        this.quizId = +params['quizId'];
-        this._quiz.getQuiz(this.quizId).subscribe(
-          (data: any) => {
-            this.quiz = data;
-            this.pageTexts.title = 'Update Quiz';
-            this.pageTexts.buttonText = 'Update';
-            this.pageTexts.isEditMode = true;
-          },
-          () => Swal.fire('Error !!', 'Error while loading data from server', 'error')
-        );
-      }
-    });
+    const idParam = this.route.snapshot.paramMap.get('quizId');
+    this.quizId = idParam ? Number(idParam) : null;
 
-    this._category.categories().subscribe(
-      (data: any) => this.categories = data,
-      () => Swal.fire('Error !!', 'Error while loading data from server', 'error')
-    );
+    this.categoryService.list()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({ next: data => (this.categories = data) });
+
+    if (this.quizId !== null) {
+      this.pageTitle = 'Update Quiz';
+      this.buttonText = 'Update';
+      this.quizService.get(this.quizId)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({ next: quiz => this.populateForm(quiz) });
+    }
   }
 
-  formSubmit() {
-    if (this.quiz.title.trim() === '' || this.quiz.title == null) {
-      this._snack.open('Title Required !!', '', { duration: 3000 });
+  submit(): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
       return;
     }
 
-    // The backend's QuizRequest expects a flat categoryId rather than a nested object.
-    const payload = {
-      title: this.quiz.title,
-      description: this.quiz.description,
-      maxMarks: String(this.quiz.maxMarks),
-      numberOfQuestions: String(this.quiz.numberOfQuestions),
-      active: this.quiz.active,
-      categoryId: Number(this.quiz.category.catId)
-    };
+    this.submitting = true;
+    const payload: QuizRequest = this.form.getRawValue();
+    const op$: Observable<QuizResponse> =
+      this.quizId !== null
+        ? this.quizService.update(this.quizId, payload)
+        : this.quizService.create(payload);
 
-    if (!this.pageTexts.isEditMode) {
-      this._quiz.addQuiz(payload).subscribe(
-        () => {
-          this.router.navigate(['/admin/quizzes']);
-          Swal.fire('Success !!', 'Quiz added successfully !!', 'success');
-        },
-        () => Swal.fire('Error !!', 'Something went wrong !!', 'error')
-      );
-    } else if (this.quizId != null) {
-      this._quiz.updateQuiz(this.quizId, payload).subscribe(
-        () => {
-          this.router.navigate(['/admin/quizzes']);
-          Swal.fire('Success !!', 'Quiz updated successfully !!', 'success');
-        },
-        () => Swal.fire('Error !!', 'Something went wrong !!', 'error')
-      );
-    }
+    op$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: () => {
+        Swal.fire('Success', `Quiz ${this.quizId !== null ? 'updated' : 'added'} successfully !!`, 'success');
+        this.router.navigate(['/admin/quizzes']);
+      },
+      error: () => {
+        this.submitting = false;
+      }
+    });
+  }
+
+  trackByCatId(_: number, c: CategoryResponse): number {
+    return c.catId;
+  }
+
+  private populateForm(quiz: QuizResponse): void {
+    this.form.patchValue({
+      title: quiz.title,
+      description: quiz.description,
+      maxMarks: quiz.maxMarks,
+      numberOfQuestions: quiz.numberOfQuestions,
+      active: quiz.active,
+      categoryId: quiz.category.catId
+    });
   }
 }

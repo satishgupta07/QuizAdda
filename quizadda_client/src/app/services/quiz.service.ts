@@ -1,57 +1,55 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { Observable } from 'rxjs';
+import {
+  EvaluateQuizRequest,
+  EvaluateQuizResponse,
+  QuizRequest,
+  QuizResponse
+} from '../models/quiz.interface';
 import baseUrl from './helper';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class QuizService {
 
+  private readonly http = inject(HttpClient);
   private readonly path = `${baseUrl}/api/v1/quizzes`;
 
-  constructor(private _http: HttpClient) { }
-
-  public quizzes() {
-    return this._http.get(this.path);
+  list(): Observable<QuizResponse[]> {
+    return this.http.get<QuizResponse[]>(this.path);
   }
 
-  public addQuiz(quiz: any) {
-    return this._http.post(this.path, quiz);
+  get(quizId: number): Observable<QuizResponse> {
+    return this.http.get<QuizResponse>(`${this.path}/${quizId}`);
   }
 
-  public deleteQuiz(quizId: number) {
-    return this._http.delete(`${this.path}/${quizId}`);
+  create(quiz: QuizRequest): Observable<QuizResponse> {
+    return this.http.post<QuizResponse>(this.path, quiz);
   }
 
-  public getQuiz(quizId: number) {
-    return this._http.get(`${this.path}/${quizId}`);
+  update(quizId: number, quiz: QuizRequest): Observable<QuizResponse> {
+    return this.http.put<QuizResponse>(`${this.path}/${quizId}`, quiz);
   }
 
-  public updateQuiz(quizId: number, quiz: any) {
-    return this._http.put(`${this.path}/${quizId}`, quiz);
+  delete(quizId: number): Observable<void> {
+    return this.http.delete<void>(`${this.path}/${quizId}`);
   }
 
-  public getQuizByCategory(categoryId: number) {
-    return this._http.get(this.path, { params: { categoryId } });
+  listByCategory(categoryId: number): Observable<QuizResponse[]> {
+    const params = new HttpParams().set('categoryId', categoryId);
+    return this.http.get<QuizResponse[]>(this.path, { params });
   }
 
-  public getActivequizzes() {
-    return this._http.get(`${this.path}/active`);
+  listActive(): Observable<QuizResponse[]> {
+    return this.http.get<QuizResponse[]>(`${this.path}/active`);
   }
 
-  public getActiveQuizByCategory(categoryId: number) {
-    return this._http.get(`${this.path}/active`, { params: { categoryId } });
+  listActiveByCategory(categoryId: number): Observable<QuizResponse[]> {
+    const params = new HttpParams().set('categoryId', categoryId);
+    return this.http.get<QuizResponse[]>(`${this.path}/active`, { params });
   }
 
-  // Posts the user's chosen answers for a specific quiz. Server validates and
-  // computes the score against its own authoritative answer key.
-  public evaluateQuiz(quizId: number, questions: any[]) {
-    const payload = {
-      answers: questions.map(q => ({
-        quesId: q.quesId,
-        chosenAnswer: q.chosenAnswer ?? ''
-      }))
-    };
-    return this._http.post(`${this.path}/${quizId}/evaluate`, payload);
+  evaluate(quizId: number, payload: EvaluateQuizRequest): Observable<EvaluateQuizResponse> {
+    return this.http.post<EvaluateQuizResponse>(`${this.path}/${quizId}/evaluate`, payload);
   }
 }

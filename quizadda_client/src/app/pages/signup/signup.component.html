@@ -4,60 +4,61 @@
             <div class="col-md-6 offset-md-3">
                 <mat-card>
                     <mat-card-content>
-
                         <div class="container text-center">
                             <img src="../../../assets/register.png" alt="register" style="width: 100px; height: 100px;">
                         </div>
                         <h1 class="text-center">Register Here !!</h1>
-                        <!-- {{ user | json }} -->
-                        <form (ngSubmit)="formSubmit()">
-                            <!-- Username field -->
+                        <form [formGroup]="form" (ngSubmit)="submit()">
                             <mat-form-field class="full-width" appearance="outline">
                                 <mat-label>Username</mat-label>
-                                <input required [(ngModel)] = "user.username" name="username"
-                                matInput placeholder="Username">
-                                <mat-hint>Username must be unique !!</mat-hint>
+                                <input formControlName="username" matInput placeholder="Username">
+                                <mat-hint>Username must be unique</mat-hint>
+                                <mat-error *ngIf="form.controls.username.touched && form.controls.username.errors?.['required']">Username is required</mat-error>
+                                <mat-error *ngIf="form.controls.username.touched && form.controls.username.errors?.['minlength']">Min 3 characters</mat-error>
                             </mat-form-field>
-                            <!-- Password field -->
+
                             <mat-form-field class="full-width" appearance="outline">
                                 <mat-label>Password</mat-label>
-                                <input required [(ngModel)] = "user.password" name="password"
-                                type="password" matInput placeholder="Password">
+                                <input formControlName="password" type="password" matInput placeholder="Password" autocomplete="new-password">
+                                <mat-error *ngIf="form.controls.password.touched && form.controls.password.errors?.['required']">Password is required</mat-error>
+                                <mat-error *ngIf="form.controls.password.touched && form.controls.password.errors?.['minlength']">Min 4 characters</mat-error>
                             </mat-form-field>
-                            <!-- First Name field -->
+
                             <mat-form-field class="full-width" appearance="outline">
                                 <mat-label>First Name</mat-label>
-                                <input required [(ngModel)] = "user.firstName" name="firstname"
-                                matInput placeholder="First Name">
+                                <input formControlName="firstName" matInput placeholder="First Name">
+                                <mat-error *ngIf="form.controls.firstName.touched && form.controls.firstName.errors?.['required']">First name is required</mat-error>
                             </mat-form-field>
-                            <!-- Last Name field -->
+
                             <mat-form-field class="full-width" appearance="outline">
                                 <mat-label>Last Name</mat-label>
-                                <input required [(ngModel)] = "user.lastName" name="lastname"
-                                matInput placeholder="Last Name">
+                                <input formControlName="lastName" matInput placeholder="Last Name">
+                                <mat-error *ngIf="form.controls.lastName.touched && form.controls.lastName.errors?.['required']">Last name is required</mat-error>
                             </mat-form-field>
-                            <!-- Email field -->
+
                             <mat-form-field class="full-width" appearance="outline">
                                 <mat-label>Email</mat-label>
-                                <input required [(ngModel)] = "user.email" name="email"
-                                type="email" matInput placeholder="Email">
+                                <input formControlName="email" type="email" matInput placeholder="Email">
+                                <mat-error *ngIf="form.controls.email.touched && form.controls.email.errors?.['required']">Email is required</mat-error>
+                                <mat-error *ngIf="form.controls.email.touched && form.controls.email.errors?.['email']">Invalid email</mat-error>
                             </mat-form-field>
-                            <!-- Phone No. field -->
+
                             <mat-form-field class="full-width" appearance="outline">
                                 <mat-label>Phone No.</mat-label>
-                                <input required [(ngModel)] = "user.phone" name="phone"
-                                type="tel" matInput placeholder="Phone No.">
+                                <input formControlName="phone" type="tel" matInput placeholder="Phone No.">
+                                <mat-error *ngIf="form.controls.phone.touched && form.controls.phone.errors?.['pattern']">Invalid phone number</mat-error>
                             </mat-form-field>
-                            <!-- Register and Clear Button -->
+
                             <div class="container text-center">
-                                <button type="submit" mat-raised-button color="primary">Register</button>
-                                <button class="ml20" mat-raised-button color="accent">Clear</button>
+                                <button type="submit" mat-raised-button color="primary" [disabled]="submitting">
+                                    {{ submitting ? 'Registering...' : 'Register' }}
+                                </button>
+                                <button type="button" class="ml20" mat-raised-button color="accent" (click)="resetForm()">Clear</button>
                             </div>
                         </form>
                         <div class="mt20 text-center">
                             <a mat-button routerLink="/login">Existing User? Log in</a>
                         </div>
-
                     </mat-card-content>
                 </mat-card>
             </div>

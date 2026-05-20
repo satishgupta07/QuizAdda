@@ -1,74 +1,43 @@
 <mat-card>
-  <h1 class="display-flex">{{pageTexts.title}}</h1>
+  <h1 class="display-flex">{{ pageTitle }}</h1>
   <mat-card-content>
     <div class="container">
       <div class="row">
         <div class="col-md-8 offset-md-2">
-          <form (ngSubmit)="formSubmit()">
+          <form [formGroup]="form" (ngSubmit)="submit()">
             <mat-form-field class="w100" appearance="outline">
               <mat-label>Title</mat-label>
-              <input
-                required
-                autofocus
-                type="text"
-                name="title"
-                matInput
-                placeholder="Enter here"
-                [(ngModel)]="quiz.title"
-              />
+              <input formControlName="title" autofocus matInput placeholder="Enter here" />
+              <mat-error *ngIf="form.controls.title.touched && form.controls.title.errors?.['required']">Title is required</mat-error>
             </mat-form-field>
+
             <mat-form-field class="w100" appearance="outline">
               <mat-label>Description</mat-label>
-              <textarea
-                type="text"
-                name="description"
-                matInput
-                placeholder="Enter description ..."
-                rows="3"
-                [(ngModel)]="quiz.description"
-              >
-              </textarea>
+              <textarea formControlName="description" matInput placeholder="Enter description ..." rows="3"></textarea>
             </mat-form-field>
 
             <div class="row">
               <div class="col-md-6">
                 <mat-form-field class="w100" appearance="outline">
                   <mat-label>Maximum Marks</mat-label>
-                  <input
-                    required
-                    autofocus
-                    type="text"
-                    name="maxMarks"
-                    matInput
-                    placeholder="Enter here"
-                    [(ngModel)]="quiz.maxMarks"
-                  />
+                  <input formControlName="maxMarks" matInput placeholder="Enter here" />
+                  <mat-error *ngIf="form.controls.maxMarks.touched && form.controls.maxMarks.errors?.['required']">Max marks is required</mat-error>
+                  <mat-error *ngIf="form.controls.maxMarks.touched && form.controls.maxMarks.errors?.['pattern']">Must be a number</mat-error>
                 </mat-form-field>
               </div>
               <div class="col-md-6">
                 <mat-form-field class="w100" appearance="outline">
                   <mat-label>Number of Questions</mat-label>
-                  <input
-                    required
-                    autofocus
-                    type="text"
-                    name="numberOfQuestions"
-                    matInput
-                    placeholder="Enter here"
-                    [(ngModel)]="quiz.numberOfQuestions"
-                  />
+                  <input formControlName="numberOfQuestions" matInput placeholder="Enter here" />
+                  <mat-error *ngIf="form.controls.numberOfQuestions.touched && form.controls.numberOfQuestions.errors?.['required']">Required</mat-error>
+                  <mat-error *ngIf="form.controls.numberOfQuestions.touched && form.controls.numberOfQuestions.errors?.['pattern']">Must be a whole number</mat-error>
                 </mat-form-field>
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-6">
-                <mat-slide-toggle
-                  class="mt10"
-                  color="primary"
-                  name="active"
-                  [(ngModel)]="quiz.active"
-                >
+                <mat-slide-toggle class="mt10" color="primary" formControlName="active">
                   Publish Status
                 </mat-slide-toggle>
               </div>
@@ -76,17 +45,18 @@
               <div class="col-md-6">
                 <mat-form-field class="w100" appearance="outline">
                   <mat-label>Category</mat-label>
-                  <mat-select [(ngModel)]="quiz.category.catId" name="category">
-                    <mat-option *ngFor="let c of categories" [value]="c.catId">
+                  <mat-select formControlName="categoryId">
+                    <mat-option *ngFor="let c of categories; trackBy: trackByCatId" [value]="c.catId">
                       {{ c.title }}
                     </mat-option>
                   </mat-select>
+                  <mat-error *ngIf="form.controls.categoryId.touched && form.controls.categoryId.errors?.['required']">Category is required</mat-error>
                 </mat-form-field>
               </div>
             </div>
 
             <div class="container text-center mt15">
-              <button mat-raised-button color="primary">{{pageTexts.buttonText}}</button>
+              <button type="submit" mat-raised-button color="primary" [disabled]="submitting">{{ buttonText }}</button>
             </div>
           </form>
         </div>
@@ -94,5 +64,3 @@
     </div>
   </mat-card-content>
 </mat-card>
-
-

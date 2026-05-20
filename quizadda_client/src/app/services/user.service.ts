@@ -1,15 +1,16 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { Observable } from 'rxjs';
+import { RegisterUserRequest, UserResponse } from '../models/user.interface';
 import baseUrl from './helper';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class UserService {
 
-  constructor(private http: HttpClient) { }
+  private readonly http = inject(HttpClient);
+  private readonly path = `${baseUrl}/api/v1/users`;
 
-  public addUser(user: any) {
-    return this.http.post(`${baseUrl}/api/v1/users`, user);
+  register(user: RegisterUserRequest): Observable<UserResponse> {
+    return this.http.post<UserResponse>(this.path, user);
   }
 }
