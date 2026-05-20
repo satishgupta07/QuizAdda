@@ -2,6 +2,12 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { QuestionRequest, QuestionResponse } from '../models/question.interface';
+
+export interface BulkImportResult {
+  imported: number;
+  skipped: number;
+  errors: Array<{ rowNumber: number; message: string }>;
+}
 import baseUrl from './helper';
 
 /**
@@ -33,6 +39,14 @@ export class QuestionsService {
 
   create(question: QuestionRequest): Observable<QuestionResponse> {
     return this.http.post<QuestionResponse>(this.path, question);
+  }
+
+  /** Bulk-imports questions from a CSV file. Returns per-row error details. */
+  importCsv(quizId: number, file: File): Observable<BulkImportResult> {
+    const form = new FormData();
+    form.append('file', file);
+    const params = new HttpParams().set('quizId', quizId);
+    return this.http.post<BulkImportResult>(`${this.path}/import`, form, { params });
   }
 
   delete(quesId: number): Observable<void> {

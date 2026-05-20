@@ -108,6 +108,19 @@
   display: block;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.import-btn {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
 @media (max-width: 600px) {
   .options-grid { grid-template-columns: 1fr; }
 }

@@ -1,14 +1,20 @@
 package com.satishgupta.quizadda_server.controllers;
 
+import com.satishgupta.quizadda_server.dto.question.BulkImportResult;
 import com.satishgupta.quizadda_server.dto.question.QuestionRequest;
 import com.satishgupta.quizadda_server.dto.question.QuestionResponse;
+import com.satishgupta.quizadda_server.services.QuestionImportService;
 import com.satishgupta.quizadda_server.services.QuestionService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 import java.net.URI;
 import java.util.List;
@@ -28,6 +34,7 @@ import java.util.List;
 public class QuestionController {
 
     private final QuestionService questionService;
+    private final QuestionImportService questionImportService;
 
     @PostMapping
     public ResponseEntity<QuestionResponse> create(@Valid @RequestBody QuestionRequest request) {
@@ -69,5 +76,16 @@ public class QuestionController {
     @GetMapping("/take")
     public ResponseEntity<List<QuestionResponse>> takeQuiz(@RequestParam Long quizId) {
         return ResponseEntity.ok(questionService.getRandomQuestionsForUser(quizId));
+    }
+
+    /**
+     * Admin-only bulk import. CSV header:
+     * {@code content,option1,option2,option3,option4,answer[,image]}.
+     */
+    @PostMapping("/import")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<BulkImportResult> importCsv(@RequestParam Long quizId,
+                                                      @RequestParam("file") MultipartFile file) throws IOException {
+        return ResponseEntity.ok(questionImportService.importCsv(quizId, file));
     }
 }

@@ -11,9 +11,9 @@ import { QuestionResponse } from 'src/app/models/question.interface';
 import { QuestionsService } from 'src/app/services/questions.service';
 
 /**
- * Admin view of all questions belonging to a quiz. The correct answer is
- * highlighted in green — this is an admin-only screen, so the answer key
- * is intentionally exposed.
+ * Admin view of all questions belonging to a quiz, plus CSV bulk import.
+ * The correct answer is highlighted in green — intentional on this admin-only
+ * screen.
  */
 @Component({
   selector: 'app-view-quiz-questions',
@@ -31,11 +31,45 @@ export class ViewQuizQuestionsComponent {
   quizId!: number;
   quizTitle = '';
   questions: QuestionResponse[] = [];
+  importing = false;
 
   ngOnInit(): void {
     this.quizId = Number(this.route.snapshot.paramMap.get('quizId'));
     this.quizTitle = this.route.snapshot.paramMap.get('title') ?? '';
     this.loadQuestions();
+  }
+
+  onCsvSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) return;
+    this.importing = true;
+    this.questionsService.importCsv(this.quizId, file)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: result => {
+          this.importing = false;
+          // Compose a friendly summary; up to 5 error rows shown inline so
+          // admins don't have to scroll a Swal modal endlessly.
+          const errSummary = result.errors.slice(0, 5)
+            .map(e => `<li>Row ${e.rowNumber}: ${e.message}</li>`)
+            .join('');
+          const more = result.errors.length > 5 ? `<li>...and ${result.errors.length - 5} more</li>` : '';
+          Swal.fire({
+            icon: result.imported > 0 ? 'success' : 'warning',
+            title: `Imported ${result.imported} question(s)`,
+            html: result.errors.length
+              ? `<p>Some rows were skipped:</p><ul style="text-align:left;">${errSummary}${more}</ul>`
+              : 'All rows imported successfully.'
+          });
+          this.loadQuestions();
+        },
+        error: err => {
+          this.importing = false;
+          Swal.fire('Import failed', err?.error?.message ?? 'Could not parse the CSV.', 'error');
+        }
+      });
+    input.value = '';
   }
 
   deleteQuestion(quesId: number): void {
