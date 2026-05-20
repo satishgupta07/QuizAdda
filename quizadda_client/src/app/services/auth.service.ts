@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, map, tap } from 'rxjs';
-import { LoginRequest, LoginResponse, Role } from '../models/auth.interface';
+import { ForgotPasswordRequest, LoginRequest, LoginResponse, ResetPasswordRequest, Role } from '../models/auth.interface';
 import { ChangePasswordRequest, UpdateProfileRequest, UserResponse } from '../models/user.interface';
 import baseUrl from './helper';
 
@@ -60,6 +60,19 @@ export class AuthService {
   /** Verifies the current password server-side, then sets a new one. */
   changePassword(request: ChangePasswordRequest): Observable<void> {
     return this.http.post<void>(`${this.path}/me/password`, request);
+  }
+
+  /**
+   * Triggers a password-reset email. Backend always returns 204 even when the
+   * email isn't registered (to prevent enumeration).
+   */
+  forgotPassword(request: ForgotPasswordRequest): Observable<void> {
+    return this.http.post<void>(`${this.path}/forgot-password`, request);
+  }
+
+  /** Consumes a reset token from the email link to set a new password. */
+  resetPassword(request: ResetPasswordRequest): Observable<void> {
+    return this.http.post<void>(`${this.path}/reset-password`, request);
   }
 
   /** Clears credentials in-memory and in localStorage. */

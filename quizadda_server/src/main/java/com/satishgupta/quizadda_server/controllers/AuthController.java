@@ -1,12 +1,15 @@
 package com.satishgupta.quizadda_server.controllers;
 
 import com.satishgupta.quizadda_server.config.JwtUtils;
+import com.satishgupta.quizadda_server.dto.auth.ForgotPasswordRequest;
 import com.satishgupta.quizadda_server.dto.auth.LoginRequest;
 import com.satishgupta.quizadda_server.dto.auth.LoginResponse;
+import com.satishgupta.quizadda_server.dto.auth.ResetPasswordRequest;
 import com.satishgupta.quizadda_server.dto.user.ChangePasswordRequest;
 import com.satishgupta.quizadda_server.dto.user.UpdateProfileRequest;
 import com.satishgupta.quizadda_server.dto.user.UserResponse;
 import com.satishgupta.quizadda_server.mappers.UserMapper;
+import com.satishgupta.quizadda_server.services.PasswordResetService;
 import com.satishgupta.quizadda_server.services.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -40,6 +43,7 @@ public class AuthController {
 
     private final UserDetailsService userDetailsService;
     private final UserService userService;
+    private final PasswordResetService passwordResetService;
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
 
@@ -76,5 +80,22 @@ public class AuthController {
     public void changePassword(Principal principal,
                                @Valid @RequestBody ChangePasswordRequest request) {
         userService.changePassword(principal.getName(), request);
+    }
+
+    /**
+     * Triggers the password reset flow. Always returns 204 even if the email
+     * isn't registered — prevents account enumeration.
+     */
+    @PostMapping("/forgot-password")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+        passwordResetService.requestReset(request.email());
+    }
+
+    /** Consumes the reset token to set a new password. */
+    @PostMapping("/reset-password")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        passwordResetService.resetPassword(request.token(), request.newPassword());
     }
 }

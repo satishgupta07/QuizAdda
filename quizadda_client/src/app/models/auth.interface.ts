@@ -13,3 +13,12 @@ export interface LoginResponse {
 }
 
 export type Role = 'USER' | 'ADMIN';
+
+export interface ForgotPasswordRequest {
+  email: string;
+}
+
+export interface ResetPasswordRequest {
+  token: string;
+  newPassword: string;
+}
