@@ -2,6 +2,8 @@ package com.satishgupta.quizadda_server.controllers;
 
 import com.satishgupta.quizadda_server.dto.quiz.EvaluateQuizRequest;
 import com.satishgupta.quizadda_server.dto.quiz.EvaluateQuizResponse;
+import com.satishgupta.quizadda_server.dto.quiz.LeaderboardEntry;
+import com.satishgupta.quizadda_server.dto.quiz.QuizAttemptResponse;
 import com.satishgupta.quizadda_server.dto.quiz.QuizRequest;
 import com.satishgupta.quizadda_server.dto.quiz.QuizResponse;
 import com.satishgupta.quizadda_server.services.QuizService;
@@ -78,5 +80,17 @@ public class QuizController {
     public ResponseEntity<EvaluateQuizResponse> evaluate(@PathVariable Long quizId,
                                                          @Valid @RequestBody EvaluateQuizRequest request) {
         return ResponseEntity.ok(quizService.evaluateQuiz(quizId, request));
+    }
+
+    /** The caller's own attempt history (newest first, capped at 50). */
+    @GetMapping("/my-attempts")
+    public ResponseEntity<List<QuizAttemptResponse>> myAttempts() {
+        return ResponseEntity.ok(quizService.getMyAttempts());
+    }
+
+    /** Public leaderboard for a quiz — top 10 attempts by score. */
+    @GetMapping("/{quizId}/leaderboard")
+    public ResponseEntity<List<LeaderboardEntry>> leaderboard(@PathVariable Long quizId) {
+        return ResponseEntity.ok(quizService.getLeaderboard(quizId));
     }
 }

@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import {
   EvaluateQuizRequest,
   EvaluateQuizResponse,
+  LeaderboardEntry,
+  QuizAttemptResponse,
   QuizRequest,
   QuizResponse
 } from '../models/quiz.interface';
@@ -56,5 +58,15 @@ export class QuizService {
 
   evaluate(quizId: number, payload: EvaluateQuizRequest): Observable<EvaluateQuizResponse> {
     return this.http.post<EvaluateQuizResponse>(`${this.path}/${quizId}/evaluate`, payload);
+  }
+
+  /** The current user's own attempt history (newest first, max 50). */
+  myAttempts(): Observable<QuizAttemptResponse[]> {
+    return this.http.get<QuizAttemptResponse[]>(`${this.path}/my-attempts`);
+  }
+
+  /** Top-10 leaderboard for a quiz. */
+  leaderboard(quizId: number): Observable<LeaderboardEntry[]> {
+    return this.http.get<LeaderboardEntry[]>(`${this.path}/${quizId}/leaderboard`);
   }
 }

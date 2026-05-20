@@ -34,3 +34,26 @@ export interface EvaluateQuizResponse {
   attempted: number;
   totalQuestions: number;
 }
+
+/** Row of a user's attempt history. */
+export interface QuizAttemptResponse {
+  id: number;
+  quizId: number;
+  quizTitle: string;
+  categoryTitle: string;
+  marksGot: number;
+  correctAnswers: number;
+  attempted: number;
+  totalQuestions: number;
+  attemptedAt: string;
+}
+
+/** Row of a quiz leaderboard. */
+export interface LeaderboardEntry {
+  rank: number;
+  username: string;
+  marksGot: number;
+  correctAnswers: number;
+  totalQuestions: number;
+  attemptedAt: string;
+}

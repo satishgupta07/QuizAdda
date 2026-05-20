@@ -1,4 +1,4 @@
-.profile { max-width: 720px; margin: 0 auto; }
+.profile { max-width: 800px; margin: 0 auto; }
 
 .profile-card {
   padding: 0;
@@ -74,3 +74,106 @@
 }
 .field-label { color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; }
 .field-value { font-weight: 600; color: var(--text-primary); }
+
+/* ---------- Attempt history ---------- */
+.attempts-section { margin-top: 32px; }
+
+.attempt-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.attempt-card {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  grid-template-areas:
+    "meta score pct"
+    "detail detail detail";
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+}
+.attempt-card:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-md);
+}
+
+.attempt-meta  { grid-area: meta; min-width: 0; }
+.attempt-title { font-weight: 700; color: var(--text-primary); }
+.attempt-sub {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+.attempt-score {
+  grid-area: score;
+  text-align: right;
+  min-width: 70px;
+}
+.score-num   { font-weight: 800; font-size: 1.2rem; color: var(--brand-primary-strong); line-height: 1; }
+.score-label { color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; }
+
+.attempt-pct {
+  grid-area: pct;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 56px;
+  height: 56px;
+  border-radius: var(--r-full);
+  font-weight: 800;
+  font-size: 0.95rem;
+  background: var(--bg-muted);
+  color: var(--text-secondary);
+}
+.attempt-pct.good { background: rgba(16, 185, 129, .12); color: var(--color-success); }
+.attempt-pct.mid  { background: rgba(245, 158, 11, .12); color: var(--color-warning); }
+.attempt-pct.low  { background: rgba(239, 68,  68,  .12); color: var(--color-danger); }
+
+.attempt-detail {
+  grid-area: detail;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--border);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+.attempt-detail span { display: inline-flex; align-items: center; gap: 4px; }
+.attempt-detail mat-icon { font-size: 16px; width: 16px; height: 16px; color: var(--brand-primary); }
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 56px 24px;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  text-align: center;
+}
+.empty-state .icon-chip { width: 56px; height: 56px; }
+.empty-state h3 { margin: 0; }
+.empty-state p { color: var(--text-muted); margin: 0; }
+
+@media (max-width: 600px) {
+  .attempt-card {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "meta pct"
+      "score score"
+      "detail detail";
+  }
+  .attempt-score { text-align: left; }
+}
