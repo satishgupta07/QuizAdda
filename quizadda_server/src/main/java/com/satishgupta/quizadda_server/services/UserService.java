@@ -4,6 +4,11 @@ import com.satishgupta.quizadda_server.dto.user.RegisterUserRequest;
 import com.satishgupta.quizadda_server.dto.user.UserResponse;
 import com.satishgupta.quizadda_server.models.User;
 
+/**
+ * Business operations on users. Registration enforces username + email uniqueness
+ * and always assigns the {@code USER} role; promotion to {@code ADMIN} is an
+ * out-of-band operation.
+ */
 public interface UserService {
 
     UserResponse registerUser(RegisterUserRequest request);

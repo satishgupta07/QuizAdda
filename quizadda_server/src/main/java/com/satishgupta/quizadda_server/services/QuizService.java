@@ -8,6 +8,11 @@ import com.satishgupta.quizadda_server.models.quizPortal.Quiz;
 
 import java.util.List;
 
+/**
+ * Business operations on quizzes, including the authoritative evaluation flow.
+ * Evaluation scoring uses the server's stored answers — the request's
+ * {@code chosenAnswer} values are the only client-trusted input.
+ */
 public interface QuizService {
 
     QuizResponse addQuiz(QuizRequest request);

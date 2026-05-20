@@ -13,6 +13,14 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
+/**
+ * Question CRUD plus two distinct list views:
+ * <ul>
+ *   <li>{@code GET ?quizId=...} — admin/full view, includes the correct answer</li>
+ *   <li>{@code GET /take?quizId=...} — user view, returns a random subset with
+ *       the answer field stripped to prevent client-side cheating</li>
+ * </ul>
+ */
 @RestController
 @RequestMapping("/api/v1/questions")
 @RequiredArgsConstructor

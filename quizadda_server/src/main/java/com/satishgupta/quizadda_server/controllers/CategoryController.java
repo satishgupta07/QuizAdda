@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
+/**
+ * CRUD for quiz categories. Categories are the top of the
+ * Category -> Quiz -> Question containment hierarchy.
+ */
 @RestController
 @RequestMapping("/api/v1/categories")
 @RequiredArgsConstructor

@@ -22,6 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 
+/**
+ * Authentication endpoints. Issues JWTs on successful login and exposes the
+ * profile of the currently authenticated user. Stateless — no server-side
+ * session is created.
+ */
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor

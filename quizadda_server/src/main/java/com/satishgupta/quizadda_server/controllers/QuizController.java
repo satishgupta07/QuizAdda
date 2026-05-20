@@ -15,6 +15,12 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
+/**
+ * Quiz CRUD plus the user-facing evaluation endpoint. Evaluation logic itself
+ * lives in {@link com.satishgupta.quizadda_server.services.QuizService} because
+ * scoring must use the server's authoritative answer key — clients can't be
+ * trusted to score themselves.
+ */
 @RestController
 @RequestMapping("/api/v1/quizzes")
 @RequiredArgsConstructor

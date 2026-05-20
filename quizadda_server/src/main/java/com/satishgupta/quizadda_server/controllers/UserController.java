@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
+/**
+ * User registration and lookup. Registration ({@code POST}) is unauthenticated;
+ * all other endpoints require a valid JWT. New users are always granted the
+ * {@code USER} role — promotion to {@code ADMIN} is an out-of-band operation.
+ */
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor

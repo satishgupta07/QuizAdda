@@ -5,6 +5,11 @@ import com.satishgupta.quizadda_server.dto.question.QuestionResponse;
 
 import java.util.List;
 
+/**
+ * Business operations on questions. The {@link #getRandomQuestionsForUser(Long)}
+ * variant strips the correct answer from its responses; all other reads include
+ * the answer for admin/owner use.
+ */
 public interface QuestionService {
 
     QuestionResponse addQuestion(QuestionRequest request);
