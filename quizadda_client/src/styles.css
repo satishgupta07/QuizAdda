@@ -288,6 +288,26 @@ a:hover { color: var(--brand-primary-strong); }
   color: var(--text-secondary);
 }
 
+/* ---------- Filter bar (search + difficulty toggle) ---------- */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.filter-bar .search-field {
+  flex: 1 1 280px;
+  min-width: 220px;
+}
+.filter-bar .difficulty-toggle {
+  border-radius: var(--r-md);
+}
+
+@media (max-width: 600px) {
+  .filter-bar { flex-direction: column; align-items: stretch; }
+}
+
 /* Gradient icon chip — used on hero stats / nav tiles */
 .icon-chip {
   display: inline-flex;

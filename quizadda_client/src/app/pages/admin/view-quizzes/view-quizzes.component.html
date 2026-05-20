@@ -8,6 +8,19 @@
   </a>
 </div>
 
+<div class="filter-bar" *ngIf="quizzes.length > 0">
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-label>Search</mat-label>
+    <input matInput type="search" [(ngModel)]="search" placeholder="Search by title, category, or tag">
+    <mat-icon matPrefix>search</mat-icon>
+  </mat-form-field>
+
+  <mat-button-toggle-group [(ngModel)]="difficultyFilter" aria-label="Filter by difficulty" class="difficulty-toggle">
+    <mat-button-toggle value="ALL">All</mat-button-toggle>
+    <mat-button-toggle *ngFor="let d of difficulties" [value]="d">{{ d }}</mat-button-toggle>
+  </mat-button-toggle-group>
+</div>
+
 <div class="empty-state" *ngIf="quizzes.length === 0">
   <span class="icon-chip"><mat-icon>quiz</mat-icon></span>
   <h3>No quizzes yet</h3>
@@ -17,8 +30,14 @@
   </a>
 </div>
 
+<div class="empty-state" *ngIf="quizzes.length > 0 && filteredQuizzes.length === 0">
+  <span class="icon-chip"><mat-icon>search_off</mat-icon></span>
+  <h3>No matches</h3>
+  <p>Try a different search or filter.</p>
+</div>
+
 <div class="card-grid">
-  <article class="quiz-card" *ngFor="let q of quizzes; trackBy: trackByQuizId">
+  <article class="quiz-card" *ngFor="let q of filteredQuizzes; trackBy: trackByQuizId">
     <div class="quiz-card-head">
       <div class="quiz-card-meta">
         <span class="pill pill-brand">{{ q.category.title }}</span>
