@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, map, tap } from 'rxjs';
 import { LoginRequest, LoginResponse, Role } from '../models/auth.interface';
-import { UserResponse } from '../models/user.interface';
+import { ChangePasswordRequest, UpdateProfileRequest, UserResponse } from '../models/user.interface';
 import baseUrl from './helper';
 
 const TOKEN_KEY = 'token';
@@ -42,6 +42,24 @@ export class AuthService {
       tap(response => this.persistSession(response.token, response.user)),
       map(response => response.user)
     );
+  }
+
+  /**
+   * Updates the caller's profile fields. Also refreshes the cached user so the
+   * navbar + profile reflect the change without re-login.
+   */
+  updateProfile(request: UpdateProfileRequest): Observable<UserResponse> {
+    return this.http.put<UserResponse>(`${this.path}/me`, request).pipe(
+      tap(updated => {
+        const token = this.getToken();
+        if (token) this.persistSession(token, updated);
+      })
+    );
+  }
+
+  /** Verifies the current password server-side, then sets a new one. */
+  changePassword(request: ChangePasswordRequest): Observable<void> {
+    return this.http.post<void>(`${this.path}/me/password`, request);
   }
 
   /** Clears credentials in-memory and in localStorage. */

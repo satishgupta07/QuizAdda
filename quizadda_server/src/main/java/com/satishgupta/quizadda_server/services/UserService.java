@@ -1,6 +1,8 @@
 package com.satishgupta.quizadda_server.services;
 
+import com.satishgupta.quizadda_server.dto.user.ChangePasswordRequest;
 import com.satishgupta.quizadda_server.dto.user.RegisterUserRequest;
+import com.satishgupta.quizadda_server.dto.user.UpdateProfileRequest;
 import com.satishgupta.quizadda_server.dto.user.UserResponse;
 import com.satishgupta.quizadda_server.models.User;
 
@@ -19,4 +21,10 @@ public interface UserService {
     User getUserEntityByUsername(String username);
 
     void deleteUserById(Long userId);
+
+    /** Updates editable fields of the currently authenticated user. */
+    UserResponse updateProfile(String username, UpdateProfileRequest request);
+
+    /** Verifies the current password, then sets a new BCrypt-hashed one. */
+    void changePassword(String username, ChangePasswordRequest request);
 }

@@ -1,7 +1,9 @@
 package com.satishgupta.quizadda_server.services.impl;
 
 import com.satishgupta.quizadda_server.config.DataLoader;
+import com.satishgupta.quizadda_server.dto.user.ChangePasswordRequest;
 import com.satishgupta.quizadda_server.dto.user.RegisterUserRequest;
+import com.satishgupta.quizadda_server.dto.user.UpdateProfileRequest;
 import com.satishgupta.quizadda_server.dto.user.UserResponse;
 import com.satishgupta.quizadda_server.exceptions.DuplicateResourceException;
 import com.satishgupta.quizadda_server.exceptions.ResourceNotFoundException;
@@ -14,6 +16,7 @@ import com.satishgupta.quizadda_server.repositories.UserRepository;
 import com.satishgupta.quizadda_server.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,5 +93,36 @@ public class UserServiceImpl implements UserService {
             throw new ResourceNotFoundException("User", "id", userId);
         }
         userRepository.deleteById(userId);
+    }
+
+    @Override
+    public UserResponse updateProfile(String username, UpdateProfileRequest request) {
+        User user = getUserEntityByUsername(username);
+
+        // Allow email change but enforce uniqueness if it changed.
+        if (!user.getEmail().equalsIgnoreCase(request.email())
+                && userRepository.existsByEmail(request.email())) {
+            throw new DuplicateResourceException("Email '%s' is already registered".formatted(request.email()));
+        }
+
+        user.setFirstName(request.firstName());
+        user.setLastName(request.lastName());
+        user.setEmail(request.email());
+        user.setPhone(request.phone());
+        return UserMapper.toResponse(userRepository.save(user));
+    }
+
+    @Override
+    public void changePassword(String username, ChangePasswordRequest request) {
+        User user = getUserEntityByUsername(username);
+        // Reject if the supplied current password doesn't match — Spring Security
+        // wraps the failure in BadCredentialsException so the global handler
+        // returns 401 with a generic "Invalid username or password" message.
+        if (!passwordEncoder.matches(request.currentPassword(), user.getPassword())) {
+            throw new BadCredentialsException("Current password is incorrect");
+        }
+        user.setPassword(passwordEncoder.encode(request.newPassword()));
+        userRepository.save(user);
+        log.info("Password changed for user: {}", username);
     }
 }

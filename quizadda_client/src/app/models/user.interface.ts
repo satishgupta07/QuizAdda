@@ -23,3 +23,17 @@ export interface RegisterUserRequest {
   email: string;
   phone: string;
 }
+
+/** Payload for `PUT /api/v1/auth/me`. */
+export interface UpdateProfileRequest {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+}
+
+/** Payload for `POST /api/v1/auth/me/password`. */
+export interface ChangePasswordRequest {
+  currentPassword: string;
+  newPassword: string;
+}

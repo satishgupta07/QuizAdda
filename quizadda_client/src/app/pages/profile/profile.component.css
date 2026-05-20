@@ -167,6 +167,29 @@
 .empty-state h3 { margin: 0; }
 .empty-state p { color: var(--text-muted); margin: 0; }
 
+.profile-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.edit-form {
+  padding: 24px;
+  border-top: 1px solid var(--border);
+}
+.edit-form .mat-mdc-form-field { display: block; }
+.edit-form .grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 600px) {
+  .edit-form .grid-2 { grid-template-columns: 1fr; }
+}
+
 .load-more {
   display: flex;
   justify-content: center;
