@@ -12,10 +12,8 @@ import Swal from 'sweetalert2';
 export class AddQuestionComponent {
   quizId: number | any;
   quizTitle: string | any;
+
   question = {
-    quiz: {
-      quizId: '',
-    },
     content: '',
     option1: '',
     option2: '',
@@ -34,25 +32,26 @@ export class AddQuestionComponent {
   ngOnInit() {
     this.quizId = this._route.snapshot.params['quizId'];
     this.quizTitle = this._route.snapshot.params['title'];
-    console.log(this.quizTitle);
-    this.question.quiz.quizId = this.quizId;
   }
 
   formSubmit() {
-    if (this.question.content.trim() == '' || this.question.content == null) {
-      this._snack.open('Title Required !!', '', {
-        duration: 3000,
-      });
+    if (this.question.content.trim() === '' || this.question.content == null) {
+      this._snack.open('Title Required !!', '', { duration: 3000 });
+      return;
     }
 
-    this._question.addQuestionOfQuiz(this.question).subscribe(
-      (data: any) => {
+    // QuestionRequest on the backend expects a flat quizId rather than a nested quiz object.
+    const payload = {
+      ...this.question,
+      quizId: Number(this.quizId)
+    };
+
+    this._question.addQuestionOfQuiz(payload).subscribe(
+      () => {
         this.router.navigate(['/admin/quizzes']);
         Swal.fire('Success !!', 'Question added successfully !!', 'success');
       },
-      (error) => {
-        Swal.fire('Error !!', 'Something went wrong !!', 'error');
-      }
+      () => Swal.fire('Error !!', 'Something went wrong !!', 'error')
     );
   }
 }

@@ -1,102 +1,76 @@
 package com.satishgupta.quizadda_server.controllers;
 
-import com.satishgupta.quizadda_server.models.quizPortal.Category;
-import com.satishgupta.quizadda_server.models.quizPortal.Question;
-import com.satishgupta.quizadda_server.models.quizPortal.Quiz;
-import com.satishgupta.quizadda_server.services.QuestionService;
+import com.satishgupta.quizadda_server.dto.quiz.EvaluateQuizRequest;
+import com.satishgupta.quizadda_server.dto.quiz.EvaluateQuizResponse;
+import com.satishgupta.quizadda_server.dto.quiz.QuizRequest;
+import com.satishgupta.quizadda_server.dto.quiz.QuizResponse;
 import com.satishgupta.quizadda_server.services.QuizService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
-import java.util.Map;
 
 @RestController
-@RequestMapping("/quiz")
-@CrossOrigin("*")
-@Tag(name="QuizController", description = "APIs for managing quizzes")
+@RequestMapping("/api/v1/quizzes")
+@RequiredArgsConstructor
+@Tag(name = "Quizzes", description = "Quiz management and evaluation")
 public class QuizController {
 
-    @Autowired
-    private QuizService quizService;
+    private final QuizService quizService;
 
-    @Autowired
-    private QuestionService questionService;
-
-    @PostMapping("/")
-    public ResponseEntity<Quiz> addQuiz(@RequestBody Quiz quiz) {
-        Quiz quiz1 = this.quizService.addQuiz(quiz);
-        return ResponseEntity.ok(quiz1);
+    @PostMapping
+    public ResponseEntity<QuizResponse> create(@Valid @RequestBody QuizRequest request) {
+        QuizResponse created = quizService.addQuiz(request);
+        return ResponseEntity
+                .created(URI.create("/api/v1/quizzes/" + created.quizId()))
+                .body(created);
     }
 
-    // get all quizzes
-    @GetMapping("/")
-    public ResponseEntity<List<Quiz>> getAllQuizzes() {
-        return ResponseEntity.ok(this.quizService.getQuizzes());
+    @GetMapping
+    public ResponseEntity<List<QuizResponse>> list() {
+        return ResponseEntity.ok(quizService.getQuizzes());
     }
 
-    // get quiz by id
     @GetMapping("/{quizId}")
-    public ResponseEntity<Quiz> getQuiz(@PathVariable("quizId") Long quizId) {
-        return ResponseEntity.ok(this.quizService.getQuiz(quizId));
+    public ResponseEntity<QuizResponse> get(@PathVariable Long quizId) {
+        return ResponseEntity.ok(quizService.getQuiz(quizId));
     }
 
-    // update quiz
-    @PutMapping("/")
-    public ResponseEntity<Quiz> updateQuiz(@RequestBody Quiz quiz) {
-        return ResponseEntity.ok(this.quizService.updateQuiz(quiz));
+    @PutMapping("/{quizId}")
+    public ResponseEntity<QuizResponse> update(@PathVariable Long quizId,
+                                               @Valid @RequestBody QuizRequest request) {
+        return ResponseEntity.ok(quizService.updateQuiz(quizId, request));
     }
 
-    // delete quiz
     @DeleteMapping("/{quizId}")
-    public void deleteQuiz(@PathVariable("quizId") Long quizId) {
-        this.quizService.deleteQuiz(quizId);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long quizId) {
+        quizService.deleteQuiz(quizId);
     }
 
-    // get quiz by category
-    @GetMapping("/category/{catId}")
-    public ResponseEntity<List<Quiz>> getQuizByCategory(@PathVariable("catId") Long catId) {
-        Category category = new Category();
-        category.setCatId(catId);
-        return ResponseEntity.ok(this.quizService.getQuizzesOfCategory(category));
-    }
-
-    // get active quizzes
     @GetMapping("/active")
-    public ResponseEntity<List<Quiz>> getActiveQuizzes() {
-        return ResponseEntity.ok(this.quizService.getActiveQuizzes(true));
+    public ResponseEntity<List<QuizResponse>> listActive() {
+        return ResponseEntity.ok(quizService.getActiveQuizzes());
     }
 
-    @GetMapping("/active/category/{catId}")
-    public ResponseEntity<List<Quiz>> getActiveQuizByCategory(@PathVariable("catId") Long catId) {
-        Category category = new Category();
-        category.setCatId(catId);
-        return ResponseEntity.ok(this.quizService.getActiveQuizzesOfCategory(category, true));
+    @GetMapping(params = "categoryId")
+    public ResponseEntity<List<QuizResponse>> listByCategory(@RequestParam Long categoryId) {
+        return ResponseEntity.ok(quizService.getQuizzesOfCategory(categoryId));
     }
 
-    @PostMapping("/eval-quiz")
-    public ResponseEntity<?> evaluateQuiz(@RequestBody List<Question> questions) {
-        float marksGot = 0f;
-        int correctAnswers = 0;
-        int attempted = 0;
-        for(Question ques: questions) {
-            Question question = this.questionService.get(ques.getQuesId());
-            if(ques.getChosenAnswer().trim().equals(question.getAnswer().trim())) {
-                correctAnswers++;
-                float oneQuesMarks = Float.parseFloat(questions.get(0).getQuiz().getMaxMarks())/questions.size();
-                marksGot += oneQuesMarks;
-            }
-            System.out.println(ques.getChosenAnswer() != null);
-            System.out.println(ques.getChosenAnswer() != "");
-            if(ques.getChosenAnswer() != null && !ques.getChosenAnswer().trim().equals("")) {
-                attempted++;
-            }
-        }
+    @GetMapping(value = "/active", params = "categoryId")
+    public ResponseEntity<List<QuizResponse>> listActiveByCategory(@RequestParam Long categoryId) {
+        return ResponseEntity.ok(quizService.getActiveQuizzesOfCategory(categoryId));
+    }
 
-        Map<String, Object> map = Map.of("marksGot", marksGot, "correctAnswers", correctAnswers, "attempted", attempted);
-
-        return ResponseEntity.ok(map);
+    @PostMapping("/{quizId}/evaluate")
+    public ResponseEntity<EvaluateQuizResponse> evaluate(@PathVariable Long quizId,
+                                                         @Valid @RequestBody EvaluateQuizRequest request) {
+        return ResponseEntity.ok(quizService.evaluateQuiz(quizId, request));
     }
 }

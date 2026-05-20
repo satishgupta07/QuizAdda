@@ -7,23 +7,23 @@ import baseUrl from './helper';
 })
 export class QuestionsService {
 
+  private readonly path = `${baseUrl}/api/v1/questions`;
+
   constructor(private _http: HttpClient) { }
 
-  public getQuestionsOfQuiz(quizId: any) {
-    return this._http.get(`${baseUrl}/question/quiz/${quizId}`)
+  public getQuestionsOfQuiz(quizId: number) {
+    return this._http.get(this.path, { params: { quizId } });
   }
 
   public addQuestionOfQuiz(question: any) {
-    return this._http.post(`${baseUrl}/question/`, question)
+    return this._http.post(this.path, question);
   }
 
-  // delete question
-  public deleteQuestion(quesId: Number) {
-    return this._http.delete(`${baseUrl}/question/${quesId}`)
+  public deleteQuestion(quesId: number) {
+    return this._http.delete(`${this.path}/${quesId}`);
   }
 
-  // get random questions for user
-  public getQuestionsOfQuizForUser(quizId: any) {
-    return this._http.get(`${baseUrl}/question/random/quiz/${quizId}`)
+  public getQuestionsOfQuizForUser(quizId: number) {
+    return this._http.get(`${this.path}/take`, { params: { quizId } });
   }
 }

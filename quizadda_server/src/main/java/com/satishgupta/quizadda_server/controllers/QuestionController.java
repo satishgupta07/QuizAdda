@@ -1,83 +1,65 @@
 package com.satishgupta.quizadda_server.controllers;
 
-import com.satishgupta.quizadda_server.models.quizPortal.Question;
-import com.satishgupta.quizadda_server.models.quizPortal.Quiz;
+import com.satishgupta.quizadda_server.dto.question.QuestionRequest;
+import com.satishgupta.quizadda_server.dto.question.QuestionResponse;
 import com.satishgupta.quizadda_server.services.QuestionService;
-import com.satishgupta.quizadda_server.services.QuizService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.net.URI;
+import java.util.List;
 
 @RestController
-@RequestMapping("/question")
-@CrossOrigin("*")
-@Tag(name="QuestionController", description = "APIs for managing questions")
+@RequestMapping("/api/v1/questions")
+@RequiredArgsConstructor
+@Tag(name = "Questions", description = "Question management")
 public class QuestionController {
 
-    @Autowired
-    private QuestionService questionService;
+    private final QuestionService questionService;
 
-    @Autowired
-    private QuizService quizService;
-
-    @PostMapping("/")
-    public ResponseEntity<Question> addQuestion(@RequestBody Question question) {
-        Question question1 = this.questionService.addQuestion(question);
-        return ResponseEntity.ok(question1);
+    @PostMapping
+    public ResponseEntity<QuestionResponse> create(@Valid @RequestBody QuestionRequest request) {
+        QuestionResponse created = questionService.addQuestion(request);
+        return ResponseEntity
+                .created(URI.create("/api/v1/questions/" + created.quesId()))
+                .body(created);
     }
 
-    // get all questions
-    @GetMapping("/")
-    public ResponseEntity<List<Question>> getAllQuestions() {
-        return ResponseEntity.ok(this.questionService.getQuestions());
+    @GetMapping
+    public ResponseEntity<List<QuestionResponse>> list() {
+        return ResponseEntity.ok(questionService.getQuestions());
     }
 
-    // get all questions of any quiz
-    @GetMapping("/quiz/{quizId}")
-    public ResponseEntity<List<Question>> getQuestionsOfQuiz(@PathVariable("quizId") Long quizId) {
-        Quiz quiz = new Quiz();
-        quiz.setQuizId(quizId);
-        return ResponseEntity.ok(this.questionService.getQuestionsOfQuiz(quiz));
-    }
-
-    // get random questions of quiz for user
-    @GetMapping("/random/quiz/{quizId}")
-    public ResponseEntity<List<Question>> getQuestionsOfQuizForUser(@PathVariable("quizId") Long quizId) {
-        Quiz quiz = this.quizService.getQuiz(quizId);
-        List<Question> questionsList = this.questionService.getQuestionsOfQuiz(quiz);
-        Collections.shuffle(questionsList);
-
-        List<Question> randomQuestions;
-        if(questionsList.size() > Integer.parseInt(quiz.getNumberOfQuestions())) {
-            randomQuestions =questionsList.subList(0, Integer.parseInt(quiz.getNumberOfQuestions()));
-        } else {
-            randomQuestions = questionsList;
-        }
-
-        randomQuestions.forEach(ques -> {
-            ques.setAnswer("");
-        });
-
-        return ResponseEntity.ok(randomQuestions);
-    }
-
-    // get question by id
     @GetMapping("/{questionId}")
-    public ResponseEntity<Question> getQuestion(@PathVariable("questionId") Long questionId) {
-        return ResponseEntity.ok(this.questionService.getQuestion(questionId));
+    public ResponseEntity<QuestionResponse> get(@PathVariable Long questionId) {
+        return ResponseEntity.ok(questionService.getQuestion(questionId));
     }
 
-    // update question
-    @PutMapping("/")
-    public ResponseEntity<Question> updateQuestion(@RequestBody Question question) {
-        return ResponseEntity.ok(this.questionService.updateQuestion(question));
+    @PutMapping("/{questionId}")
+    public ResponseEntity<QuestionResponse> update(@PathVariable Long questionId,
+                                                   @Valid @RequestBody QuestionRequest request) {
+        return ResponseEntity.ok(questionService.updateQuestion(questionId, request));
     }
 
     @DeleteMapping("/{questionId}")
-    public void deleteQuestion(@PathVariable("questionId") Long questionId) {
-        this.questionService.deleteQuestion(questionId);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long questionId) {
+        questionService.deleteQuestion(questionId);
+    }
+
+    /** Admin view: all questions for a quiz including the correct answer. */
+    @GetMapping(params = "quizId")
+    public ResponseEntity<List<QuestionResponse>> listByQuiz(@RequestParam Long quizId) {
+        return ResponseEntity.ok(questionService.getQuestionsOfQuiz(quizId));
+    }
+
+    /** User view: random subset for taking the quiz; the {@code answer} field is omitted. */
+    @GetMapping("/take")
+    public ResponseEntity<List<QuestionResponse>> takeQuiz(@RequestParam Long quizId) {
+        return ResponseEntity.ok(questionService.getRandomQuestionsForUser(quizId));
     }
 }

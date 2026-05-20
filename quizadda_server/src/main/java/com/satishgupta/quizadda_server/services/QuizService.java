@@ -1,25 +1,33 @@
 package com.satishgupta.quizadda_server.services;
 
-import com.satishgupta.quizadda_server.models.quizPortal.Category;
+import com.satishgupta.quizadda_server.dto.quiz.EvaluateQuizRequest;
+import com.satishgupta.quizadda_server.dto.quiz.EvaluateQuizResponse;
+import com.satishgupta.quizadda_server.dto.quiz.QuizRequest;
+import com.satishgupta.quizadda_server.dto.quiz.QuizResponse;
 import com.satishgupta.quizadda_server.models.quizPortal.Quiz;
 
 import java.util.List;
 
 public interface QuizService {
 
-    public Quiz addQuiz(Quiz quiz);
+    QuizResponse addQuiz(QuizRequest request);
 
-    public Quiz updateQuiz(Quiz quiz);
+    QuizResponse updateQuiz(Long quizId, QuizRequest request);
 
-    public List<Quiz> getQuizzes();
+    List<QuizResponse> getQuizzes();
 
-    public Quiz getQuiz(Long quizId);
+    QuizResponse getQuiz(Long quizId);
 
-    public void deleteQuiz(Long quizId);
+    /** Internal accessor for use by other services (returns the JPA entity). */
+    Quiz getQuizEntity(Long quizId);
 
-    public List<Quiz> getQuizzesOfCategory(Category category);
+    void deleteQuiz(Long quizId);
 
-    public List<Quiz> getActiveQuizzes(Boolean active);
+    List<QuizResponse> getQuizzesOfCategory(Long categoryId);
 
-    public List<Quiz> getActiveQuizzesOfCategory(Category category, Boolean active);
+    List<QuizResponse> getActiveQuizzes();
+
+    List<QuizResponse> getActiveQuizzesOfCategory(Long categoryId);
+
+    EvaluateQuizResponse evaluateQuiz(Long quizId, EvaluateQuizRequest request);
 }

@@ -1,18 +1,19 @@
 package com.satishgupta.quizadda_server.services;
 
-import com.satishgupta.quizadda_server.models.quizPortal.Category;
+import com.satishgupta.quizadda_server.dto.category.CategoryRequest;
+import com.satishgupta.quizadda_server.dto.category.CategoryResponse;
 
 import java.util.List;
 
 public interface CategoryService {
 
-    public Category addCategory(Category category);
+    CategoryResponse addCategory(CategoryRequest request);
 
-    public Category updateCategory(Category category);
+    CategoryResponse updateCategory(Long categoryId, CategoryRequest request);
 
-    public List<Category> getCategories();
+    List<CategoryResponse> getCategories();
 
-    public Category getCategory(Long categoryId);
+    CategoryResponse getCategory(Long categoryId);
 
-    public void deleteCategory(Long categoryId);
+    void deleteCategory(Long categoryId);
 }

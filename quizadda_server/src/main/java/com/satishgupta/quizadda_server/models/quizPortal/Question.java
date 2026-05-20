@@ -1,32 +1,36 @@
 package com.satishgupta.quizadda_server.models.quizPortal;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
+@Table(name = "questions")
 public class Question {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long quesId;
 
-    @Column(length = 5000)
+    @Column(nullable = false, length = 5000)
     private String content;
 
+    @Column(length = 500)
     private String image;
 
-    private String option1;
-    private String option2;
-    private String option3;
-    private String option4;
+    @Column(nullable = false) private String option1;
+    @Column(nullable = false) private String option2;
+    @Column(nullable = false) private String option3;
+    @Column(nullable = false) private String option4;
 
+    @Column(nullable = false)
     private String answer;
 
-    @Transient
-    private String chosenAnswer;
-
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "quiz_id", nullable = false)
     private Quiz quiz;
 }

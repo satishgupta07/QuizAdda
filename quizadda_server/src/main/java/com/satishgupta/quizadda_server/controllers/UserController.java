@@ -1,66 +1,41 @@
 package com.satishgupta.quizadda_server.controllers;
 
-import com.satishgupta.quizadda_server.models.Role;
-import com.satishgupta.quizadda_server.models.User;
-import com.satishgupta.quizadda_server.models.UserRole;
+import com.satishgupta.quizadda_server.dto.user.RegisterUserRequest;
+import com.satishgupta.quizadda_server.dto.user.UserResponse;
 import com.satishgupta.quizadda_server.services.UserService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.net.URI;
 
 @RestController
-@RequestMapping("/user")
-@CrossOrigin("*")
-@Tag(name="UserController", description = "APIs for user management")
+@RequestMapping("/api/v1/users")
+@RequiredArgsConstructor
+@Tag(name = "Users", description = "User registration and lookup")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @PostMapping("/")
-    @Operation(summary = "Create new user !!", description = "this api is for user creation")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Success | OK"),
-            @ApiResponse(responseCode = "401", description = "Unauthorised User"),
-            @ApiResponse(responseCode = "201", description = "User created successfully !!")
-    })
-    public User createUser(@RequestBody User user) throws Exception {
-        user.setProfile("default.png");
-
-        // encoding password with bcrypt
-        user.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
-
-        Set<UserRole> roles = new HashSet<>();
-
-        Role role = new Role();
-        role.setRoleId(45L);
-        role.setRoleName("USER");
-
-        UserRole userRole = new UserRole();
-        userRole.setUser(user);
-        userRole.setRole(role);
-
-        roles.add(userRole);
-        return this.userService.createUser(user, roles);
+    @PostMapping
+    public ResponseEntity<UserResponse> register(@Valid @RequestBody RegisterUserRequest request) {
+        UserResponse created = userService.registerUser(request);
+        return ResponseEntity
+                .created(URI.create("/api/v1/users/" + created.username()))
+                .body(created);
     }
 
     @GetMapping("/{username}")
-    public User getUserByUserName(@PathVariable("username") String username) {
-        return this.userService.getUserByUsername(username);
+    public ResponseEntity<UserResponse> getByUsername(@PathVariable String username) {
+        return ResponseEntity.ok(userService.getUserByUsername(username));
     }
 
     @DeleteMapping("/{userId}")
-    public void deleteUserById(@PathVariable("userId") Long userId) {
-        this.userService.deleteUserById(userId);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long userId) {
+        userService.deleteUserById(userId);
     }
 }

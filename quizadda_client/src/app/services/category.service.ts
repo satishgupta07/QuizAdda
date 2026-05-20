@@ -7,20 +7,19 @@ import baseUrl from './helper';
 })
 export class CategoryService {
 
-  constructor(private _http:HttpClient) { }
+  private readonly path = `${baseUrl}/api/v1/categories`;
 
-  // load all the categories
+  constructor(private _http: HttpClient) { }
+
   public categories() {
-    return this._http.get(`${baseUrl}/category/`)
+    return this._http.get(this.path);
   }
 
-  // add new category
   public addCategory(category: any) {
-    return this._http.post(`${baseUrl}/category/`, category)
+    return this._http.post(this.path, category);
   }
 
-  // delete category
-  public deleteCategory(catId: Number) {
-    return this._http.delete(`${baseUrl}/category/${catId}`)
+  public deleteCategory(catId: number) {
+    return this._http.delete(`${this.path}/${catId}`);
   }
 }

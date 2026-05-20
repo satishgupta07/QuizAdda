@@ -1,23 +1,25 @@
 package com.satishgupta.quizadda_server.services;
 
-import com.satishgupta.quizadda_server.models.quizPortal.Question;
-import com.satishgupta.quizadda_server.models.quizPortal.Quiz;
+import com.satishgupta.quizadda_server.dto.question.QuestionRequest;
+import com.satishgupta.quizadda_server.dto.question.QuestionResponse;
 
 import java.util.List;
 
 public interface QuestionService {
 
-    public Question addQuestion(Question question);
+    QuestionResponse addQuestion(QuestionRequest request);
 
-    public Question updateQuestion(Question question);
+    QuestionResponse updateQuestion(Long questionId, QuestionRequest request);
 
-    public List<Question> getQuestions();
+    List<QuestionResponse> getQuestions();
 
-    public Question getQuestion(Long questionId);
+    QuestionResponse getQuestion(Long questionId);
 
-    public List<Question> getQuestionsOfQuiz(Quiz quiz);
+    /** Admin-facing list of questions for a quiz (includes the correct answer). */
+    List<QuestionResponse> getQuestionsOfQuiz(Long quizId);
 
-    public void deleteQuestion(Long quesId);
+    /** User-facing random subset for taking the quiz (answer field is stripped). */
+    List<QuestionResponse> getRandomQuestionsForUser(Long quizId);
 
-    public Question get(Long questionId);
+    void deleteQuestion(Long questionId);
 }

@@ -93,7 +93,7 @@ export class StartPageComponent {
   }
 
   evalQuiz() {
-    this._quiz.evaluateQuiz(this.questions).subscribe(
+    this._quiz.evaluateQuiz(this.quizId, this.questions).subscribe(
       (data: any)=> {
         this.isSubmitted = true;
         this.marksGot = parseFloat(data.marksGot).toFixed(2);

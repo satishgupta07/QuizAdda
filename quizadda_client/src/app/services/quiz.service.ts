@@ -7,49 +7,51 @@ import baseUrl from './helper';
 })
 export class QuizService {
 
-  constructor(private _http:HttpClient) { }
+  private readonly path = `${baseUrl}/api/v1/quizzes`;
+
+  constructor(private _http: HttpClient) { }
 
   public quizzes() {
-    return this._http.get(`${baseUrl}/quiz/`)
+    return this._http.get(this.path);
   }
 
-  // add new quiz
   public addQuiz(quiz: any) {
-    return this._http.post(`${baseUrl}/quiz/`, quiz)
+    return this._http.post(this.path, quiz);
   }
 
-  // delete quiz
-  public deleteQuiz(quizId: Number) {
-    return this._http.delete(`${baseUrl}/quiz/${quizId}`)
+  public deleteQuiz(quizId: number) {
+    return this._http.delete(`${this.path}/${quizId}`);
   }
 
-  // get quiz by quizId
-  public getQuiz(quizId: Number) {
-    return this._http.get(`${baseUrl}/quiz/${quizId}`)
+  public getQuiz(quizId: number) {
+    return this._http.get(`${this.path}/${quizId}`);
   }
 
-  // update quiz
-  public updateQuiz(quiz: any) {
-    return this._http.put(`${baseUrl}/quiz/`, quiz)
+  public updateQuiz(quizId: number, quiz: any) {
+    return this._http.put(`${this.path}/${quizId}`, quiz);
   }
 
-  // get quizzes of category
-  public getQuizByCategory(categoryId: Number) {
-    return this._http.get(`${baseUrl}/quiz/category/${categoryId}`)
+  public getQuizByCategory(categoryId: number) {
+    return this._http.get(this.path, { params: { categoryId } });
   }
 
-  // get active quizzes
   public getActivequizzes() {
-    return this._http.get(`${baseUrl}/quiz/active`)
+    return this._http.get(`${this.path}/active`);
   }
 
-  // get quizzes of category
-  public getActiveQuizByCategory(categoryId: Number) {
-    return this._http.get(`${baseUrl}/quiz/active/category/${categoryId}`)
+  public getActiveQuizByCategory(categoryId: number) {
+    return this._http.get(`${this.path}/active`, { params: { categoryId } });
   }
 
-  public evaluateQuiz(questions: any) {
-    return this._http.post(`${baseUrl}/quiz/eval-quiz`, questions);
+  // Posts the user's chosen answers for a specific quiz. Server validates and
+  // computes the score against its own authoritative answer key.
+  public evaluateQuiz(quizId: number, questions: any[]) {
+    const payload = {
+      answers: questions.map(q => ({
+        quesId: q.quesId,
+        chosenAnswer: q.chosenAnswer ?? ''
+      }))
+    };
+    return this._http.post(`${this.path}/${quizId}/evaluate`, payload);
   }
-
 }

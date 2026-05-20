@@ -1,19 +1,17 @@
 package com.satishgupta.quizadda_server.services;
 
+import com.satishgupta.quizadda_server.dto.user.RegisterUserRequest;
+import com.satishgupta.quizadda_server.dto.user.UserResponse;
 import com.satishgupta.quizadda_server.models.User;
-import com.satishgupta.quizadda_server.models.UserRole;
-
-import java.util.Set;
 
 public interface UserService {
 
-    // creating user
-    public User createUser(User user, Set<UserRole> userRoles) throws Exception;
+    UserResponse registerUser(RegisterUserRequest request);
 
-    //get user by username
-    public User getUserByUsername(String username);
+    UserResponse getUserByUsername(String username);
 
-    //delete user by id
-    public void deleteUserById(Long userId);
+    /** Internal accessor that returns the JPA entity (needed by Spring Security). */
+    User getUserEntityByUsername(String username);
 
+    void deleteUserById(Long userId);
 }
