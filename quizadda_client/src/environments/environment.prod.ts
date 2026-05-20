@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://your-server.onrender.com'
+  apiUrl: 'https://quizaddaserver.onrender.com'
 };
