@@ -1,0 +1,32 @@
+.dashboard-shell {
+  min-height: calc(100vh - 64px);
+  background: var(--bg-app);
+}
+
+.dashboard-drawer {
+  width: 260px;
+  border-right: 1px solid var(--border);
+  background: var(--surface);
+  padding: 16px;
+}
+
+.dashboard-topbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  font-weight: 700;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.dashboard-content { padding: 24px; }
+
+@media (max-width: 600px) {
+  .dashboard-content { padding: 16px; }
+}
+
+.mat-drawer { box-shadow: none !important; }

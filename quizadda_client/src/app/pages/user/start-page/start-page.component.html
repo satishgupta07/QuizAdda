@@ -1,89 +1,80 @@
-<div class="bootstrap-wrapper" *ngIf="!isSubmitted">
-  <div class="container-fluid" style="background-color: #d3d3d3">
-    <div class="row">
-      <div class="col-md-2">
-        <mat-card style="margin-top: 68px; padding: 10px;">
-          <mat-card-title>Instructions</mat-card-title>
-          <ul>
-            <li>Do not refresh the page otherwise a new quiz will start.</li>
-            <li>Do not switch the tabs.</li>
-            <li>Do not minimize the window.</li>
-          </ul>
-        </mat-card>
+<div class="quiz-attempt" *ngIf="!isSubmitted">
+  <!-- Sticky timer / progress header -->
+  <div class="quiz-status">
+    <div class="quiz-status-inner app-container">
+      <div class="quiz-status-info">
+        <div class="quiz-status-label">Time remaining</div>
+        <div class="quiz-status-time">{{ getFormattedTime() }}</div>
       </div>
-      <div class="col-md-8">
-        <ng-container *ngIf="questions.length > 0">
-          <h1 class="mt20">Quiz in progress</h1>
-          <mat-card *ngFor="let q of questions; let i = index; trackBy: trackByQuesId" class="mt10">
-            <mat-card-content>
-              <h3>
-                <b>Q{{ i + 1 }}.</b> {{ q.content }}
-              </h3>
-              <mat-radio-group [(ngModel)]="q.chosenAnswer">
-                <div class="row mt10">
-                  <div class="col-md-6">
-                    <mat-radio-button [value]="q.option1" [name]="q.option1">{{ q.option1 }}</mat-radio-button>
-                  </div>
-                  <div class="col-md-6">
-                    <mat-radio-button [value]="q.option2" [name]="q.option2">{{ q.option2 }}</mat-radio-button>
-                  </div>
-                </div>
-                <div class="row mt10">
-                  <div class="col-md-6">
-                    <mat-radio-button [value]="q.option3" [name]="q.option3">{{ q.option3 }}</mat-radio-button>
-                  </div>
-                  <div class="col-md-6">
-                    <mat-radio-button [value]="q.option4" [name]="q.option4">{{ q.option4 }}</mat-radio-button>
-                  </div>
-                </div>
-              </mat-radio-group>
-            </mat-card-content>
-          </mat-card>
-          <div class="container text-center mt20 mb20">
-            <button mat-raised-button color="primary" (click)="submitQuiz()">Submit Quiz</button>
-          </div>
-        </ng-container>
+      <div class="progress-track">
+        <div class="progress-fill"
+             [style.width.%]="100 - ((timer / (totalQuestions * 60)) * 100)"></div>
       </div>
-      <div class="col-md-2">
-        <mat-card style="margin-top: 68px">
-          <mat-card-header>
-            <mat-card-title>Progress</mat-card-title>
-            <mat-card-subtitle>
-              Quiz will be automatically submitted after : <br />
-              <b>{{ getFormattedTime() }}</b>
-            </mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content class="mt20">
-            <mat-spinner
-              mode="determinate"
-              style="margin: auto"
-              [value]="(timer / (totalQuestions * 60)) * 100"
-            ></mat-spinner>
-          </mat-card-content>
-        </mat-card>
-      </div>
+      <button mat-raised-button color="primary" (click)="submitQuiz()" class="hide-mobile">
+        <mat-icon>check</mat-icon> Submit
+      </button>
     </div>
+  </div>
+
+  <div class="app-container quiz-content">
+    <ng-container *ngIf="questions.length > 0">
+      <article class="q-card" *ngFor="let q of questions; let i = index; trackBy: trackByQuesId">
+        <div class="q-card-head">
+          <span class="q-num">Q{{ i + 1 }}</span>
+          <h3>{{ q.content }}</h3>
+        </div>
+
+        <mat-radio-group [(ngModel)]="q.chosenAnswer" class="q-options">
+          <label class="q-option" *ngFor="let opt of [q.option1, q.option2, q.option3, q.option4]; let oi = index"
+                 [class.selected]="q.chosenAnswer === opt">
+            <mat-radio-button [value]="opt" [name]="'q' + q.quesId">
+              <span class="q-option-letter">{{ ['A','B','C','D'][oi] }}</span>
+              <span class="q-option-text">{{ opt }}</span>
+            </mat-radio-button>
+          </label>
+        </mat-radio-group>
+      </article>
+
+      <div class="form-actions submit-bottom">
+        <button mat-raised-button color="primary" (click)="submitQuiz()">
+          <mat-icon>check</mat-icon> Submit Quiz
+        </button>
+      </div>
+    </ng-container>
   </div>
 </div>
 
-<div class="bootstrap-wrapper" *ngIf="isSubmitted">
-  <div class="container-fluid">
-    <div class="row mt20">
-      <div class="col-md-6 offset-md-3">
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title>Quiz Result</mat-card-title>
-          </mat-card-header>
-          <mat-card-content class="mt20">
-            <h3>Marks Got : {{ marksGot }}</h3>
-            <h3>Correct Answers : {{ correctAnswers }}</h3>
-            <h3>Questions Attempted : {{ attempted }}</h3>
-          </mat-card-content>
-          <div class="container text-center mt20 mb20">
-            <button mat-raised-button color="primary" routerLink="/user-dashboard">Dashboard</button>
-            <button mat-raised-button color="accent" class="ml20" (click)="printPage()">Print</button>
-          </div>
-        </mat-card>
+<div class="quiz-result hero-bg" *ngIf="isSubmitted">
+  <div class="app-container">
+    <div class="result-card surface-card">
+      <div class="result-icon">
+        <span class="icon-chip"><mat-icon>emoji_events</mat-icon></span>
+      </div>
+      <h1>Great job!</h1>
+      <p class="text-muted">Here's how you did on this quiz.</p>
+
+      <div class="result-stats">
+        <div class="result-stat">
+          <div class="result-num">{{ marksGot }}</div>
+          <div class="result-label">Marks</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-num">{{ correctAnswers }}</div>
+          <div class="result-label">Correct</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-num">{{ attempted }}</div>
+          <div class="result-label">Attempted</div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <a mat-raised-button color="primary" routerLink="/user-dashboard">
+          <mat-icon>arrow_back</mat-icon> Back to Dashboard
+        </a>
+        <button mat-stroked-button (click)="printPage()">
+          <mat-icon>print</mat-icon> Print
+        </button>
       </div>
     </div>
   </div>

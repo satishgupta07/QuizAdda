@@ -1,12 +1,23 @@
-<div class="bootstrap-wrapper">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3">
-                <app-sidebar></app-sidebar>
-            </div>
-            <div class="col-md-9">
-                <router-outlet></router-outlet>
-            </div>
-        </div>
+<mat-sidenav-container class="dashboard-shell" autosize>
+  <mat-sidenav
+    #sidenav
+    class="dashboard-drawer"
+    [mode]="isHandset ? 'over' : 'side'"
+    [opened]="!isHandset"
+    [fixedInViewport]="false">
+    <app-sidebar></app-sidebar>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="dashboard-topbar" *ngIf="isHandset">
+      <button mat-icon-button type="button" aria-label="Open menu" (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>Admin</span>
     </div>
-</div>
+
+    <div class="dashboard-content app-container">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

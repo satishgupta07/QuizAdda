@@ -3,6 +3,7 @@ import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { switchMap } from 'rxjs';
 import { QuizResponse } from 'src/app/models/quiz.interface';
@@ -16,7 +17,7 @@ import { QuizService } from 'src/app/services/quiz.service';
 @Component({
   selector: 'app-load-quiz',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatCardModule, RouterLink],
+  imports: [CommonModule, MatButtonModule, MatCardModule, MatIconModule, RouterLink],
   templateUrl: './load-quiz.component.html',
   styleUrls: ['./load-quiz.component.css']
 })

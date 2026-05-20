@@ -1,43 +1,53 @@
-<div class="bootstrap-wrapper">
-    <div class="container">
-        <div class="row mt20">
-            <div class="col-md-6 offset-md-3">
-                <mat-card>
-                    <mat-card-content>
-                        <div class="container text-center">
-                            <img src="../../../assets/register.png" alt="register" style="width: 100px; height: 100px;">
-                        </div>
-                        <h1 class="text-center">Login Here !!</h1>
-                        <form [formGroup]="form" (ngSubmit)="submit()">
-                            <mat-form-field class="full-width" appearance="outline">
-                                <mat-label>Username</mat-label>
-                                <input formControlName="username" matInput placeholder="Username" autocomplete="username">
-                                <mat-error *ngIf="form.controls.username.touched && form.controls.username.errors?.['required']">
-                                    Username is required
-                                </mat-error>
-                            </mat-form-field>
-
-                            <mat-form-field class="full-width" appearance="outline">
-                                <mat-label>Password</mat-label>
-                                <input formControlName="password" type="password" matInput placeholder="Password" autocomplete="current-password">
-                                <mat-error *ngIf="form.controls.password.touched && form.controls.password.errors?.['required']">
-                                    Password is required
-                                </mat-error>
-                            </mat-form-field>
-
-                            <div class="container text-center">
-                                <button type="submit" mat-raised-button color="primary" [disabled]="submitting">
-                                    {{ submitting ? 'Signing in...' : 'Login' }}
-                                </button>
-                                <button type="button" class="ml20" mat-raised-button color="accent" (click)="resetForm()">Clear</button>
-                            </div>
-                        </form>
-                        <div class="mt20 text-center">
-                            <a mat-button routerLink="/signup">New to Quiz Adda? Create an account</a>
-                        </div>
-                    </mat-card-content>
-                </mat-card>
-            </div>
-        </div>
+<section class="auth-page hero-bg">
+  <div class="app-container auth-grid">
+    <div class="auth-art">
+      <span class="pill pill-brand">
+        <mat-icon>quiz</mat-icon> QuizAdda
+      </span>
+      <h1>Welcome back.<br/><span class="text-gradient">Ready to play?</span></h1>
+      <p>Sign in to pick up where you left off, attempt new quizzes, and track your progress.</p>
+      <ul class="auth-bullets">
+        <li><mat-icon>bolt</mat-icon> Quick attempts, instant scoring</li>
+        <li><mat-icon>shield</mat-icon> Your data stays yours</li>
+        <li><mat-icon>group</mat-icon> Compete with friends</li>
+      </ul>
     </div>
-</div>
+
+    <div class="auth-card surface-card">
+      <h2>Login</h2>
+      <p class="text-muted mb20">Use your QuizAdda credentials to continue.</p>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <mat-form-field class="w100" appearance="outline">
+          <mat-label>Username</mat-label>
+          <input formControlName="username" matInput placeholder="Your username" autocomplete="username">
+          <mat-icon matPrefix>person</mat-icon>
+          <mat-error *ngIf="form.controls.username.touched && form.controls.username.errors?.['required']">
+            Username is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="w100" appearance="outline">
+          <mat-label>Password</mat-label>
+          <input formControlName="password" type="password" matInput placeholder="Your password" autocomplete="current-password">
+          <mat-icon matPrefix>lock</mat-icon>
+          <mat-error *ngIf="form.controls.password.touched && form.controls.password.errors?.['required']">
+            Password is required
+          </mat-error>
+        </mat-form-field>
+
+        <div class="form-actions">
+          <button type="submit" mat-raised-button color="primary" [disabled]="submitting" class="auth-submit">
+            <mat-icon *ngIf="!submitting">login</mat-icon>
+            {{ submitting ? 'Signing in...' : 'Sign in' }}
+          </button>
+          <button type="button" mat-stroked-button (click)="resetForm()">Clear</button>
+        </div>
+      </form>
+
+      <div class="auth-foot">
+        New to QuizAdda? <a routerLink="/signup">Create an account</a>
+      </div>
+    </div>
+  </div>
+</section>

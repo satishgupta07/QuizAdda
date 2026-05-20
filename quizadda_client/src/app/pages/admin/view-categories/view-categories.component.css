@@ -1,12 +1,47 @@
-.display-flex {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.cat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 24px;
+  transition: transform var(--t-fast), box-shadow var(--t-fast), border-color var(--t-fast);
+}
+.cat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--brand-primary);
 }
 
-.icon-button {
-    cursor: pointer; 
-    border: none;
-    background-color: transparent;
-    color: #ff7800;
+.cat-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
 }
+
+.cat-card h3 {
+  margin: 0 0 8px;
+  font-size: 1.15rem;
+}
+
+.delete-btn {
+  color: var(--text-muted);
+  transition: color var(--t-fast);
+}
+.delete-btn:hover {
+  color: var(--color-danger);
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 56px 24px;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  text-align: center;
+}
+.empty-state .icon-chip { width: 56px; height: 56px; }
+.empty-state h3 { margin: 0; }
+.empty-state p  { color: var(--text-muted); margin: 0; }

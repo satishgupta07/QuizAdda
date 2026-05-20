@@ -1,9 +1,25 @@
-.w100 {
-    width: 100%;
+.form-card { max-width: 820px; margin: 0 auto; }
+.form-card .mat-mdc-form-field { display: block; }
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
 }
 
-.display-flex {
-    display: flex;
-    justify-content: center;
-    padding: 16px;
+.active-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--bg-muted);
+  gap: 6px;
+}
+.toggle-label { font-weight: 600; }
+.toggle-hint { font-size: 0.8rem; }
+
+@media (max-width: 600px) {
+  .grid-2 { grid-template-columns: 1fr; }
 }

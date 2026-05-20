@@ -1,30 +1,98 @@
-<mat-toolbar color="primary" position="fixed">
-    <a routerLink="/" mat-button style="font-size:large;">
+<header class="navbar">
+  <div class="navbar-inner app-container">
+    <a routerLink="/" class="brand" (click)="closeMobileMenu()">
+      <span class="brand-mark">
         <mat-icon>quiz</mat-icon>
-        Quiz Adda
-    </a>
-    <span class="example-spacer"></span>
-    <a *ngIf="!isActive"
-     routerLink="/login" mat-button>
-        <mat-icon>login</mat-icon>
-        Login
-    </a>
-    
-    <a *ngIf="!isActive"
-     routerLink="/signup" class="ml20" mat-button>
-        <mat-icon>account_box</mat-icon>
-        Register
+      </span>
+      <span class="brand-text">Quiz<span class="text-gradient">Adda</span></span>
     </a>
 
-    <button *ngIf="isActive && user"
-        mat-button>
-        <mat-icon>account_circle</mat-icon>
-        {{ user.username }}
-    </button>
+    <!-- Desktop links -->
+    <nav class="nav-links hide-mobile">
+      <ng-container *ngIf="!user">
+        <a mat-button routerLink="/login" routerLinkActive="active">Login</a>
+        <a mat-button routerLink="/signup" routerLinkActive="active">Register</a>
+      </ng-container>
 
-    <button *ngIf="isActive" (click)="logout()"
-        class="ml20" mat-button>
-        <mat-icon>logout</mat-icon>
-        Logout
-    </button>
-</mat-toolbar>
+      <ng-container *ngIf="user">
+        <a *ngIf="user.authorities.includes('ADMIN')"
+           mat-button routerLink="/admin" routerLinkActive="active">Admin</a>
+        <a *ngIf="user.authorities.includes('USER')"
+           mat-button routerLink="/user-dashboard" routerLinkActive="active">Dashboard</a>
+      </ng-container>
+
+      <button mat-icon-button
+              type="button"
+              class="theme-toggle"
+              [attr.aria-label]="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+              (click)="toggleTheme()">
+        <mat-icon>{{ isDark ? 'light_mode' : 'dark_mode' }}</mat-icon>
+      </button>
+
+      <ng-container *ngIf="user">
+        <button mat-button class="user-trigger" [matMenuTriggerFor]="userMenu">
+          <span class="avatar">{{ user.username.charAt(0).toUpperCase() }}</span>
+          <span class="username">{{ user.username }}</span>
+          <mat-icon>expand_more</mat-icon>
+        </button>
+        <mat-menu #userMenu="matMenu" xPosition="before">
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
+      </ng-container>
+    </nav>
+
+    <!-- Mobile hamburger -->
+    <div class="mobile-actions hide-desktop">
+      <button mat-icon-button
+              type="button"
+              [attr.aria-label]="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+              (click)="toggleTheme()">
+        <mat-icon>{{ isDark ? 'light_mode' : 'dark_mode' }}</mat-icon>
+      </button>
+      <button mat-icon-button
+              type="button"
+              aria-label="Open menu"
+              (click)="toggleMobileMenu()">
+        <mat-icon>{{ mobileMenuOpen ? 'close' : 'menu' }}</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile drawer -->
+  <div class="mobile-drawer hide-desktop" [class.open]="mobileMenuOpen">
+    <nav class="mobile-links">
+      <ng-container *ngIf="!user">
+        <a routerLink="/login" routerLinkActive="active" (click)="closeMobileMenu()">
+          <mat-icon>login</mat-icon> Login
+        </a>
+        <a routerLink="/signup" routerLinkActive="active" (click)="closeMobileMenu()">
+          <mat-icon>person_add</mat-icon> Register
+        </a>
+      </ng-container>
+
+      <ng-container *ngIf="user">
+        <div class="mobile-user">
+          <span class="avatar large">{{ user.username.charAt(0).toUpperCase() }}</span>
+          <div>
+            <div class="mobile-user-name">{{ user.firstName }} {{ user.lastName }}</div>
+            <div class="mobile-user-role">{{ user.authorities[0] }}</div>
+          </div>
+        </div>
+        <a *ngIf="user.authorities.includes('ADMIN')"
+           routerLink="/admin" routerLinkActive="active" (click)="closeMobileMenu()">
+          <mat-icon>dashboard</mat-icon> Admin Dashboard
+        </a>
+        <a *ngIf="user.authorities.includes('USER')"
+           routerLink="/user-dashboard" routerLinkActive="active" (click)="closeMobileMenu()">
+          <mat-icon>dashboard</mat-icon> Dashboard
+        </a>
+        <button type="button" (click)="logout()">
+          <mat-icon>logout</mat-icon> Logout
+        </button>
+      </ng-container>
+    </nav>
+  </div>
+</header>

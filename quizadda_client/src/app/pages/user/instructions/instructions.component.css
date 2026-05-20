@@ -1,3 +1,65 @@
-.startButton {
-    justify-content: center;
+.instructions {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.instructions-hero {
+  padding: 32px;
+  border-radius: var(--r-xl);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.instructions-hero h1 { margin: 16px 0 8px; }
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: var(--bg-muted);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+}
+.meta-num   { font-size: 1.5rem; font-weight: 800; color: var(--brand-primary-strong); line-height: 1; }
+.meta-label { font-size: 0.8rem; color: var(--text-muted); }
+
+.instructions-body h3 { margin: 0 0 16px; }
+
+.rules {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.rules li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  color: var(--text-secondary);
+}
+.rules mat-icon {
+  color: var(--brand-primary);
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+}
+
+@media (max-width: 700px) {
+  .meta-grid { grid-template-columns: 1fr; }
+  .instructions-hero { padding: 24px 20px; }
 }

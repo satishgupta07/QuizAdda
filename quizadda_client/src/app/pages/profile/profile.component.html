@@ -1,44 +1,49 @@
-<mat-card *ngIf="user">
-    <h1 class="display-flex">Profile Details</h1>
-    <mat-card-content>
-        <div class="bootstrap-wrapper">
-            <div class="container">
+<div class="profile" *ngIf="user">
+  <div class="profile-card surface-card">
+    <div class="profile-banner hero-bg"></div>
 
-                <div class="container text-center">
-                    <img src="https://static.thenounproject.com/png/5034901-200.png" 
-                        alt="" class="profile-image" />
-                       
-                    <h2 class="mt-20">{{user.firstName}} {{user.lastName}}</h2>    
-                </div>
+    <div class="profile-avatar">
+      <span class="avatar-big">{{ user.firstName.charAt(0).toUpperCase() }}{{ user.lastName.charAt(0).toUpperCase() }}</span>
+    </div>
 
-                <div class="row">
-                    <div class="col-md-10 offset-md-1">
-                        <table class="table">
-                            <tr>
-                                <td>Username</td>
-                                <td>{{user.username}}</td>
-                            </tr>
-                            <tr>
-                                <td>UserId</td>
-                                <td>{{user.id}}</td>
-                            </tr>
-                            <tr>
-                                <td>Phone No.</td>
-                                <td>{{user.phone}}</td>
-                            </tr>
-                            <tr>
-                                <td>Role</td>
-                                <td>{{user.authorities[0]}}</td>
-                            </tr>
-                            <tr>
-                                <td>Status</td>
-                                <td>{{ user.enabled ? "ACTIVE": "NOT-ACTIVE"}}</td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
+    <div class="profile-head">
+      <h1>{{ user.firstName }} {{ user.lastName }}</h1>
+      <p class="text-muted">&#64;{{ user.username }}</p>
+      <div class="profile-pills">
+        <span class="pill pill-brand">
+          <mat-icon>verified_user</mat-icon> {{ user.authorities[0] }}
+        </span>
+        <span class="pill" *ngIf="user.enabled">
+          <mat-icon>check_circle</mat-icon> Active
+        </span>
+        <span class="pill" *ngIf="!user.enabled">
+          <mat-icon>block</mat-icon> Disabled
+        </span>
+      </div>
+    </div>
+
+    <div class="profile-fields">
+      <div class="field">
+        <span class="field-icon"><mat-icon>badge</mat-icon></span>
+        <div>
+          <div class="field-label">User ID</div>
+          <div class="field-value">{{ user.id }}</div>
         </div>
-    </mat-card-content>
-</mat-card>
-
+      </div>
+      <div class="field">
+        <span class="field-icon"><mat-icon>mail</mat-icon></span>
+        <div>
+          <div class="field-label">Email</div>
+          <div class="field-value">{{ user.email }}</div>
+        </div>
+      </div>
+      <div class="field">
+        <span class="field-icon"><mat-icon>phone</mat-icon></span>
+        <div>
+          <div class="field-label">Phone</div>
+          <div class="field-value">{{ user.phone || '—' }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

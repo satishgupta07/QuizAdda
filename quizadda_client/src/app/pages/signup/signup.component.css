@@ -1,0 +1,12 @@
+/* Signup shares the layout with login — see the global .auth-* classes used here. */
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.grid-2 .mat-mdc-form-field { display: block; }
+
+@media (max-width: 480px) {
+  .grid-2 { grid-template-columns: 1fr; }
+}

@@ -1,26 +1,32 @@
-<div class="bootstrap-wrapper">
-    <div class="container-fluid">
-        <div class="row mt20" *ngIf="quizzes.length > 0">
-            <div class="col-md-4" *ngFor="let q of quizzes; trackBy: trackByQuizId">
-                <mat-card>
-                    <mat-card-header>
-                        <div mat-card-avatar class="avatar"></div>
-                        <mat-card-title>{{ q.title }}</mat-card-title>
-                        <mat-card-subtitle>{{ q.category.title }}</mat-card-subtitle>
-                    </mat-card-header>
-                    <mat-card-content class="mt10">
-                        <p class="truncate">{{ q.description }}</p>
-                        <div style="color: #808080;">
-                            <p>No. of Ques : {{ q.numberOfQuestions }}</p>
-                            <p>Max Marks : {{ q.maxMarks }}</p>
-                        </div>
-                    </mat-card-content>
-                    <mat-card-actions>
-                        <button mat-button color="primary">VIEW</button>
-                        <button mat-button color="accent" [routerLink]="['/user-dashboard/instructions', q.quizId]">START</button>
-                    </mat-card-actions>
-                </mat-card>
-            </div>
-        </div>
+<div class="page-header">
+  <div>
+    <h1>Pick a quiz</h1>
+    <p class="text-muted">Hand-picked quizzes ready when you are.</p>
+  </div>
+</div>
+
+<div class="empty-state" *ngIf="quizzes.length === 0">
+  <span class="icon-chip"><mat-icon>quiz</mat-icon></span>
+  <h3>No quizzes here yet</h3>
+  <p>Try another category — new quizzes are added all the time.</p>
+</div>
+
+<div class="card-grid">
+  <article class="quiz-tile" *ngFor="let q of quizzes; trackBy: trackByQuizId">
+    <div class="quiz-tile-head">
+      <span class="pill pill-brand">{{ q.category.title }}</span>
     </div>
+    <h3>{{ q.title }}</h3>
+    <p class="text-muted truncate">{{ q.description }}</p>
+
+    <div class="quiz-tile-meta">
+      <span><mat-icon>format_list_numbered</mat-icon> {{ q.numberOfQuestions }} Qs</span>
+      <span><mat-icon>military_tech</mat-icon> {{ q.maxMarks }} marks</span>
+    </div>
+
+    <a mat-raised-button color="primary" class="quiz-start-btn"
+       [routerLink]="['/user-dashboard/instructions', q.quizId]">
+      <mat-icon>play_arrow</mat-icon> Start Quiz
+    </a>
+  </article>
 </div>

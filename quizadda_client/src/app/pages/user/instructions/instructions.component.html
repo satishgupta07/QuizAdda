@@ -1,32 +1,51 @@
-<div class="bootstrap-wrapper" *ngIf="quiz">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <mat-card>
-          <mat-card-header><h2>Quiz Instructions</h2></mat-card-header>
-          <mat-card-subtitle class="ml20">
-            <h2>{{ quiz.title }}</h2>
-            <p>{{ quiz.description }}</p>
-          </mat-card-subtitle>
-          <mat-card-content class="mt20">
-            <h3>Welcome to the quiz! Please read the following instructions before you start:</h3>
-            <ul>
-              <li>Answer all the questions.</li>
-              <li>Each question has only one correct answer.</li>
-              <li>Scroll down to move to the next question.</li>
-              <li>You have to submit the quiz with in <b>{{ quiz.numberOfQuestions }} minutes.</b></li>
-              <li>You can attempt the quiz any number of time.</li>
-              <li>There are <b>{{ quiz.numberOfQuestions }} questions</b> in this quiz.</li>
-              <li>Each question carries <b>{{ marksPerQuestion }} marks</b>. No negative marking for the wrong answers.</li>
-              <li>Click <b>Start Quiz</b> button to start the quiz.</li>
-              <li>Once you've answered all the questions, click <b>'Submit'</b> to see your score.</li>
-            </ul>
-          </mat-card-content>
-          <mat-card-actions class="startButton mt20">
-            <button mat-raised-button color="primary" (click)="startQuiz()">Start Quiz</button>
-          </mat-card-actions>
-        </mat-card>
+<div class="instructions" *ngIf="quiz">
+  <div class="instructions-hero hero-bg">
+    <span class="pill pill-brand">
+      <mat-icon>info</mat-icon> Before you start
+    </span>
+    <h1>{{ quiz.title }}</h1>
+    <p>{{ quiz.description }}</p>
+
+    <div class="meta-grid">
+      <div class="meta-item">
+        <span class="icon-chip"><mat-icon>format_list_numbered</mat-icon></span>
+        <div>
+          <div class="meta-num">{{ quiz.numberOfQuestions }}</div>
+          <div class="meta-label">Questions</div>
+        </div>
       </div>
+      <div class="meta-item">
+        <span class="icon-chip"><mat-icon>military_tech</mat-icon></span>
+        <div>
+          <div class="meta-num">{{ quiz.maxMarks }}</div>
+          <div class="meta-label">Max marks</div>
+        </div>
+      </div>
+      <div class="meta-item">
+        <span class="icon-chip"><mat-icon>star</mat-icon></span>
+        <div>
+          <div class="meta-num">{{ marksPerQuestion }}</div>
+          <div class="meta-label">Per question</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="instructions-body surface-card">
+    <h3>Rules of play</h3>
+    <ul class="rules">
+      <li><mat-icon>check_circle</mat-icon> Answer all the questions to maximize your score.</li>
+      <li><mat-icon>check_circle</mat-icon> Each question has exactly one correct answer.</li>
+      <li><mat-icon>schedule</mat-icon> You have <strong>{{ quiz.numberOfQuestions }} minutes</strong> to submit.</li>
+      <li><mat-icon>refresh</mat-icon> You can re-attempt the quiz any number of times.</li>
+      <li><mat-icon>info</mat-icon> No negative marking for wrong answers.</li>
+      <li><mat-icon>warning</mat-icon> Don't refresh the page — that ends the attempt.</li>
+    </ul>
+
+    <div class="form-actions">
+      <button mat-raised-button color="primary" (click)="startQuiz()">
+        <mat-icon>play_arrow</mat-icon> Start Quiz
+      </button>
     </div>
   </div>
 </div>

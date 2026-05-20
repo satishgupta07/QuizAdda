@@ -1,0 +1,15 @@
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main {
+  flex: 1 1 auto;
+  /* Top padding makes room for the sticky navbar (64px). */
+  padding-top: 64px;
+}
+
+@media (max-width: 600px) {
+  .app-main { padding-top: 56px; }
+}

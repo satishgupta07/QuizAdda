@@ -1,12 +1,104 @@
-.display-flex {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.question-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.icon-button {
-    cursor: pointer; 
-    border: none;
-    background-color: transparent;
-    color: #ff7800;
+.question-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 24px;
+  transition: box-shadow var(--t-fast), border-color var(--t-fast);
+}
+.question-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-strong);
+}
+
+.question-card-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: start;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.question-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  height: 44px;
+  padding: 0 12px;
+  border-radius: var(--r-md);
+  background: var(--brand-gradient);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.question-card-head h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.delete-btn { color: var(--text-muted); }
+.delete-btn:hover { color: var(--color-danger); }
+
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--bg-muted);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+.option-letter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--r-full);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+.option.option-correct {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: var(--color-success);
+}
+.option.option-correct .option-letter {
+  background: var(--color-success);
+  color: #fff;
+  border-color: var(--color-success);
+}
+
+.answer-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+.answer-row mat-icon { color: var(--color-success); font-size: 18px; width: 18px; height: 18px; }
+
+@media (max-width: 600px) {
+  .options-grid { grid-template-columns: 1fr; }
 }

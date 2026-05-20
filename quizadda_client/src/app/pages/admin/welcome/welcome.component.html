@@ -1,27 +1,48 @@
-<mat-card>
-    <h1 class="display-flex">Welcome to Admin Panel</h1>
-    <div class="display-flex">
-        <mat-card class="display-flex card" routerLink="/admin/profile">
-            <mat-icon>account_circle</mat-icon>
-            <h1 style="margin-top: 10px;">Profile</h1>
-        </mat-card>
-        <mat-card class="display-flex card" routerLink="/admin/categories">
-            <mat-icon>list</mat-icon>
-            <h1 style="margin-top: 10px;">Categories</h1>
-        </mat-card>
-        <mat-card class="display-flex card" routerLink="/admin/add-category">
-            <mat-icon>library_add</mat-icon>
-            <h1 style="margin-top: 10px;">Add Category</h1>
-        </mat-card>
-    </div>
-    <div class="display-flex">
-        <mat-card class="display-flex card" routerLink="/admin/quizzes">
-            <mat-icon>quiz</mat-icon>
-            <h1 style="margin-top: 10px;">Quizzes</h1>
-        </mat-card>
-        <mat-card class="display-flex card" routerLink="/admin/add-quiz">
-            <mat-icon>add_circle_outline</mat-icon>
-            <h1 style="margin-top: 10px;">Add Quiz</h1>
-        </mat-card>
-    </div>
-</mat-card>
+<div class="welcome">
+  <div class="welcome-hero hero-bg">
+    <h1>Welcome back!</h1>
+    <p class="text-muted">Manage your quizzes, categories, and questions from one place.</p>
+  </div>
+
+  <div class="quick-grid">
+    <a class="tile" routerLink="/admin/categories">
+      <span class="icon-chip"><mat-icon>list</mat-icon></span>
+      <div>
+        <div class="tile-title">All Categories</div>
+        <div class="tile-sub">Browse and remove categories</div>
+      </div>
+    </a>
+
+    <a class="tile" routerLink="/admin/add-category">
+      <span class="icon-chip"><mat-icon>library_add</mat-icon></span>
+      <div>
+        <div class="tile-title">Add Category</div>
+        <div class="tile-sub">Create a new quiz topic</div>
+      </div>
+    </a>
+
+    <a class="tile" routerLink="/admin/quizzes">
+      <span class="icon-chip"><mat-icon>quiz</mat-icon></span>
+      <div>
+        <div class="tile-title">All Quizzes</div>
+        <div class="tile-sub">Edit, deactivate, or delete</div>
+      </div>
+    </a>
+
+    <a class="tile" routerLink="/admin/add-quiz">
+      <span class="icon-chip"><mat-icon>add_circle_outline</mat-icon></span>
+      <div>
+        <div class="tile-title">Add Quiz</div>
+        <div class="tile-sub">Build a new quiz from scratch</div>
+      </div>
+    </a>
+
+    <a class="tile" routerLink="/admin/profile">
+      <span class="icon-chip"><mat-icon>account_circle</mat-icon></span>
+      <div>
+        <div class="tile-title">Profile</div>
+        <div class="tile-sub">View your account details</div>
+      </div>
+    </a>
+  </div>
+</div>

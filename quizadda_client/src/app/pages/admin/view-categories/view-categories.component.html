@@ -1,24 +1,32 @@
-<mat-card style="padding-bottom: 16px;">
-  <h1 style="padding-top: 10px; display: flex; justify-content: center;">All Categories</h1>
-  <div *ngFor="let c of categories; trackBy: trackByCatId">
-    <mat-card style="margin: 10px; background-color: #E5E4E2;">
-      <mat-card-header class="display-flex">
-        <mat-card-title style="display: flex;">
-          <mat-icon style="margin-right: 10px;" matListItemIcon>category</mat-icon>{{ c.title }}
-        </mat-card-title>
-        <button class="icon-button" (click)="deleteCategory(c.catId)">
-          <mat-icon fontIcon="delete"></mat-icon>
-        </button>
-      </mat-card-header>
-      <mat-card-content>
-        <p>{{ c.description }}</p>
-      </mat-card-content>
-    </mat-card>
+<div class="page-header">
+  <div>
+    <h1>Categories</h1>
+    <p class="text-muted">Organize your quizzes into topics.</p>
   </div>
+  <a mat-raised-button color="primary" routerLink="/admin/add-category">
+    <mat-icon>add</mat-icon> New Category
+  </a>
+</div>
 
-  <div class="container text-center mt20">
-    <button routerLink="/admin/add-category" mat-raised-button color="primary">
-      Add New Category
-    </button>
-  </div>
-</mat-card>
+<div class="empty-state" *ngIf="categories.length === 0">
+  <span class="icon-chip"><mat-icon>category</mat-icon></span>
+  <h3>No categories yet</h3>
+  <p>Create your first category to start grouping quizzes.</p>
+  <a mat-stroked-button routerLink="/admin/add-category">
+    <mat-icon>add</mat-icon> Add Category
+  </a>
+</div>
+
+<div class="card-grid">
+  <article class="cat-card" *ngFor="let c of categories; trackBy: trackByCatId">
+    <div class="cat-card-head">
+      <span class="icon-chip"><mat-icon>category</mat-icon></span>
+      <button mat-icon-button type="button" aria-label="Delete category"
+              class="delete-btn" (click)="deleteCategory(c.catId)">
+        <mat-icon>delete_outline</mat-icon>
+      </button>
+    </div>
+    <h3>{{ c.title }}</h3>
+    <p class="text-muted">{{ c.description || 'No description.' }}</p>
+  </article>
+</div>

@@ -1,31 +1,50 @@
-<div class="display-flex">
-    <h1 class="mt20">Questions of {{ quizTitle }}</h1>
-    <button [routerLink]="['/admin/quiz/add-question', quizId, quizTitle]" mat-raised-button color="primary">Add Question</button>
+<div class="page-header">
+  <div>
+    <h1>Questions</h1>
+    <p class="text-muted">Quiz: <strong>{{ quizTitle }}</strong></p>
+  </div>
+  <a mat-raised-button color="primary" [routerLink]="['/admin/quiz/add-question', quizId, quizTitle]">
+    <mat-icon>add</mat-icon> Add Question
+  </a>
 </div>
-<div class="bootstrap-wrapper">
-    <div class="row">
-        <div class="col-md-12">
-            <mat-card *ngFor="let q of questions; let i = index; trackBy: trackByQuesId" class="mt20">
-                <mat-card-content>
-                    <div class="display-flex">
-                        <p>Q{{ i + 1 }}. <span>{{ q.content }}</span></p>
-                        <button class="icon-button" (click)="deleteQuestion(q.quesId)"><mat-icon fontIcon="delete"></mat-icon></button>
-                    </div>
 
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-6"><p>A. {{ q.option1 }}</p></div>
-                            <div class="col-md-6"><p>B. {{ q.option2 }}</p></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6"><p>C. {{ q.option3 }}</p></div>
-                            <div class="col-md-6"><p>D. {{ q.option4 }}</p></div>
-                        </div>
-                        <mat-divider></mat-divider>
-                        <p>Correct Answer: {{ q.answer }}</p>
-                    </div>
-                </mat-card-content>
-            </mat-card>
-        </div>
+<div class="empty-state" *ngIf="questions.length === 0">
+  <span class="icon-chip"><mat-icon>help_outline</mat-icon></span>
+  <h3>No questions yet</h3>
+  <p>Add your first question to this quiz.</p>
+  <a mat-stroked-button [routerLink]="['/admin/quiz/add-question', quizId, quizTitle]">
+    <mat-icon>add</mat-icon> Add Question
+  </a>
+</div>
+
+<div class="question-list">
+  <article class="question-card" *ngFor="let q of questions; let i = index; trackBy: trackByQuesId">
+    <div class="question-card-head">
+      <span class="question-num">Q{{ i + 1 }}</span>
+      <h3>{{ q.content }}</h3>
+      <button mat-icon-button class="delete-btn" aria-label="Delete question" (click)="deleteQuestion(q.quesId)">
+        <mat-icon>delete_outline</mat-icon>
+      </button>
     </div>
+
+    <div class="options-grid">
+      <div class="option" [class.option-correct]="q.option1 === q.answer">
+        <span class="option-letter">A</span> {{ q.option1 }}
+      </div>
+      <div class="option" [class.option-correct]="q.option2 === q.answer">
+        <span class="option-letter">B</span> {{ q.option2 }}
+      </div>
+      <div class="option" [class.option-correct]="q.option3 === q.answer">
+        <span class="option-letter">C</span> {{ q.option3 }}
+      </div>
+      <div class="option" [class.option-correct]="q.option4 === q.answer">
+        <span class="option-letter">D</span> {{ q.option4 }}
+      </div>
+    </div>
+
+    <div class="answer-row">
+      <mat-icon>verified</mat-icon>
+      <strong>Correct answer:</strong> {{ q.answer }}
+    </div>
+  </article>
 </div>

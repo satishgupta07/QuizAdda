@@ -1,9 +1,58 @@
-<div class="bootstrap-wrapper">
-    <div class="container">
-        <div class="row mt20">
-            <div class="col-md-6 offset-md-3 text-center">
-                <h1>Welcome to Quiz-Adda</h1>
-            </div>
-        </div>
+<section class="hero hero-bg" *ngIf="showHero">
+  <div class="app-container hero-grid">
+    <div class="hero-copy">
+      <span class="pill pill-brand">
+        <mat-icon>auto_awesome</mat-icon>
+        Race the timer · Beat your best score
+      </span>
+
+      <h1>
+        Learn faster with
+        <span class="text-gradient">QuizAdda.</span>
+      </h1>
+      <p class="hero-sub">
+        Pick a category, attempt curated quizzes, and see your score breakdown in seconds.
+        Built for curious minds — students, hobbyists, and anyone who likes the rush of a
+        ticking clock.
+      </p>
+
+      <div class="hero-cta">
+        <a mat-raised-button color="primary" routerLink="/signup">
+          Get started — it's free
+          <mat-icon iconPositionEnd>arrow_forward</mat-icon>
+        </a>
+        <a mat-stroked-button routerLink="/login">I already have an account</a>
+      </div>
+
+      <ul class="hero-bullets">
+        <li><mat-icon>check_circle</mat-icon> Hundreds of quizzes across categories</li>
+        <li><mat-icon>check_circle</mat-icon> Instant scoring with answer breakdown</li>
+        <li><mat-icon>check_circle</mat-icon> Free forever — sign up in seconds</li>
+      </ul>
     </div>
-</div>
+
+    <div class="hero-art">
+      <div class="hero-card hero-card-1">
+        <span class="icon-chip"><mat-icon>quiz</mat-icon></span>
+        <div>
+          <div class="hero-card-title">Programming</div>
+          <div class="hero-card-meta">12 quizzes · 320 questions</div>
+        </div>
+      </div>
+      <div class="hero-card hero-card-2">
+        <span class="icon-chip"><mat-icon>psychology</mat-icon></span>
+        <div>
+          <div class="hero-card-title">Logic & Reasoning</div>
+          <div class="hero-card-meta">8 quizzes · 180 questions</div>
+        </div>
+      </div>
+      <div class="hero-card hero-card-3">
+        <span class="icon-chip"><mat-icon>public</mat-icon></span>
+        <div>
+          <div class="hero-card-title">General Knowledge</div>
+          <div class="hero-card-meta">20 quizzes · 540 questions</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

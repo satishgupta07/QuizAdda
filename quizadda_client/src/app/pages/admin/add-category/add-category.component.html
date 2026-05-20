@@ -1,30 +1,31 @@
-<mat-card>
-    <h1 class="display-flex">Add New Category</h1>
-    <mat-card-content>
-        <div class="bootstrap-wrapper">
-            <div class="row">
-                <div class="col-md-8 offset-md-2">
-                    <form [formGroup]="form" (ngSubmit)="submit()">
-                        <mat-form-field class="w100" appearance="outline">
-                            <mat-label>Title</mat-label>
-                            <input formControlName="title" autofocus matInput placeholder="Enter here">
-                            <mat-error *ngIf="form.controls.title.touched && form.controls.title.errors?.['required']">Title is required</mat-error>
-                            <mat-error *ngIf="form.controls.title.touched && form.controls.title.errors?.['maxlength']">Max 100 characters</mat-error>
-                        </mat-form-field>
-                        <mat-form-field class="w100" appearance="outline">
-                            <mat-label>Description</mat-label>
-                            <textarea formControlName="description" matInput placeholder="Enter description ..." rows="3"></textarea>
-                            <mat-error *ngIf="form.controls.description.touched && form.controls.description.errors?.['maxlength']">Max 500 characters</mat-error>
-                        </mat-form-field>
+<div class="page-header">
+  <div>
+    <h1>Add Category</h1>
+    <p class="text-muted">Group related quizzes under a topic.</p>
+  </div>
+</div>
 
-                        <div class="container text-center mt15">
-                            <button type="submit" mat-raised-button color="primary" [disabled]="submitting">
-                                {{ submitting ? 'Adding...' : 'Add' }}
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </mat-card-content>
-</mat-card>
+<div class="surface-card form-card">
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <mat-form-field appearance="outline" class="w100">
+      <mat-label>Title</mat-label>
+      <input formControlName="title" matInput placeholder="e.g. Programming">
+      <mat-icon matPrefix>label</mat-icon>
+      <mat-error *ngIf="form.controls.title.touched && form.controls.title.errors?.['required']">Title is required</mat-error>
+      <mat-error *ngIf="form.controls.title.touched && form.controls.title.errors?.['maxlength']">Max 100 characters</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w100">
+      <mat-label>Description</mat-label>
+      <textarea formControlName="description" matInput rows="4" placeholder="What's this category about?"></textarea>
+      <mat-error *ngIf="form.controls.description.touched && form.controls.description.errors?.['maxlength']">Max 500 characters</mat-error>
+    </mat-form-field>
+
+    <div class="form-actions">
+      <button type="submit" mat-raised-button color="primary" [disabled]="submitting">
+        <mat-icon *ngIf="!submitting">save</mat-icon>
+        {{ submitting ? 'Saving...' : 'Save Category' }}
+      </button>
+    </div>
+  </form>
+</div>

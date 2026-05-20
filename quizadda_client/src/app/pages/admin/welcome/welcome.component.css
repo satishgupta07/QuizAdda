@@ -1,15 +1,41 @@
-.display-flex {
-    display: flex;
-    justify-content: center;
-    padding: 16px;
+.welcome-hero {
+  border-radius: var(--r-xl);
+  padding: 40px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+.welcome-hero h1 { margin: 0 0 8px; }
+
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
 }
 
-.card {
-    cursor: pointer; 
-    width: 20vw;
-    height: 20vh;
-    align-items: center;
-    padding: 1vw 1.5vw;
-    margin: 1.5vw;
-    background-color: #E5E4E2;
+.tile {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: transform var(--t-fast), box-shadow var(--t-fast), border-color var(--t-fast);
+}
+.tile:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--brand-primary);
+}
+
+.tile-title { font-weight: 700; }
+.tile-sub   { color: var(--text-muted); font-size: 0.85rem; }
+
+@media (max-width: 600px) {
+  .welcome-hero { padding: 28px 20px; border-radius: var(--r-lg); }
 }

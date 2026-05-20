@@ -1,20 +1,76 @@
-.profile-image {
-    max-width: 100px;
-    max-height: 100px;
+.profile { max-width: 720px; margin: 0 auto; }
+
+.profile-card {
+  padding: 0;
+  overflow: hidden;
+  position: relative;
 }
 
-.table {
-    width: 80%;
-    margin-left: 10%;
-    border-collapse: collapse;
+.profile-banner {
+  height: 140px;
+  background: var(--brand-gradient);
+  position: relative;
 }
 
-.table tr td {
-    padding: 15px 30px;
-    border: 0.5px solid #e2e2e2;
+.profile-avatar {
+  display: flex;
+  justify-content: center;
+  margin-top: -52px;
+  margin-bottom: 16px;
+}
+.avatar-big {
+  width: 104px;
+  height: 104px;
+  border-radius: var(--r-full);
+  background: var(--brand-gradient);
+  color: #fff;
+  font-weight: 800;
+  font-size: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 4px solid var(--surface);
+  box-shadow: var(--shadow-lg);
 }
 
-.display-flex {
-    display: flex;
-    padding: 16px;
+.profile-head {
+  text-align: center;
+  padding: 0 24px 24px;
 }
+.profile-head h1 { margin: 0 0 4px; }
+.profile-pills {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+.pill mat-icon { font-size: 14px; width: 14px; height: 14px; }
+
+.profile-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid var(--border);
+}
+.field {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+}
+.field:last-child { border-bottom: none; }
+
+.field-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-md);
+  background: var(--bg-muted);
+  color: var(--brand-primary);
+}
+.field-label { color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.field-value { font-weight: 600; color: var(--text-primary); }
