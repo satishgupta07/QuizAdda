@@ -10,6 +10,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
 import { QuestionResponse, QuizAttemptQuestion } from 'src/app/models/question.interface';
+import { LeaderboardEntry } from 'src/app/models/quiz.interface';
+import { AuthService } from 'src/app/services/auth.service';
 import { QuestionsService } from 'src/app/services/questions.service';
 import { QuizService } from 'src/app/services/quiz.service';
 
@@ -50,6 +52,7 @@ export class StartPageComponent implements OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly questionsService = inject(QuestionsService);
   private readonly quizService = inject(QuizService);
+  private readonly auth = inject(AuthService);
   private readonly destroyRef = inject(DestroyRef);
 
   quizId!: number;
@@ -61,12 +64,18 @@ export class StartPageComponent implements OnDestroy {
   isSubmitted = false;
   timer = 0;
 
+  /** Loaded once the quiz is submitted; shown alongside the score. */
+  leaderboard: LeaderboardEntry[] = [];
+  /** Tracks the current user's row so we can visually highlight it. */
+  currentUsername = '';
+
   /** Timer handle, used so we can stop ticking when the component is destroyed. */
   private intervalId: ReturnType<typeof setInterval> | null = null;
 
   ngOnInit(): void {
     this.preventBackButton();
     this.quizId = Number(this.route.snapshot.paramMap.get('quizId'));
+    this.currentUsername = this.auth.getCurrentUser()?.username ?? '';
     this.loadQuestions(this.quizId);
   }
 
@@ -166,7 +175,23 @@ export class StartPageComponent implements OnDestroy {
           this.marksGot = result.marksGot.toFixed(2);
           this.correctAnswers = result.correctAnswers;
           this.attempted = result.attempted;
+          this.loadLeaderboard();
         }
       });
+  }
+
+  /**
+   * Fetched right after submission so the user immediately sees where they
+   * stand. Failures fall through silently — leaderboard is a nice-to-have,
+   * not a critical-path UI element.
+   */
+  private loadLeaderboard(): void {
+    this.quizService.leaderboard(this.quizId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({ next: entries => (this.leaderboard = entries) });
+  }
+
+  trackByRank(_: number, entry: LeaderboardEntry): number {
+    return entry.rank;
   }
 }
