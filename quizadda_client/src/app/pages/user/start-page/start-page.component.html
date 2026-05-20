@@ -1,26 +1,37 @@
 <div class="quiz-attempt" *ngIf="!isSubmitted">
-  <!-- Sticky timer / progress header -->
-  <div class="quiz-status">
+  <!-- Sticky timer / progress header; aria-live so screen readers hear updates. -->
+  <div class="quiz-status" role="region" aria-label="Quiz progress">
     <div class="quiz-status-inner app-container">
       <div class="quiz-status-info">
-        <div class="quiz-status-label">Time remaining</div>
-        <div class="quiz-status-time">{{ getFormattedTime() }}</div>
+        <div class="quiz-status-label" id="time-remaining-label">Time remaining</div>
+        <div class="quiz-status-time"
+             aria-labelledby="time-remaining-label"
+             aria-live="polite"
+             aria-atomic="true">
+          {{ getFormattedTime() }}
+        </div>
       </div>
-      <div class="progress-track">
+      <div class="progress-track"
+           role="progressbar"
+           aria-label="Quiz time remaining"
+           [attr.aria-valuenow]="timer"
+           [attr.aria-valuemin]="0"
+           [attr.aria-valuemax]="totalQuestions * 60">
         <div class="progress-fill"
              [style.width.%]="100 - ((timer / (totalQuestions * 60)) * 100)"></div>
       </div>
       <button mat-raised-button color="primary" (click)="submitQuiz()" class="hide-mobile">
-        <mat-icon>check</mat-icon> Submit
+        <mat-icon aria-hidden="true">check</mat-icon> Submit
       </button>
     </div>
   </div>
 
   <div class="app-container quiz-content">
     <ng-container *ngIf="questions.length > 0">
-      <article class="q-card" *ngFor="let q of questions; let i = index; trackBy: trackByQuesId">
+      <article class="q-card" *ngFor="let q of questions; let i = index; trackBy: trackByQuesId"
+               [attr.aria-label]="'Question ' + (i + 1) + ' of ' + totalQuestions">
         <div class="q-card-head">
-          <span class="q-num">Q{{ i + 1 }}</span>
+          <span class="q-num" aria-hidden="true">Q{{ i + 1 }}</span>
           <h3>{{ q.content }}</h3>
         </div>
 

@@ -5,10 +5,13 @@
   fgsType="three-strings"
 ></ngx-ui-loader>
 
+<!-- Keyboard-accessible skip-to-content link; visible only when focused. -->
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
 <div class="app-shell">
   <app-navbar></app-navbar>
 
-  <main class="app-main">
+  <main id="main-content" class="app-main" tabindex="-1">
     <router-outlet></router-outlet>
   </main>
 

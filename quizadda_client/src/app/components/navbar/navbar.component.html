@@ -1,14 +1,14 @@
-<header class="navbar">
+<header class="navbar" role="banner">
   <div class="navbar-inner app-container">
-    <a routerLink="/" class="brand" (click)="closeMobileMenu()">
-      <span class="brand-mark">
+    <a routerLink="/" class="brand" aria-label="QuizAdda home" (click)="closeMobileMenu()">
+      <span class="brand-mark" aria-hidden="true">
         <mat-icon>quiz</mat-icon>
       </span>
       <span class="brand-text">Quiz<span class="text-gradient">Adda</span></span>
     </a>
 
     <!-- Desktop links -->
-    <nav class="nav-links hide-mobile">
+    <nav class="nav-links hide-mobile" aria-label="Primary">
       <ng-container *ngIf="!user">
         <a mat-button routerLink="/login" routerLinkActive="active">Login</a>
         <a mat-button routerLink="/signup" routerLinkActive="active">Register</a>
@@ -54,16 +54,18 @@
       </button>
       <button mat-icon-button
               type="button"
-              aria-label="Open menu"
+              [attr.aria-label]="mobileMenuOpen ? 'Close menu' : 'Open menu'"
+              [attr.aria-expanded]="mobileMenuOpen"
+              aria-controls="mobile-drawer"
               (click)="toggleMobileMenu()">
-        <mat-icon>{{ mobileMenuOpen ? 'close' : 'menu' }}</mat-icon>
+        <mat-icon aria-hidden="true">{{ mobileMenuOpen ? 'close' : 'menu' }}</mat-icon>
       </button>
     </div>
   </div>
 
   <!-- Mobile drawer -->
-  <div class="mobile-drawer hide-desktop" [class.open]="mobileMenuOpen">
-    <nav class="mobile-links">
+  <div id="mobile-drawer" class="mobile-drawer hide-desktop" [class.open]="mobileMenuOpen" [attr.aria-hidden]="!mobileMenuOpen">
+    <nav class="mobile-links" aria-label="Mobile primary">
       <ng-container *ngIf="!user">
         <a routerLink="/login" routerLinkActive="active" (click)="closeMobileMenu()">
           <mat-icon>login</mat-icon> Login

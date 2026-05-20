@@ -76,6 +76,40 @@ body.dark-mode {
 }
 
 /* ============================================================
+   Accessibility primitives
+   ============================================================ */
+
+/* Visually-hidden text for screen readers (use on icon-only context labels). */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Keyboard-only focus ring. Mouse focus stays clean; tab/space surfaces clearly. */
+:focus-visible {
+  outline: 3px solid var(--brand-primary);
+  outline-offset: 2px;
+  border-radius: var(--r-sm);
+}
+
+/* Respect users who prefer no animation. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
    Base
    ============================================================ */
 *, *::before, *::after { box-sizing: border-box; }
