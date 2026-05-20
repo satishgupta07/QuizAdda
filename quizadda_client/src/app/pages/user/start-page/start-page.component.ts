@@ -11,6 +11,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
 import { QuestionResponse, QuizAttemptQuestion } from 'src/app/models/question.interface';
 import { LeaderboardEntry } from 'src/app/models/quiz.interface';
+import { AttemptCacheService } from 'src/app/services/attempt-cache.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { QuestionsService } from 'src/app/services/questions.service';
 import { QuizService } from 'src/app/services/quiz.service';
@@ -24,11 +25,12 @@ const SECONDS_PER_QUESTION = 60;
  *   <li>Fetch the question set (server omits the answer for this endpoint)</li>
  *   <li>Track chosen answers locally via {@code [(ngModel)]} on each option</li>
  *   <li>Drive a countdown timer that auto-submits at zero</li>
+ *   <li>Persist chosen answers + remaining time to localStorage so a refresh
+ *       restores progress instead of starting from scratch</li>
  *   <li>POST chosen answers to {@code /evaluate} for server-side scoring</li>
  * </ul>
  * Explicitly implements {@link OnDestroy} so the interval is cleared if the
- * user navigates away mid-attempt — without this the timer keeps decrementing
- * and the eventual auto-submit lands on a stale component.
+ * user navigates away mid-attempt.
  */
 @Component({
   selector: 'app-start-page',
@@ -53,6 +55,7 @@ export class StartPageComponent implements OnDestroy {
   private readonly questionsService = inject(QuestionsService);
   private readonly quizService = inject(QuizService);
   private readonly auth = inject(AuthService);
+  private readonly attemptCache = inject(AttemptCacheService);
   private readonly destroyRef = inject(DestroyRef);
 
   quizId!: number;
@@ -80,9 +83,12 @@ export class StartPageComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // Critical: stop the interval when the user navigates away or refreshes.
-    // Without this the timer keeps decrementing in the background.
     this.clearTimer();
+  }
+
+  /** Called from the template on every (ngModelChange) — persists immediately. */
+  onAnswerChange(): void {
+    this.persistProgress();
   }
 
   submitQuiz(): void {
@@ -132,13 +138,32 @@ export class StartPageComponent implements OnDestroy {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: data => {
+          const cached = this.attemptCache.load(quizId);
           // Augment each question with a local-only chosenAnswer field for ngModel binding.
-          this.questions = data.map(q => ({ ...q, chosenAnswer: '' }));
+          this.questions = data.map(q => ({
+            ...q,
+            chosenAnswer: cached?.answers[q.quesId] ?? ''
+          }));
           this.totalQuestions = this.questions.length;
-          this.timer = this.totalQuestions * SECONDS_PER_QUESTION;
+          this.timer = cached?.secondsLeft ?? this.totalQuestions * SECONDS_PER_QUESTION;
           this.startTimer();
+
+          if (cached) {
+            this.notifyResumed();
+          }
         }
       });
+  }
+
+  private notifyResumed(): void {
+    // Fire-and-forget toast; no need to block on dismissal.
+    Swal.fire({
+      icon: 'info',
+      title: 'Resumed',
+      text: 'Picking up from where you left off.',
+      timer: 1800,
+      showConfirmButton: false
+    });
   }
 
   private startTimer(): void {
@@ -149,6 +174,11 @@ export class StartPageComponent implements OnDestroy {
         this.evaluateQuiz();
       } else {
         this.timer--;
+        // Cache every 5 s so the savedAt stays fresh enough for the TTL.
+        // (Cheap: a single localStorage write of a small JSON blob.)
+        if (this.timer % 5 === 0) {
+          this.persistProgress();
+        }
       }
     }, 1000);
   }
@@ -158,6 +188,15 @@ export class StartPageComponent implements OnDestroy {
       clearInterval(this.intervalId);
       this.intervalId = null;
     }
+  }
+
+  private persistProgress(): void {
+    if (!this.quizId || this.isSubmitted) return;
+    const answers: Record<number, string> = {};
+    for (const q of this.questions) {
+      if (q.chosenAnswer) answers[q.quesId] = q.chosenAnswer;
+    }
+    this.attemptCache.save(this.quizId, answers, this.timer);
   }
 
   private evaluateQuiz(): void {
@@ -175,6 +214,8 @@ export class StartPageComponent implements OnDestroy {
           this.marksGot = result.marksGot.toFixed(2);
           this.correctAnswers = result.correctAnswers;
           this.attempted = result.attempted;
+          // Clear cache so the next attempt of this quiz starts fresh.
+          this.attemptCache.clear(this.quizId);
           this.loadLeaderboard();
         }
       });

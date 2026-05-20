@@ -24,7 +24,7 @@
           <h3>{{ q.content }}</h3>
         </div>
 
-        <mat-radio-group [(ngModel)]="q.chosenAnswer" class="q-options">
+        <mat-radio-group [(ngModel)]="q.chosenAnswer" (ngModelChange)="onAnswerChange()" class="q-options">
           <label class="q-option" *ngFor="let opt of [q.option1, q.option2, q.option3, q.option4]; let oi = index"
                  [class.selected]="q.chosenAnswer === opt">
             <mat-radio-button [value]="opt" [name]="'q' + q.quesId">
