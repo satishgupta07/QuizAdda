@@ -13,6 +13,21 @@
       <mat-error *ngIf="form.controls.content.touched && form.controls.content.errors?.['required']">Question content is required</mat-error>
     </mat-form-field>
 
+    <div class="image-row">
+      <div class="image-preview" *ngIf="form.controls.image.value">
+        <img [src]="form.controls.image.value" alt="Question image preview">
+        <button mat-icon-button type="button" class="image-remove" aria-label="Remove image" (click)="removeImage()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <label class="image-picker" *ngIf="!form.controls.image.value">
+        <mat-icon>add_photo_alternate</mat-icon>
+        <span>{{ uploading ? 'Uploading...' : 'Add image (optional, max 2 MB)' }}</span>
+        <input type="file" accept="image/png,image/jpeg,image/webp,image/gif"
+               (change)="onImageSelected($event)" [disabled]="uploading" hidden>
+      </label>
+    </div>
+
     <div class="grid-2">
       <mat-form-field appearance="outline">
         <mat-label>Option A</mat-label>

@@ -24,6 +24,8 @@
           <h3>{{ q.content }}</h3>
         </div>
 
+        <img *ngIf="q.image" [src]="q.image" alt="Question image" class="q-image">
+
         <mat-radio-group [(ngModel)]="q.chosenAnswer" (ngModelChange)="onAnswerChange()" class="q-options">
           <label class="q-option" *ngFor="let opt of [q.option1, q.option2, q.option3, q.option4]; let oi = index"
                  [class.selected]="q.chosenAnswer === opt">

@@ -27,6 +27,8 @@
       </button>
     </div>
 
+    <img *ngIf="q.image" [src]="q.image" alt="Question image" class="question-image">
+
     <div class="options-grid">
       <div class="option" [class.option-correct]="q.option1 === q.answer">
         <span class="option-letter">A</span> {{ q.option1 }}
