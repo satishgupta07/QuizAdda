@@ -1,4 +1,12 @@
 <div class="profile" *ngIf="user">
+  <div class="verify-banner" *ngIf="!user.emailVerified">
+    <mat-icon>mark_email_unread</mat-icon>
+    <div>
+      <strong>Your email isn't verified yet.</strong>
+      Check your inbox for the link we sent to {{ user.email }}.
+    </div>
+  </div>
+
   <div class="profile-card surface-card">
     <div class="profile-banner hero-bg"></div>
 

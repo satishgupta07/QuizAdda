@@ -11,6 +11,7 @@ export interface UserResponse {
   phone: string;
   profile: string;
   enabled: boolean;
+  emailVerified: boolean;
   authorities: string[];
 }
 

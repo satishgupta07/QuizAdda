@@ -35,6 +35,11 @@ export const routes: Routes = [
       import('./pages/reset-password/reset-password.component').then(m => m.ResetPasswordComponent)
   },
   {
+    path: 'verify-email',
+    loadComponent: () =>
+      import('./pages/verify-email/verify-email.component').then(m => m.VerifyEmailComponent)
+  },
+  {
     path: 'admin',
     canActivate: [adminGuard],
     loadComponent: () =>

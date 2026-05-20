@@ -9,6 +9,7 @@ import com.satishgupta.quizadda_server.dto.user.ChangePasswordRequest;
 import com.satishgupta.quizadda_server.dto.user.UpdateProfileRequest;
 import com.satishgupta.quizadda_server.dto.user.UserResponse;
 import com.satishgupta.quizadda_server.mappers.UserMapper;
+import com.satishgupta.quizadda_server.services.EmailVerificationService;
 import com.satishgupta.quizadda_server.services.PasswordResetService;
 import com.satishgupta.quizadda_server.services.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -44,6 +45,7 @@ public class AuthController {
     private final UserDetailsService userDetailsService;
     private final UserService userService;
     private final PasswordResetService passwordResetService;
+    private final EmailVerificationService emailVerificationService;
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
 
@@ -97,5 +99,15 @@ public class AuthController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
         passwordResetService.resetPassword(request.token(), request.newPassword());
+    }
+
+    /**
+     * Consumes the email-verification token. Uses POST (with token in the body)
+     * rather than GET to avoid accidental verification by link prefetchers.
+     */
+    @PostMapping("/verify-email")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void verifyEmail(@RequestBody com.satishgupta.quizadda_server.dto.auth.VerifyEmailRequest request) {
+        emailVerificationService.verify(request.token());
     }
 }

@@ -53,6 +53,15 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private boolean enabled = true;
 
+    /**
+     * Whether the user has clicked the verification link in their welcome
+     * email. Login is not gated on this — verification is informational
+     * (UI banner). Defaults to {@code true} so the column can be added
+     * without backfilling existing rows; new registrations set it to false.
+     */
+    @Column(name = "email_verified", nullable = false)
+    private boolean emailVerified = true;
+
     @Column(length = 255)
     private String profile;
 

@@ -75,6 +75,11 @@ export class AuthService {
     return this.http.post<void>(`${this.path}/reset-password`, request);
   }
 
+  /** Consumes an email-verification token. */
+  verifyEmail(token: string): Observable<void> {
+    return this.http.post<void>(`${this.path}/verify-email`, { token });
+  }
+
   /** Clears credentials in-memory and in localStorage. */
   logout(): void {
     localStorage.removeItem(TOKEN_KEY);

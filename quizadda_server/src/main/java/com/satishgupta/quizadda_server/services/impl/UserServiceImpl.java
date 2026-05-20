@@ -13,6 +13,7 @@ import com.satishgupta.quizadda_server.models.User;
 import com.satishgupta.quizadda_server.models.UserRole;
 import com.satishgupta.quizadda_server.repositories.RoleRepository;
 import com.satishgupta.quizadda_server.repositories.UserRepository;
+import com.satishgupta.quizadda_server.services.EmailVerificationService;
 import com.satishgupta.quizadda_server.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailVerificationService emailVerificationService;
 
     @Override
     public UserResponse registerUser(RegisterUserRequest request) {
@@ -54,6 +56,9 @@ public class UserServiceImpl implements UserService {
         user.setPhone(request.phone());
         user.setProfile(DEFAULT_PROFILE_IMAGE);
         user.setEnabled(true);
+        // New registrations start unverified; the welcome email's link
+        // flips this to true once the user clicks through.
+        user.setEmailVerified(false);
 
         // Look up the seeded USER role rather than fabricating one inline — keeps
         // role IDs consistent with whatever the database assigned at seed time.
@@ -70,6 +75,7 @@ public class UserServiceImpl implements UserService {
         user.setUserRoles(roles);
 
         User saved = userRepository.save(user);
+        emailVerificationService.sendVerification(saved);
         log.info("Registered new user: {}", saved.getUsername());
         return UserMapper.toResponse(saved);
     }

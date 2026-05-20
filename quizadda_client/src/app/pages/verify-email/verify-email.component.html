@@ -1,0 +1,24 @@
+<section class="auth-page hero-bg">
+  <div class="app-container forgot-grid">
+    <div class="auth-card surface-card verify-card">
+      <div *ngIf="state === 'verifying'" class="verify-body">
+        <span class="icon-chip"><mat-icon>hourglass_top</mat-icon></span>
+        <h2>Verifying your email...</h2>
+      </div>
+
+      <div *ngIf="state === 'success'" class="verify-body">
+        <span class="icon-chip success"><mat-icon>verified</mat-icon></span>
+        <h2>Email verified</h2>
+        <p class="text-muted">Thanks for confirming your address. You can now log in.</p>
+        <a mat-raised-button color="primary" routerLink="/login">Go to login</a>
+      </div>
+
+      <div *ngIf="state === 'error'" class="verify-body">
+        <span class="icon-chip error"><mat-icon>error</mat-icon></span>
+        <h2>Verification failed</h2>
+        <p class="text-muted">{{ errorMessage }}</p>
+        <a mat-stroked-button routerLink="/login">Back to login</a>
+      </div>
+    </div>
+  </div>
+</section>

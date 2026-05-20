@@ -28,6 +28,7 @@ public final class UserMapper {
                 u.getPhone(),
                 u.getProfile(),
                 u.isEnabled(),
+                u.isEmailVerified(),
                 authorities
         );
     }

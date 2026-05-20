@@ -15,6 +15,7 @@ public record UserResponse(
         String phone,
         String profile,
         boolean enabled,
+        boolean emailVerified,
         Set<String> authorities
 ) {
 }

@@ -167,6 +167,23 @@
 .empty-state h3 { margin: 0; }
 .empty-state p { color: var(--text-muted); margin: 0; }
 
+.verify-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  background: rgba(245, 158, 11, .1);
+  border: 1px solid var(--color-warning);
+  color: var(--text-primary);
+  border-radius: var(--r-md);
+  font-size: 0.95rem;
+}
+.verify-banner mat-icon {
+  color: var(--color-warning);
+  flex-shrink: 0;
+}
+
 .profile-actions {
   display: flex;
   justify-content: center;

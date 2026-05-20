@@ -1,0 +1,15 @@
+.forgot-grid { display: flex; justify-content: center; }
+.verify-card { max-width: 460px; text-align: center; }
+
+.verify-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0;
+}
+.verify-body .icon-chip { width: 64px; height: 64px; }
+.verify-body .icon-chip mat-icon { font-size: 32px; width: 32px; height: 32px; }
+.verify-body .icon-chip.success { background: var(--color-success); }
+.verify-body .icon-chip.error   { background: var(--color-danger); }
+.verify-body h2 { margin: 0; }
